@@ -1,0 +1,38 @@
+version: "3.9"
+   
+services:
+  db:
+    image: postgres
+    ports:
+      - "92.205.26.185:5432:5432"
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    networks:
+      - container_network
+  backend:
+    image: container_backend
+    build: ./backend
+    volumes:
+      - ./backend:/backend
+      - ./uploads:/uploads
+    ports:
+      - "92.205.26.185:8080:8080"
+    depends_on:
+      - db
+    networks:
+      - container_network
+  frontend:
+    stdin_open: true
+    image: container_frontend
+    build: ./frontend
+    volumes:
+      - ./frontend:/frontend
+    ports:
+      - "92.205.26.185:3000:3000"
+    depends_on:
+      - db
+    networks:
+      - container_network
+networks:
+  container_network:
+    driver: bridge
