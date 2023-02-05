@@ -10,6 +10,10 @@
 *.sqlite3
 *.db-shm
 *.db-wal
+database_folder/
+database_folder/*
+database_volume/
+database_volume/*
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
