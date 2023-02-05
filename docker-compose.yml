@@ -6,7 +6,11 @@ services:
     ports:
       - "92.205.26.185:5432:5432"
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - ./database_folder/database_volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     networks:
       - container_network
   backend:
