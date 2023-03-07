@@ -1,70 +1,82 @@
-# Getting Started with Create React App
+## About the Frontend Setup
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Quick Start
+1. To get started you need to clone this repository to your local workspace. After cloning, make sure you have already downloaded [npm](https://www.npmjs.com/package/npm).
 
-## Available Scripts
+2. If you already have npm, make sure you are in the `/frontend` folder.
 
-In the project directory, you can run:
+3. Use `npm install` command on the terminal and npm will install all the dependencies.
 
-### `npm start`
+### About Vite
+We use [Vite](https://vitejs.dev/) during the development process. **Vite** will act as a local server during development, and will be the build tool when we decide to deploy the application.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+index.html is the file that is served by Vite during development. It is the entry point of the application. No need to worry about this file and do not change this file in any way.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### During development
+Use `npm run dev` command to start the development server. Vite will serve the application on a local endpoint. The endpoint can be accessed from the console.
 
-### `npm test`
+Vite supports **Hot Module Replacement**. This means whenever you make some change on the code and save the file, Vite will automatically re-render (some magic is involved in here I assume) your page. 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Dependencies
+#### [React-Query](https://tanstack.com/query/v4/docs/overview)
+We will use react-query to handle the interactions with the backend. react-query comes with ways to manage the server state that are not available in React.
 
-### `npm run build`
+#### [React-Router](https://reactrouter.com/en/main/start/tutorial#adding-a-router)
+react-router handles the client side routing. In an ideal world we would have used Next.js or Remix but we are not in an ideal world and I have no clue how to work with those frameworks. 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Folder Structure
+Most of our work will go under `/src`. `main.tsx` and `App.tsx` are the default files that must be in the folder in order for `React` to work. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
++ `/src/components` folder will include all the components we will use from forms to sidebars.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
++ `/src/pages` folder will ideally include the pages we will render on specific routes.
 
-### `npm run eject`
++ `/src/hooks` and `/src/providers` are too long for me to describe here. Either watch a youtube video or come and ask me face-to-face.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### About Types
+We are going to need to create types if we would like to use the power of strong typing that comes with TypeScript. **The rule of thumb for creating types is to keep them as close as possible to where they are needed.** See below for more details.
+#### Location of types
+Types that are only used by the immediate component should be placed inside that component. Becase those types are almost 100% specific to that component and will not be re-used anywhere else.<br>
+More generic types like `User` (user type) can be placed in the folder where it is used. For example:
+```
+/src/components/auth
+    --- index.ts
+    --- user.ts
+    --- utils.ts
+    --- types.ts
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+Here, index.ts is the file exporting all the files:
+```ts
+export * from './user'
+export * from './types'
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### Naming types
+To ensure consisting naming among the codebase, just make sure using pascal case when writing types, interfaces, and enums.
+```ts
+/src/components/auth/types.ts
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+type User = {
+    Authorization: {
+        accessToken: string
+    }
+}
 
-## Learn More
+interface SaferUser extends User {
+    TwoFactorAuth: boolean
+}
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Config
+Config is config. Just don't change any of the config files.
 
-### Code Splitting
+### Testing
+I don't have much idea about how we will do the testing but we are going to be using [react-testing-library](https://testing-library.com/docs/react-testing-library/intro/). This library will be used to test our components.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### TODO
++ Add react-router setup
++ Add MUI or Mantine setup
++ Add React-Query setup
++ Add axios
