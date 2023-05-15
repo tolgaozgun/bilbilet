@@ -1,9 +1,10 @@
 "use client";
-import styles from "./page.module.css";
-import { Group } from "@mantine/core";
-import RegisterForm from "@/components/RegisterForm";
-import LoginForm from "@/components/LoginForm";
 import CarRentSearchBar from "@/components/CarRentSearchBar";
+import LoginForm from "@/components/LoginForm";
+import RegisterForm from "@/components/RegisterForm";
+import { Group } from "@mantine/core";
+import Link from "next/link";
+import styles from "./page.module.css";
 
 export default function Home() {
   return (
