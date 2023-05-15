@@ -1,7 +1,7 @@
 "use client";
-import CarRentSearchBar from "@/components/CarRentSearchBar";
-import LoginForm from "@/components/LoginForm";
-import RegisterForm from "@/components/RegisterForm";
+import CarRentSearchBar from "@/src/components/CarRentSearchBar";
+import LoginForm from "@/src/components/LoginForm";
+import RegisterForm from "@/src/components/RegisterForm";
 import { Group } from "@mantine/core";
 import Link from "next/link";
 import styles from "./page.module.css";
