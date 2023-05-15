@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import ProviderWrapper from "./components/common/provider-wrapper";
 import "./index.css";
-import ProviderWrapper from "./provider-wrapper";
 
 const router = createBrowserRouter([]);
 const queryClient = new QueryClient();

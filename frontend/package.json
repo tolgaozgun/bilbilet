@@ -20,6 +20,7 @@
     "@mantine/modals": "^6.0.10",
     "@mantine/notifications": "^6.0.10",
     "@mantine/nprogress": "^6.0.10",
+    "@tabler/icons": "^2.18.0",
     "dayjs": "^1.11.7",
     "embla-carousel-react": "^8.0.0-rc03",
     "localforage": "^1.10.0",
