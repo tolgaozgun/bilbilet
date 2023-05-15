@@ -27,6 +27,7 @@
     "next": "13.4.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "swr": "^2.1.5",
     "tabler": "^1.0.0-alpha.8",
     "tabler-icons-react": "^1.56.0",
     "typescript": "5.0.4"
