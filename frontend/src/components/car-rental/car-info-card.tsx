@@ -1,10 +1,18 @@
-import { Card, Image, Flex, Title, SimpleGrid, Text, Center } from "@mantine/core";
-import CustomElevatedButton from "./custom-elevated-button";
+import {
+  Card,
+  Center,
+  Flex,
+  Image,
+  SimpleGrid,
+  Text,
+  Title,
+} from "@mantine/core";
 import {
   IconGasStation,
   IconManualGearbox,
   IconUser,
 } from "@tabler/icons-react";
+import CustomElevatedButton from "../common/buttons/custom-elevated-button";
 interface CarInfoCardProps {
   carName: String;
   seat: number;
