@@ -17,6 +17,7 @@
     "@mantine/hooks": "^6.0.10",
     "@mantine/modals": "^6.0.10",
     "@mantine/next": "^6.0.10",
+    "@tabler/icons": "^2.18.0",
     "@types/node": "20.1.3",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
@@ -26,6 +27,8 @@
     "next": "13.4.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "tabler": "^1.0.0-alpha.8",
+    "tabler-icons-react": "^1.56.0",
     "typescript": "5.0.4"
   }
 }
