@@ -1,7 +1,7 @@
 import { Center, Flex, Title } from "@mantine/core";
-import CarRentSearchBar from "../components/car-rental/car-search-bar";
-import CarInfoCard from "../components/car-rental/car-info-card";
-import CarFilter from "../components/car-rental/car-filter";
+import CarFilter from "../components/car-rental/CarFilter";
+import CarInfoCard from "../components/car-rental/CarInfoCard";
+import CarRentSearchBar from "../components/car-rental/CarSearchBar";
 
 const SearchRentCarPage = () => {
   return (
