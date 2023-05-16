@@ -1,5 +1,5 @@
 import { Group, Header, Title } from "@mantine/core";
-import ToggleThemeIcon from "./toggle-theme-icon";
+import ToggleThemeIcon from "./ToggleThemeIcon";
 
 const AppHeader = () => {
   return (
