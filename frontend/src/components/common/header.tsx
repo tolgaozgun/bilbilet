@@ -1,4 +1,4 @@
-import { Container, Flex, Group, Header, Title } from "@mantine/core";
+import { Group, Header, Title } from "@mantine/core";
 import ToggleThemeIcon from "./toggle-theme-icon";
 
 const AppHeader = () => {
@@ -6,7 +6,7 @@ const AppHeader = () => {
     <Header height={80} p="lg">
       <Group position="apart">
         <Title color="blue" ml={20}>
-          Beam
+          BilBilet
         </Title>
         <ToggleThemeIcon mr={50} />
       </Group>

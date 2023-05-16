@@ -9,8 +9,10 @@ import {
     TextInput,
     Title,
   } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
   
   const LoginForm = () => {
+    const navigate = useNavigate()
     return (
       <Card
         withBorder
@@ -21,7 +23,7 @@ import {
         mx="auto"
       >
         <Stack spacing={"xl"}>
-          <Title color="black" size="36px" align="center">
+          <Title size="36px" align="center">
             Login
           </Title>
   
@@ -50,6 +52,9 @@ import {
                   },
                 })}
                 loaderPosition="left"
+                onClick={()=>{
+                  
+                }}
               >
                 Login
               </Button>
@@ -59,6 +64,9 @@ import {
                     backgroundColor: "#5D5FEF",
                   },
                 })}
+                onClick={()=>{
+                  navigate('/register')
+                }}
               >
                 Register
               </Button>

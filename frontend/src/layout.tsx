@@ -1,4 +1,4 @@
-import { AppShell, Group, Title } from "@mantine/core";
+import { AppShell } from "@mantine/core";
 import { Outlet } from "react-router-dom";
 import AppHeader from "./components/common/header";
 

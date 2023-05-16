@@ -10,12 +10,13 @@ import {
     Stack,
     Title,
   } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
   
   interface RegisterFormProps {
-    name: String;
     isUser: boolean;
   }
-  const RegisterForm = ({ name, isUser }: RegisterFormProps) => {
+  const RegisterForm = ({ isUser }: RegisterFormProps) => {
+    const navigate = useNavigate()
     return (
       <Card
         withBorder
@@ -26,14 +27,14 @@ import {
         mx="auto"
       >
         <Stack spacing={"xl"}>
-          <Title color="black" size="36px" align="center">
+          <Title size="36px" align="center">
             Register
           </Title>
   
           <form>
             <Flex direction={"column"} gap={"xs"}>
               <Flex direction={"row"} gap={"xs"}>
-                <TextInput label={name} />
+                <TextInput label= {isUser ? "Name" : "Company Name" }/>
                 {isUser ? (
                   <TextInput label="Surname" />
                 ) : (
@@ -69,7 +70,9 @@ import {
                   Not a company? Click here to register as user
                 </Button>
               )}
-              <Button variant="subtle" color="dark" radius="xs" compact>
+              <Button variant="subtle" color="dark" radius="xs" compact onClick={()=>{
+                navigate('/login')
+              }}>
                 Already have an account? Click here to login
               </Button>
               <Group position="center">{}</Group>

@@ -1,5 +1,5 @@
 import { ActionIcon, useMantineColorScheme } from "@mantine/core";
-import { IconMoon, IconSun } from '@tabler/icons';
+import { IconMoon, IconSun } from "@tabler/icons-react";
 
 interface ToggleThemeIconProps {
     mr?: number,
