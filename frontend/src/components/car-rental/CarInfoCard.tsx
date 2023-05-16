@@ -12,7 +12,7 @@ import {
   IconManualGearbox,
   IconUser,
 } from "@tabler/icons-react";
-import CustomElevatedButton from "../common/buttons/custom-elevated-button";
+import CustomElevatedButton from "../common/buttons/CustomElevatedButton";
 interface CarInfoCardProps {
   carName: String;
   seat: number;

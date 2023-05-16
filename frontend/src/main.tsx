@@ -2,11 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import ProviderWrapper from "./components/common/provider-wrapper";
+import ProviderWrapper from "./components/common/ProviderWrapper";
 import "./index.css";
-import LoginPage from "./pages/login";
 import Layout from "./layout";
-import RegisterPage from "./pages/register";
+import LoginPage from "./pages/Login";
+import RegisterPage from "./pages/Register";
 
 const router = createBrowserRouter([
   {

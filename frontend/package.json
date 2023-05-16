@@ -21,8 +21,10 @@
     "@mantine/notifications": "^6.0.10",
     "@mantine/nprogress": "^6.0.10",
     "@tabler/icons-react": "^2.18.0",
+    "axios": "^1.4.0",
     "dayjs": "^1.11.7",
     "embla-carousel-react": "^8.0.0-rc03",
+    "js-cookie": "^3.0.5",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "react": "^18.2.0",
@@ -32,6 +34,7 @@
     "sort-by": "^1.2.0"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.3",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
