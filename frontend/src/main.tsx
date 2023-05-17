@@ -5,9 +5,9 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import ProviderWrapper from "./components/common/ProviderWrapper";
 import "./index.css";
 import Layout from "./layout";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import SearchRentCarPage from "./pages/SearchRentCarPage";
+import LoginPage from "./pages/login/LoginPage";
+import RegisterPage from "./pages/login/RegisterPage";
+import SearchRentCarPage from "./pages/rent-car/SearchRentCarPage";
 
 const router = createBrowserRouter([
   {

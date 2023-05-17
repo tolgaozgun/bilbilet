@@ -1,7 +1,7 @@
 import { Center, Tabs } from "@mantine/core";
 import { IconBus, IconUser } from "@tabler/icons-react";
-import RegisterCompanyForm from "../components/login/RegisterCompanyForm";
-import RegisterUserForm from "../components/login/RegisterUserForm";
+import RegisterCompanyForm from "../../components/login/RegisterCompanyForm";
+import RegisterUserForm from "../../components/login/RegisterUserForm";
 
 const RegisterPage = () => {
   return (
