@@ -8,6 +8,7 @@ import Layout from "./layout";
 import LoginPage from "./pages/login/LoginPage";
 import RegisterPage from "./pages/login/RegisterPage";
 import SearchRentCarPage from "./pages/rent-car/SearchRentCarPage";
+import AddCarPage from "./pages/rent-car/AddCarPage";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
           {
             path: "/car-rent-searchbar",
             element: <SearchRentCarPage />,
+          },
+          {
+            path: "/add-car",
+            element: <AddCarPage />,
           },
         ],
       },

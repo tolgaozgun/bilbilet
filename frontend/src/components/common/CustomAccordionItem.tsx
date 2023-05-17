@@ -1,4 +1,5 @@
-import { Accordion, Flex, Checkbox } from "@mantine/core";
+import { Accordion } from "@mantine/core";
+import { primaryAccordionColor } from "../../constants/colors";
 
 interface CustomAccordionItemProps {
   value: string;
@@ -6,11 +7,11 @@ interface CustomAccordionItemProps {
 }
 const CustomAccordionItem = ({ value, children }: CustomAccordionItemProps) => {
   return (
-    <Accordion.Item bg={"#B5B4E8"} value={value}>
-      <Accordion.Control bg={"#B5B4E8"} c="black">
+    <Accordion.Item bg={primaryAccordionColor} value={value}>
+      <Accordion.Control bg={primaryAccordionColor} c="black">
         {value}
       </Accordion.Control>
-      <Accordion.Panel bg={"#B5B4E8"} c="black">
+      <Accordion.Panel bg={primaryAccordionColor} c="black">
         {children}
       </Accordion.Panel>
     </Accordion.Item>

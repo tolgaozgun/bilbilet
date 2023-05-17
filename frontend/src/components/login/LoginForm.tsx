@@ -9,9 +9,9 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { Link } from "react-router-dom";
 import { useLogin } from "../../hooks/useLogin";
 import SubtleLinkButton from "../common/buttons/SubtleLinkButton";
+import { primaryButtonColor } from "../../constants/colors";
 
 const LoginForm = () => {
   const { login } = useLogin();
@@ -89,7 +89,11 @@ const LoginForm = () => {
               placeholder="Your password"
               {...form.getInputProps("password")}
             />
-            <Button bg="#5D5FEF" loaderPosition="left" onClick={onLogin}>
+            <Button
+              bg={primaryButtonColor}
+              loaderPosition="left"
+              onClick={onLogin}
+            >
               Login
             </Button>
             <Flex direction={"row"} justify={"space-between"} align={"center"}>

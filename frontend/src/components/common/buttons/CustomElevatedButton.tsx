@@ -1,17 +1,10 @@
 import { Button } from "@mantine/core";
+import { primaryButtonColor } from "../../../constants/colors";
 
-interface CustomElevatedButtonProps{
-    text: String
+interface CustomElevatedButtonProps {
+  text: String;
 }
-const CustomElevatedButton = ({text}: CustomElevatedButtonProps) => {
-    return (<Button
-        styles={(theme) => ({
-          root: {
-            backgroundColor: "#5D5FEF",
-          },
-        })}
-      >
-        {text}
-      </Button>);
-}
+const CustomElevatedButton = ({ text }: CustomElevatedButtonProps) => {
+  return <Button bg={primaryButtonColor}>{text}</Button>;
+};
 export default CustomElevatedButton;

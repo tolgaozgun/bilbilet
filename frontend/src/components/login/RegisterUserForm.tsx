@@ -10,6 +10,7 @@ import {
   Title,
 } from "@mantine/core";
 import SubtleLinkButton from "../common/buttons/SubtleLinkButton";
+import { primaryButtonColor } from "../../constants/colors";
 
 const RegisterUserForm = () => {
   return (
@@ -35,7 +36,7 @@ const RegisterUserForm = () => {
             <PasswordInput label="Password" />
             <PasswordInput label="Confirm Password" />
             <NumberInput label="Telephone" hideControls />
-            <Button bg={"#5D5FEF"}>Register</Button>
+            <Button bg={primaryButtonColor}>Register</Button>
             <SubtleLinkButton to="/login" size="sm">
               Already have an account? Login
             </SubtleLinkButton>

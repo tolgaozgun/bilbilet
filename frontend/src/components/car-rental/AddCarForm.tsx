@@ -1,0 +1,58 @@
+import {
+  Card,
+  Title,
+  Flex,
+  TextInput,
+  Radio,
+  Group,
+  Select,
+  NumberInput,
+} from "@mantine/core";
+import CustomElevatedButton from "../common/buttons/CustomElevatedButton";
+import { primaryAccordionColor } from "../../constants/colors";
+const fuelList = ["Gas", "Electric", "Hybrid", "Diesel"];
+const carCategoryList = ["Small", "Medium", "Large", "SUV"];
+
+const AddCarForm = () => {
+  return (
+    <Card
+      padding={36}
+      bg={primaryAccordionColor}
+      withBorder
+      radius="xl"
+      shadow="xl"
+    >
+      <Title>Add A New Car</Title>
+      <Flex direction={"column"} gap={"xs"}>
+        <form>
+          <Flex direction={"column"} gap={"xs"}>
+            <TextInput withAsterisk label="Brand" />
+            <TextInput withAsterisk label="Model" />
+            <TextInput withAsterisk label="Year" />
+            <Radio.Group name="Gear" label="Gear" withAsterisk>
+              <Group mt="xs">
+                <Radio value="automatic" label="Automatic" />
+                <Radio value="manual" label="Manual" />
+              </Group>
+            </Radio.Group>
+            <Select withAsterisk label="Fuel" clearable data={fuelList} />
+            <Select
+              withAsterisk
+              label="Car Category"
+              clearable
+              data={carCategoryList}
+            />
+            <NumberInput
+              withAsterisk
+              hideControls
+              label="Price Per Day"
+            ></NumberInput>
+          </Flex>
+        </form>
+        <CustomElevatedButton text={"Add Car For Sale"}></CustomElevatedButton>
+      </Flex>
+    </Card>
+  );
+};
+
+export default AddCarForm;

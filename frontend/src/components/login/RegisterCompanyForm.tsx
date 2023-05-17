@@ -11,6 +11,7 @@ import {
   Title,
 } from "@mantine/core";
 import SubtleLinkButton from "../common/buttons/SubtleLinkButton";
+import { primaryButtonColor } from "../../constants/colors";
 
 const RegisterCompanyForm = () => {
   return (
@@ -42,7 +43,7 @@ const RegisterCompanyForm = () => {
             <TextInput label="Adress" />
             <TextInput label="Contact Information" />
             <TextInput label="Business Registration" />
-            <Button bg={"#5D5FEF"}>Register</Button>
+            <Button bg={primaryButtonColor}>Register</Button>
             <SubtleLinkButton to="/login" size="sm">
               Already have an account? Login
             </SubtleLinkButton>
