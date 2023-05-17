@@ -1,81 +1,110 @@
 import {
-    Button,
-    Card,
-    Checkbox,
-    Flex,
-    Group,
-    PasswordInput,
-    Stack,
-    TextInput,
-    Title,
-  } from "@mantine/core";
-import { useNavigate } from "react-router-dom";
-  
-  const LoginForm = () => {
-    const navigate = useNavigate()
-    return (
-      <Card
-        withBorder
-        radius="xl"
-        shadow="xl"
-        p={48}
-        sx={{ minWidth: 350 }}
-        mx="auto"
-      >
-        <Stack spacing={"xl"}>
-          <Title size="36px" align="center">
-            Login
-          </Title>
-  
-          <form>
-            <Flex direction={"column"} gap={"xs"}>
-              <TextInput label="Email" placeholder="Your Email" />
-              <PasswordInput
-                label="Password"
-                placeholder="Your password"
-              ></PasswordInput>
-              <Flex direction={"row"} justify={"space-between"} align={"center"}>
-                <Checkbox
-                  labelPosition="left"
-                  label="Remember me"
-                  radius="xs"
-                  size="xs"
-                />
-                <Button variant="subtle" color="dark" radius="xs" compact>
-                  Forgot Password
-                </Button>
-              </Flex>
-              <Button
-                styles={(theme) => ({
-                  root: {
-                    backgroundColor: "#5D5FEF",
-                  },
-                })}
-                loaderPosition="left"
-                onClick={()=>{
-                  
-                }}
-              >
-                Login
-              </Button>
-              <Button
-                styles={(theme) => ({
-                  root: {
-                    backgroundColor: "#5D5FEF",
-                  },
-                })}
-                onClick={()=>{
-                  navigate('/register')
-                }}
-              >
-                Register
-              </Button>
-              <Group position="center">{}</Group>
-            </Flex>
-          </form>
-        </Stack>
-      </Card>
-    );
+  Button,
+  Card,
+  Flex,
+  PasswordInput,
+  Stack,
+  TextInput,
+  Title,
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
+import { Link } from "react-router-dom";
+import { useLogin } from "../../hooks/useLogin";
+
+const LoginForm = () => {
+  const { login } = useLogin();
+  const form = useForm({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email."),
+      password: (value) =>
+        value === "" ? "Can't leave password field empty" : null,
+    },
+  });
+
+  const onLogin = () => {
+    // Validate input fields
+    const validation = form.validate();
+    if (validation.hasErrors) {
+      return;
+    }
+
+    const { email, password } = form.values;
+    const res = login(email, password);
+    if (!res) {
+      notifications.show({
+        id: "login-fail",
+        title: "Login failed!",
+        message: "Please check your login credentials.",
+        autoClose: 10000,
+        withCloseButton: true,
+        style: { backgroundColor: "red" },
+      });
+      return;
+    }
+
+    notifications.show({
+      id: "login-success",
+      title: "Login successful!",
+      message: "You have successfully logged in!.",
+      autoClose: 10000,
+      withCloseButton: true,
+      style: { backgroundColor: "green" },
+    });
   };
-  
-  export default LoginForm;
+
+  return (
+    <Card
+      withBorder
+      radius="xl"
+      shadow="xl"
+      p={48}
+      sx={{ minWidth: 350 }}
+      mx="auto"
+    >
+      <Stack spacing={"md"}>
+        <Title size="28px" align="center">
+          Log in to your account
+        </Title>
+        <Link to="/register">
+          <Button size="lg" variant="subtle" color="#5D5FEF" radius="xs">
+            Don't have an account? Register
+          </Button>
+        </Link>
+        <form>
+          <Flex direction={"column"} gap={"xs"}>
+            <TextInput
+              withAsterisk
+              label="Email"
+              placeholder="your@email.com"
+              {...form.getInputProps("email")}
+            />
+            <PasswordInput
+              withAsterisk
+              label="Password"
+              placeholder="Your password"
+              {...form.getInputProps("password")}
+            />
+            <Button bg="#5D5FEF" loaderPosition="left" onClick={onLogin}>
+              Login
+            </Button>
+            <Flex direction={"row"} justify={"space-between"} align={"center"}>
+              <Link to="/forgot-password">
+                <Button variant="subtle" color="dark" radius="xs" compact>
+                  Forgot Password?
+                </Button>
+              </Link>
+            </Flex>
+          </Flex>
+        </form>
+      </Stack>
+    </Card>
+  );
+};
+
+export default LoginForm;

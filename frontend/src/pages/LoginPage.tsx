@@ -3,11 +3,9 @@ import LoginForm from "../components/login/LoginForm";
 
 const LoginPage = () => {
   return (
-    <>
-      <Center sx={{ height: "87vh" }}>
-        <LoginForm />
-      </Center>
-    </>
+    <Center sx={{ height: "87vh" }}>
+      <LoginForm />
+    </Center>
   );
 };
 

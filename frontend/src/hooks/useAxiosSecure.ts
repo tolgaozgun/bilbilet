@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { axiosSecure } from "../services/axios";
 import { User } from "../types";
-import { useRefresh, useUser } from "./auth";
+import { useRefresh } from "./useRefresh";
+import { useUser } from "./useUser";
 
 const useAxiosSecure = () => {
-    const refresh = useRefresh()
     const user  = useUser()
+    const refresh = useRefresh()
 
     useEffect(() => {
         const requestIntercept = axiosSecure.interceptors.request.use(config => {

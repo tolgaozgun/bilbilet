@@ -1,16 +1,18 @@
 import Cookies from "js-cookie"
-import { authService } from "../../services/auth"
+import { refresh as refreshFn } from "../services/auth"
+import useAxiosSecure from "./useAxiosSecure"
 import { useUser } from "./useUser"
 
 export const useRefresh = () => {
     const user = useUser()
+    const axiosSecure = useAxiosSecure()
 
     const refresh = async () => {
         if (!user) {
             return null
         }   
         
-        const res = await authService.refresh(user.refreshToken)
+        const res = await refreshFn(user.refreshToken, axiosSecure)
 
         if (!res) {
             return null;
