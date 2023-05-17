@@ -42,6 +42,7 @@ const AddCarForm = () => {
               clearable
               data={carCategoryList}
             />
+            <TextInput withAsterisk label="Image URL"></TextInput>
             <NumberInput
               withAsterisk
               hideControls
@@ -49,7 +50,7 @@ const AddCarForm = () => {
             ></NumberInput>
           </Flex>
         </form>
-        <CustomElevatedButton text={"Add Car For Sale"}></CustomElevatedButton>
+        <CustomElevatedButton text={"Add Car For Rent"}></CustomElevatedButton>
       </Flex>
     </Card>
   );
