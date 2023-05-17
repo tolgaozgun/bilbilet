@@ -11,6 +11,7 @@ import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { Link } from "react-router-dom";
 import { useLogin } from "../../hooks/useLogin";
+import SubtleLinkButton from "../common/buttons/SubtleLinkButton";
 
 const LoginForm = () => {
   const { login } = useLogin();
@@ -71,11 +72,9 @@ const LoginForm = () => {
         <Title size="28px" align="center">
           Log in to your account
         </Title>
-        <Link to="/register">
-          <Button size="lg" variant="subtle" color="#5D5FEF" radius="xs">
-            Don't have an account? Register
-          </Button>
-        </Link>
+        <SubtleLinkButton to="/register">
+          Don't have an account? Register
+        </SubtleLinkButton>
         <form>
           <Flex direction={"column"} gap={"xs"}>
             <TextInput
@@ -94,11 +93,9 @@ const LoginForm = () => {
               Login
             </Button>
             <Flex direction={"row"} justify={"space-between"} align={"center"}>
-              <Link to="/forgot-password">
-                <Button variant="subtle" color="dark" radius="xs" compact>
-                  Forgot Password?
-                </Button>
-              </Link>
+              <SubtleLinkButton to="/forgot-password" size="sm">
+                Forgot Password?
+              </SubtleLinkButton>
             </Flex>
           </Flex>
         </form>
