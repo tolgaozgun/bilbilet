@@ -9,6 +9,7 @@ import LoginPage from "./pages/login/LoginPage";
 import RegisterPage from "./pages/login/RegisterPage";
 import SearchRentCarPage from "./pages/rent-car/SearchRentCarPage";
 import AddCarPage from "./pages/rent-car/AddCarPage";
+import SearchFarePage from "./pages/fare/SearchFarePage";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
           {
             path: "/add-car",
             element: <AddCarPage />,
+          },
+          {
+            path: "/search-fare",
+            element: <SearchFarePage />,
           },
         ],
       },

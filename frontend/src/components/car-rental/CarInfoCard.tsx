@@ -14,10 +14,10 @@ import {
 } from "@tabler/icons-react";
 import CustomElevatedButton from "../common/buttons/CustomElevatedButton";
 interface CarInfoCardProps {
-  carName: String;
+  carName: string;
   seat: number;
-  fuel: String;
-  gear: String;
+  fuel: string;
+  gear: string;
   dailyPrice: number;
   totalPrice: number;
 }
