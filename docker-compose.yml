@@ -4,7 +4,8 @@ services:
   db:
     image: postgres
     ports:
-      - "92.205.189.60:5432:5432"
+      # - "92.205.189.60:5432:5432"
+      - "5431:5432"
     volumes:
       - ./database_folder/database_volume:/var/lib/postgresql/data
     environment:
@@ -14,15 +15,25 @@ services:
     networks:
       - container_network
     env_file:
-      - db.env
+      - .env
   backend:
     image: container_backend
-    build: ./backend
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+      # target: dev
     volumes:
-      - ./backend:/backend
-      - ./uploads:/uploads
+      - /backend
+      - /uploads
+    environment:
+      DB_NAME: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_HOST: db
+      APP_PORT: 8080
     ports:
-      - "92.205.189.60:8080:8080"
+      # - "92.205.189.60:8080:8080"
+      - "8080:8080"
     depends_on:
       - db
     networks:
@@ -32,9 +43,10 @@ services:
     image: container_frontend
     build: ./frontend
     volumes:
-      - ./frontend:/frontend
+      - /frontend
     ports:
-      - "92.205.189.60:3000:3000"
+      # - "92.205.189.60:3000:3000"
+      - "3000:3000"
     depends_on:
       - db
     networks:
