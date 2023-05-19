@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { Tokens, User } from "../../types";
+import { RegisterCompany, RegisterUser, Tokens, User } from "../../types";
 import { axiosSecure as axios } from "../axios";
 
 
@@ -25,8 +25,12 @@ export async function logout() {
     // TODO: Send logout request to API
 }
 
-export async function register() {
-    // TODO
+// Returns { status, msg }
+export async function registerCompany(companyDetails: RegisterCompany) {
+}
+
+export async function registerUser(userDetails: RegisterUser) {
+
 }
 
 export async function refresh(refreshToken: string, axiosSecure: AxiosInstance): Promise<Tokens | null> {
