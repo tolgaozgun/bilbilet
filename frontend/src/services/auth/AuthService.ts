@@ -27,10 +27,11 @@ export async function logout() {
 
 // Returns { status, msg }
 export async function registerCompany(companyDetails: RegisterCompany) {
+    // TODO: Send registration request to API
 }
 
 export async function registerUser(userDetails: RegisterUser) {
-
+    // TODO: Send registration request to API
 }
 
 export async function refresh(refreshToken: string, axiosSecure: AxiosInstance): Promise<Tokens | null> {
