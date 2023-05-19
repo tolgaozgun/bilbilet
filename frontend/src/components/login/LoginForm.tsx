@@ -9,12 +9,14 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
+import { useNavigate } from "react-router-dom";
+import { primaryButtonColor } from "../../constants/colors";
 import { useLogin } from "../../hooks/useLogin";
 import SubtleLinkButton from "../common/buttons/SubtleLinkButton";
-import { primaryButtonColor } from "../../constants/colors";
 
 const LoginForm = () => {
   const { login } = useLogin();
+  const navigate = useNavigate();
   const form = useForm({
     initialValues: {
       email: "",
@@ -36,6 +38,7 @@ const LoginForm = () => {
     }
 
     const { email, password } = form.values;
+    // TODO: Modify to cover error message received from backend
     const res = login(email, password);
     if (!res) {
       notifications.show({
@@ -57,6 +60,7 @@ const LoginForm = () => {
       withCloseButton: true,
       style: { backgroundColor: "green" },
     });
+    navigate("/search-fare");
   };
 
   return (

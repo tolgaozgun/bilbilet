@@ -2,7 +2,6 @@ import {
   Button,
   Card,
   Flex,
-  Group,
   NumberInput,
   PasswordInput,
   Select,
@@ -10,10 +9,60 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import SubtleLinkButton from "../common/buttons/SubtleLinkButton";
+import { useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
 import { primaryButtonColor } from "../../constants/colors";
+import { registerCompany } from "../../services/auth";
+import { CompanyType, RegisterCompany } from "../../types";
+import SubtleLinkButton from "../common/buttons/SubtleLinkButton";
 
 const RegisterCompanyForm = () => {
+  const form = useForm({
+    initialValues: {
+      companyName: "",
+      companyType: "",
+      companyEmail: "",
+      password: "",
+      confirmPassword: "",
+      telephone: "",
+      address: "",
+      contactInformation: "",
+      businessRegistration: "",
+    },
+    validate: {
+      companyName: (value) =>
+        value === "" ? "Company name cannot be left empty." : null,
+      companyType: (value) =>
+        value === "" ? "Company type cannot be left empty." : null,
+      companyEmail: (value) =>
+        /^\S+@\S+$/.test(value) ? null : "Invalid email.",
+      password: (value) =>
+        value === "" ? "Password cannot be left empty." : null,
+      confirmPassword: (value, values) =>
+        value !== values.password ? "Passwords did not match" : null,
+      telephone: (value) =>
+        /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(value)
+          ? null
+          : "Invalid phone number",
+      address: (value) =>
+        value === "" ? "Address cannot be left empty." : null,
+      contactInformation: (value) =>
+        value === "" ? "Contact information cannot be left empty." : null,
+      businessRegistration: (value) =>
+        value === "" ? "Business registration cannot be left empty." : null,
+    },
+  });
+
+  const onRegister = () => {
+    const validation = form.validate();
+    if (validation.hasErrors) {
+      return;
+    }
+
+    // TODO: Send registration request, show error message or confirm message,
+    // automatically login and redirect to search page
+  };
+
   return (
     <Card
       withBorder
@@ -30,24 +79,44 @@ const RegisterCompanyForm = () => {
         <form>
           <Flex direction={"column"} gap={"xs"}>
             <Flex direction={"row"} gap={"xs"}>
-              <TextInput label="Company Name" />
+              <TextInput
+                label="Company Name"
+                {...form.getInputProps("companyName")}
+              />
               <Select
                 label="Company Type"
-                data={["Transportation", "Car Rental", "Hotel"]}
+                data={Object.values(CompanyType)}
+                {...form.getInputProps("companyType")}
               />
             </Flex>
-            <TextInput label="Company Email" />
-            <PasswordInput label="Password" />
-            <PasswordInput label="Confirm Password" />
-            <NumberInput label="Telephone" hideControls />
-            <TextInput label="Adress" />
-            <TextInput label="Contact Information" />
-            <TextInput label="Business Registration" />
-            <Button bg={primaryButtonColor}>Register</Button>
+            <TextInput
+              label="Company Email"
+              {...form.getInputProps("companyEmail")}
+            />
+            <PasswordInput
+              label="Password"
+              {...form.getInputProps("password")}
+            />
+            <PasswordInput
+              label="Confirm Password"
+              {...form.getInputProps("confirmPassword")}
+            />
+            <TextInput label="Telephone" {...form.getInputProps("telephone")} />
+            <TextInput label="Adress" {...form.getInputProps("address")} />
+            <TextInput
+              label="Contact Information"
+              {...form.getInputProps("contactInformation")}
+            />
+            <TextInput
+              label="Business Registration"
+              {...form.getInputProps("businessRegistration")}
+            />
+            <Button onClick={onRegister} bg={primaryButtonColor}>
+              Register
+            </Button>
             <SubtleLinkButton to="/login" size="sm">
               Already have an account? Login
             </SubtleLinkButton>
-            <Group position="center">{}</Group>
           </Flex>
         </form>
       </Stack>
