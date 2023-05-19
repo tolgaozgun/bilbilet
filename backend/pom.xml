@@ -8,11 +8,11 @@
 		<version>3.0.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>edu.bikent</groupId>
-	<artifactId>achilles</artifactId>
+	<groupId>edu.bilkent</groupId>
+	<artifactId>bilbilet</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>achilles</name>
-	<description>Demo project for Spring Boot</description>
+	<name>BilBilet</name>
+	<description>BilBilet application</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -49,6 +49,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>bilbilet</finalName>
 	</build>
 
 </project>

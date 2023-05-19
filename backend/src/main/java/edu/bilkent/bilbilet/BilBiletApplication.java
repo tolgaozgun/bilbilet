@@ -1,17 +1,16 @@
-package edu.bikent.achilles;
+package edu.bilkent.bilbilet;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
+// @Slf4j
 @SpringBootApplication
-@RestController
-public class AchillesApplication {
+public class BilBiletApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AchillesApplication.class, args);
+		SpringApplication.run(BilBiletApplication.class, args);
 	}
 
 }

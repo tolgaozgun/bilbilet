@@ -1,20 +1,26 @@
-# pull official base image
-FROM node:13.12.0-alpine
+# Use an official Node.js runtime as the base image
+FROM node:16-alpine
 
-# set working directory
+# Set the working directory in the container
 WORKDIR /frontend
 
 # add `/app/node_modules/.bin` to $PATH
 ENV PATH /frontend/node_modules/.bin:$PATH
 
-# install app dependencies
+# Copy the package.json and yarn.lock files to the container
 COPY package.json /frontend
-COPY package-lock.json /frontend
-RUN npm install --silent
-RUN npm install react-scripts@3.4.1 -g --silent
+COPY yarn.lock /frontend
 
-# add app
+# Install dependencies
+RUN yarn install 
+#--frozen-lockfile
+
+# Copy the remaining application files to the container
 COPY . /frontend
 
-# start app
-CMD ["npm", "start"]
+# Build the React application
+# RUN yarn build
+
+# Set the command to run the application
+# CMD ["yarn", "start"]
+CMD ["yarn", "run", "dev"]

@@ -1,10 +1,10 @@
-package edu.bikent.achilles;
+package edu.bilkent.bilbilet;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AchillesApplicationTests {
+class BilBiletApplicationTests {
 
 	@Test
 	void contextLoads() {
