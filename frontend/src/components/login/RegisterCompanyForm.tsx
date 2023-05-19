@@ -84,6 +84,7 @@ const RegisterCompanyForm = () => {
                 {...form.getInputProps("companyName")}
               />
               <Select
+                clearable
                 label="Company Type"
                 data={Object.values(CompanyType)}
                 {...form.getInputProps("companyType")}
