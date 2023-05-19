@@ -1,11 +1,5 @@
 import { Card, Flex, Title, Text } from "@mantine/core";
-import {
-  IconArrowNarrowRight,
-  IconArrowRight,
-  IconArrowRightBar,
-  IconArrowRightTail,
-  IconPlane,
-} from "@tabler/icons-react";
+import { IconArrowRight, IconPlane } from "@tabler/icons-react";
 import CustomElevatedButton from "../common/buttons/CustomElevatedButton";
 interface FareInfoCardProps {
   companyName: string;

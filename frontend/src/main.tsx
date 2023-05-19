@@ -27,7 +27,7 @@ const router = createBrowserRouter([
             element: <RegisterPage />,
           },
           {
-            path: "/car-rent-searchbar",
+            path: "/search-car-rent",
             element: <SearchRentCarPage />,
           },
           {

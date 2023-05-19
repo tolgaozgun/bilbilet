@@ -1,11 +1,13 @@
 import { Card, Center, Flex, Tabs, Title } from "@mantine/core";
 import { IconBus, IconPlane, IconBuilding } from "@tabler/icons-react";
-import RegisterCompanyForm from "../../components/login/RegisterCompanyForm";
 import PlaneSearchBar from "../../components/fare/PlaneSearchbar";
 import FareInfoCard from "../../components/fare/FareInfoCard";
 import PlaneFilter from "../../components/fare/PlaneFilter";
 import BusSearchBar from "../../components/fare/BusSearchbar";
 import BusFilter from "../../components/fare/BusFilter";
+import HotelSearchBar from "../../components/hotel/HotelSearchBar";
+import HotelFilter from "../../components/hotel/HotelFilter";
+import HotelInfoCard from "../../components/hotel/HotelInfoCard";
 
 const SearchFarePage = () => {
   return (
@@ -88,7 +90,45 @@ const SearchFarePage = () => {
         </Tabs.Panel>
 
         <Tabs.Panel value="hotel" pt="xs">
-          To Be Implemented
+          <Card
+            withBorder
+            radius="xl"
+            shadow="xl"
+            p={48}
+            sx={{ minWidth: 400 }}
+            mx="auto"
+          >
+            <Flex direction={"column"} align={"start"} gap={"xl"}>
+              <Title>Discover Hotels</Title>
+              <HotelSearchBar></HotelSearchBar>
+              <Flex direction={"row"} gap={"xl"}>
+                <HotelFilter></HotelFilter>
+                <Flex direction={"column"} gap={"xl"}>
+                  <HotelInfoCard
+                    hotelName={"Example Hotel"}
+                    avgPrice={2500}
+                    rating={4.7}
+                    websiteUrl={"https://examplehotel.com"}
+                    telephone={"05300861306"}
+                  />
+                  <HotelInfoCard
+                    hotelName={"Example Hotel"}
+                    avgPrice={2500}
+                    rating={4.7}
+                    websiteUrl={"https://examplehotel.com"}
+                    telephone={"05300861306"}
+                  />
+                  <HotelInfoCard
+                    hotelName={"Example Hotel"}
+                    avgPrice={2500}
+                    rating={4.7}
+                    websiteUrl={"https://examplehotel.com"}
+                    telephone={"05300861306"}
+                  />
+                </Flex>
+              </Flex>
+            </Flex>
+          </Card>
         </Tabs.Panel>
       </Tabs>
     </Center>

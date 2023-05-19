@@ -32,6 +32,7 @@ const RegisterCompanyForm = () => {
             <Flex direction={"row"} gap={"xs"}>
               <TextInput label="Company Name" />
               <Select
+                clearable
                 label="Company Type"
                 data={["Transportation", "Car Rental", "Hotel"]}
               />
