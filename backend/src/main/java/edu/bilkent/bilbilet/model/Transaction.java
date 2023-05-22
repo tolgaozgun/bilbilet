@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Transaction {
     @Id
+    @NotNull
     private int transaction_id;
 
     @NotBlank
