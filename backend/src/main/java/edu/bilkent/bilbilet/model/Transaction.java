@@ -1,6 +1,9 @@
 package edu.bilkent.bilbilet.model;
 
 import lombok.AllArgsConstructor;
+
+import java.math.BigDecimal;
+
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,7 +22,7 @@ public class Transaction {
     private String transaction_type;
 
     @NotNull
-    private int transaction_amount;
+    private BigDecimal transaction_amount;
 
     @NotNull
     private int receiver_id;

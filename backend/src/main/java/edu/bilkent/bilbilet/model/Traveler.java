@@ -1,6 +1,9 @@
 package edu.bilkent.bilbilet.model;
 
 import lombok.AllArgsConstructor;
+
+import java.math.BigDecimal;
+
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,7 +25,7 @@ public class Traveler {
     private String passport_number;
 
     @NotNull
-    private int balance;
+    private BigDecimal balance;
 
     @NotBlank
     private String TCK;
