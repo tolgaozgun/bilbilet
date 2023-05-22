@@ -10,29 +10,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Company {
+public class Transaction {
     @Id
     @NotNull
-    private int company_id;
+    private int transaction_id;
 
     @NotBlank
-    private String company_title;
-
-    @NotBlank
-    private String address;
-
-    @NotBlank
-    private String type;
-
-    @NotBlank
-    private String contact_information;
-
-    @NotBlank
-    private String business_registration;
+    private String transaction_type;
 
     @NotNull
-    private int balance;
+    private int transaction_amount;
 
     @NotNull
-    private int user_id;
+    private int receiver_id;
+
+    @NotNull
+    private int sender_id;
 }

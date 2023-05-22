@@ -10,29 +10,17 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Company {
+public class Promotion {
     @Id
-    @NotNull
-    private int company_id;
-
     @NotBlank
-    private String company_title;
-
-    @NotBlank
-    private String address;
-
-    @NotBlank
-    private String type;
-
-    @NotBlank
-    private String contact_information;
-
-    @NotBlank
-    private String business_registration;
+    private String promotion_code;
 
     @NotNull
-    private int balance;
+    private int promotion_percentage;
 
     @NotNull
     private int user_id;
+
+    @NotNull
+    private int company_id;
 }

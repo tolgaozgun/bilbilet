@@ -10,29 +10,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Company {
+public class Address {
     @Id
     @NotNull
-    private int company_id;
+    private int address_id;
 
     @NotBlank
-    private String company_title;
+    private String country;
 
     @NotBlank
-    private String address;
-
-    @NotBlank
-    private String type;
-
-    @NotBlank
-    private String contact_information;
-
-    @NotBlank
-    private String business_registration;
+    private String city;
 
     @NotNull
-    private int balance;
+    private int latitude;
 
     @NotNull
-    private int user_id;
+    private int longitude;
 }
