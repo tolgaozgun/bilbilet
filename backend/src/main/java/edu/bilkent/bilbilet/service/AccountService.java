@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import edu.bilkent.bilbilet.enums.UserType;
 import edu.bilkent.bilbilet.model.User;
 import edu.bilkent.bilbilet.repository.AccountRepository;
 import edu.bilkent.bilbilet.request.UserLogin;
@@ -45,8 +46,8 @@ public class AccountService {
             
             String hashedPassword = dbUser.getPassword();
             //String hashedPassword = accountRepository.getPasswordIfUserExist(Long.parseLong(user.getBilkentId()));
-            // boolean passwordMatch = bCryptPasswordEncoder.matches(user.getPassword(), hashedPassword); /// change thisssss!!!
-            boolean passwordMatch = hashedPassword.equals(dbUser.getPassword());
+            boolean passwordMatch = bCryptPasswordEncoder.matches(user.getPassword(), hashedPassword); /// change thisssss!!!
+            // boolean passwordMatch = hashedPassword.equals(dbUser.getPassword());
 
             if (!passwordMatch) {
                 throw new Exception("passwords do not match");

@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class User {
     @Id
-    @NotNull
+    // @NotNull
     private int userId;
 
     @NotBlank
