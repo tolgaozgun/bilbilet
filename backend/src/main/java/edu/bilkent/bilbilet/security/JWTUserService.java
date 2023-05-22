@@ -29,7 +29,8 @@ public class JWTUserService implements UserDetailsService {
             UserDetails userDetails = new org.springframework.security.core.userdetails.User(
                                         username, 
                                         appUser.getPassword(), 
-                                        null
+                                        Collections.singleton(new SimpleGrantedAuthority(appUser.getUserType().toString()))
+                                        // null
                                         // Collections.singleton(new SimpleGrantedAuthority(appUser.getUserType().toString()))
                                         );
             return userDetails; 
