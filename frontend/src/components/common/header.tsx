@@ -1,17 +1,18 @@
-import { Group, Header, Title } from "@mantine/core";
-import ToggleThemeIcon from "./ToggleThemeIcon";
+import { Button, Container, Flex, Group, Header, Title } from '@mantine/core';
+import UserButton from './buttons/UserButton';
+import UserMenu from './menus/UserMenu';
 
 const AppHeader = () => {
-  return (
-    <Header height={80} p="lg">
-      <Group position="apart">
-        <Title color="blue" ml={20}>
-          BilBilet
-        </Title>
-        <ToggleThemeIcon mr={50} />
-      </Group>
-    </Header>
-  );
+	return (
+		<Header w="100%" height={100} p="lg">
+			<Flex align="center" justify="space-between">
+				<Title color="blue" ml={20}>
+					BilBilet
+				</Title>
+				<UserMenu />
+			</Flex>
+		</Header>
+	);
 };
 
 export default AppHeader;
