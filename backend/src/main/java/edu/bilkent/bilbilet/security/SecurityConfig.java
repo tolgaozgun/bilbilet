@@ -1,5 +1,6 @@
 package edu.bilkent.bilbilet.security;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,8 +34,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests((request) -> {
 					try {
 						request
-							.requestMatchers("/**")
-							// .requestMatchers("/api/v1/auth/login", "/api/v1/auth/hello", "/api/v1/auth/register", "/api/v1/auth/register_chunk", "/api/v1/eval/evaluateUni", "/api/v1/eval/uniEval/{uniId}")
+							.requestMatchers("/api/v1/auth/hello")							
 							.permitAll()						
 							.anyRequest().authenticated()							
 							.and()
@@ -47,7 +47,7 @@ public class SecurityConfig {
 					}					
 				
 			});
-
+		// http.addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();

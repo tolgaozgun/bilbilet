@@ -1,121 +1,151 @@
 package edu.bilkent.bilbilet.security;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwt;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.Keys;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import javax.crypto.SecretKey;
 
 @Component
 public class JWTUtils {
-    private String accessSingKey = "broccoliisthegreatestfood";
-    private String refreshSingKey = "pizzaisalsogood";
-    private long accessExp = TimeUnit.HOURS.toMillis(10); //change
+    private String accessSignKey = "broccoliisthegreatestfoodinthewholeuniverse";
+    private String refreshSignKey = "pizzaisalsogoodbutnotreallygoodwithoutbroccoli";
+    private long accessExp = TimeUnit.HOURS.toMillis(10);
     private long refreshExp = TimeUnit.HOURS.toMillis(24);
 
-    private Claims extractAllClaims(String token, String singKey) throws SignatureException {
-        return Jwts.parser().setSigningKey(singKey).parseClaimsJws(token).getBody();
+    private Claims extractAllClaims(String token, String signKey)  {
+        SecretKey key = Keys.hmacShaKeyFor(signKey.getBytes(StandardCharsets.UTF_8));
+
+        return Jwts.parserBuilder()
+            .setSigningKey(key)   
+            .build()
+            .parseClaimsJws(token)
+            .getBody();
+
+            // Jwt<?,?> jwt;
+
+            // try {
+            //     jwt = Jwts.parserBuilder() // (1)
+                    
+            //     .verifyWith(key)         //     or a static key used to verify all signed JWTs
+            //     //.decryptWith(key)        //     or a static key used to decrypt all encrypted JWTs
+                    
+            //     .build()                   // (3)
+                    
+            //     .parseClaimsJws(token);           // (4) or parseClaimsJws, parseClaimsJwe, parseContentJws, etc
+                
+            //     // we can safely trust the JWT
+                 
+            // catch (JwtException ex) {      // (5)
+                
+            //     // we *cannot* use the JWT as intended by its creator
+            // }
     }
 
-    public Date extractAccessExp(String token) throws SignatureException {
-        return extractAllClaims(token, accessSingKey).getExpiration();
+    public Date extractAccessExpiration(String token) {
+        return extractAllClaims(token, accessSignKey).getExpiration();
     }
 
-    public String extractAccessUsername(String token) throws SignatureException {
-        return extractAllClaims(token, accessSingKey).getSubject();
+    public String extractAccessUsername(String token) {
+        return extractAllClaims(token, accessSignKey).getSubject();
     }
 
-    public boolean isAccessTokenExpired(String token) throws SignatureException {
-        return extractAccessExp(token).before(new Date());
+    public boolean isAccessTokenExpired(String token) {
+        return extractAccessExpiration(token).before(new Date());
     }
 
-    public Date extractRefreshExp(String token) throws SignatureException {
-        return extractAllClaims(token, refreshSingKey).getExpiration();
+    public Date extractRefreshExpiration(String token) {
+        return extractAllClaims(token, refreshSignKey).getExpiration();
     }
 
-    public String extractRefreshUsername(String token) throws SignatureException {
-        return extractAllClaims(token, refreshSingKey).getSubject();
+    public String extractRefreshUsername(String token) {
+        return extractAllClaims(token, refreshSignKey).getSubject();
     }
 
-    public boolean isRefreshTokenExpired(String token) throws SignatureException {
-        return extractRefreshExp(token).before(new Date());
+    public boolean isRefreshTokenExpired(String token) {
+        return extractRefreshExpiration(token).before(new Date());
     }
 
-    private String createToken(Map<String, Object> claims, UserDetails user, String singKey, long expiration) {
+    private String createToken(Map<String, Object> claims, UserDetails user, String signKey, long expiration) {
         long issuedAt = System.currentTimeMillis();
+        SecretKey key = Keys.hmacShaKeyFor(signKey.getBytes(StandardCharsets.UTF_8));
 
-        return Jwts.builder().setClaims(claims)
+        JwtBuilder builder = Jwts.builder()
+                .setClaims(claims)
                 .setSubject(user.getUsername())
                 .claim("authorities", user.getAuthorities())
                 .setIssuedAt(new Date(issuedAt))
                 .setExpiration(new Date(issuedAt + expiration))
-                .signWith(SignatureAlgorithm.HS256, singKey).compact();
+                .signWith(key);
+
+        return builder.compact();
     }
 
-    private String createToken(UserDetails user, String singKey, long expiration) {
+    private String createToken(UserDetails user, String signKey, long expiration) {
         long issuedAt = System.currentTimeMillis();
+        SecretKey key = Keys.hmacShaKeyFor(signKey.getBytes(StandardCharsets.UTF_8));
         Map<String, Object> claims = new HashMap<>();
 
-        return Jwts.builder().setClaims(claims)
+        JwtBuilder builder = Jwts.builder()
+                .setClaims(claims)
                 .setSubject(user.getUsername())
                 .claim("authorities", user.getAuthorities())
                 .setIssuedAt(new Date(issuedAt))
                 .setExpiration(new Date(issuedAt + expiration))
-                .signWith(SignatureAlgorithm.HS256, singKey).compact();
+                .signWith(key);
+
+        return builder.compact();
     }
 
     public String createAccessToken(Map<String, Object> claims, UserDetails user) {
-        return createToken(claims, user, accessSingKey, accessExp);
+        return createToken(claims, user, accessSignKey, accessExp);
     }
 
     public String createRefreshToken(Map<String, Object> claims, UserDetails user) {
-        return createToken(claims, user, refreshSingKey, refreshExp);
+        return createToken(claims, user, refreshSignKey, refreshExp);
     }
 
     public String createAccessToken(UserDetails user) {
-        return createToken(user, accessSingKey, accessExp);
+        return createToken(user, accessSignKey, accessExp);
     }
 
     public String createRefreshToken(UserDetails user) {
-        return createToken(user, refreshSingKey, refreshExp);
+        return createToken(user, refreshSignKey, refreshExp);
     }
 
-    public boolean validateAccessToken(String token, UserDetails user) { //better validation?
+    public boolean validateAccessToken(String token, UserDetails user) {
         String username = extractAccessUsername(token);
-
         return user.getUsername().equals(username) && !isAccessTokenExpired(token);
     }
 
-    public boolean validateRefreshToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(refreshSingKey).parseClaimsJws(token);
-            return true;
-        } catch (SignatureException e) {
-            System.out.println("signature exc");
-            throw e;
-          } catch (MalformedJwtException e) {
-            System.out.println("Invalid JWT token");
-            throw e;
-          } catch (ExpiredJwtException e) {
-            System.out.println("expired");
-            throw e;
-          } catch (UnsupportedJwtException e) {
-            System.out.println("unsupported");
-            throw e;
-          } catch (IllegalArgumentException e) {
-            System.out.println("illegal args");
-            throw e;
-          }
-        
+    public boolean validateRefreshToken(String token, UserDetails user) {
+        String username = extractRefreshUsername(token);
+        return user.getUsername().equals(username) && !isRefreshTokenExpired(token);
     }
+    // public boolean validateRefreshToken(String token) {
+    //     try {
+    //         Jwts.parser().setSigningKey(refreshSignKey).parseClaimsJws(token);
+    //         return true;
+    //     } catch (SignatureException | MalformedJwtException | ExpiredJwtException |
+    //             UnsupportedJwtException | IllegalArgumentException e) {
+    //         System.out.println("Invalid JWT token");
+    //         throw e;
+    //     }
+    // }
 }

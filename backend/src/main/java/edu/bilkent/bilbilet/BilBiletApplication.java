@@ -15,7 +15,6 @@ import jakarta.annotation.PostConstruct;
 
 // @Slf4j
 @SpringBootApplication
-@ComponentScan("edu.bilkent.bilbilet.controller")
 public class BilBiletApplication {
 	// @Autowired
 	// DatabaseInitializer databaseInitializer;

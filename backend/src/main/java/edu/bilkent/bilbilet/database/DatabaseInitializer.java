@@ -18,7 +18,7 @@ public class DatabaseInitializer {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @PostConstruct
+    // @PostConstruct
     public void initializeDatabase() throws IOException {
         ClassPathResource resource = new ClassPathResource("sql/init.sql");
         String sqlScript = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);

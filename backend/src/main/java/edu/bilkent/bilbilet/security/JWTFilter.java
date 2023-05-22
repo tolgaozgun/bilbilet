@@ -10,8 +10,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.http.HttpHeaders;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -80,7 +79,7 @@ public class JWTFilter extends OncePerRequestFilter {
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails user = jwtUserService.loadUserByUsername(username);
 
-                if (isCurrentRefresh && jwtUtils.validateRefreshToken(token) || jwtUtils.validateAccessToken(token, user)) {
+                if (isCurrentRefresh && jwtUtils.validateRefreshToken(token, user) || jwtUtils.validateAccessToken(token, user)) {
                     System.out.println("here is here: " + user.getPassword());
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -99,14 +98,11 @@ public class JWTFilter extends OncePerRequestFilter {
             }
     
             filterChain.doFilter(request, response);
-        } catch (SignatureException e) {
+        } catch (JwtException e) {
             System.out.println("JWT token cannot be verified");
             throw e;
         } catch (IllegalArgumentException e) {
             System.out.println("Unable to get JWT Token");
-            throw e;
-        } catch (ExpiredJwtException e) {
-            System.out.println("JWT Token has expired");
             throw e;
         } catch (Exception e) {
             e.printStackTrace();

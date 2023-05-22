@@ -34,7 +34,7 @@ public class DatabaseConfig {
     }
 
     @Bean
-    public DatabaseInitializer databaseInitializer() {
+    public DatabaseInitializer initializeDB() {
         return new DatabaseInitializer();
     }
 

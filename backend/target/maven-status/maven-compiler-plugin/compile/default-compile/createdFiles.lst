@@ -16,5 +16,3 @@ edu\bilkent\bilbilet\database\DatabaseInitializer.class
 edu\bilkent\bilbilet\security\JWTUserService.class
 edu\bilkent\bilbilet\request\UserLogin.class
 edu\bilkent\bilbilet\model\User.class
-edu\bilkent\bilbilet\service\ExampleService.class
-edu\bilkent\bilbilet\controller\ExampleController.class
