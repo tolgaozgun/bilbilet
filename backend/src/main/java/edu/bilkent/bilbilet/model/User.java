@@ -1,6 +1,7 @@
 package edu.bilkent.bilbilet.model;
 
 import lombok.AllArgsConstructor;
+import edu.bilkent.bilbilet.enums.UserType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,26 +12,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-	@Id
-	@NotNull
-	private int user_id;
+    @Id
+    // @NotNull
+    private int userId;
 
-	@NotBlank
-	private String name;
+    @NotBlank
+    private String name;
 
-	@NotBlank
-	private String surname;
+    @NotBlank
+    private String surname;
 
-	@NotBlank
-	private String email;
+    @NotBlank
+    private String email;
 
-	@NotBlank
-	private String telephone;
+    @NotBlank
+    private String telephone;
 
-	@NotBlank
-	private String password;
+    @NotBlank
+    private String password;
 
-	@NotBlank
-	private String user_type;
+    @NotBlank
+    private UserType userType;
 
 }
