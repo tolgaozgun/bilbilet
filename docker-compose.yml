@@ -16,28 +16,28 @@ services:
       - container_network
     env_file:
       - .env
-  backend:
-    image: container_backend
-    build: 
-      context: ./backend
-      dockerfile: Dockerfile
-      # target: dev
-    volumes:
-      - /backend
-      - /uploads
-    environment:
-      DB_NAME: ${POSTGRES_DB}
-      DB_USER: ${POSTGRES_USER}
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
-      DB_HOST: db
-      APP_PORT: 8080
-    ports:
-      # - "92.205.189.60:8080:8080"
-      - "8080:8080"
-    depends_on:
-      - db
-    networks:
-      - container_network
+  # backend:
+  #   image: container_backend
+  #   build: 
+  #     context: ./backend
+  #     dockerfile: Dockerfile
+  #     # target: dev
+  #   volumes:
+  #     - /backend
+  #     - /uploads
+  #   environment:
+  #     DB_NAME: ${POSTGRES_DB}
+  #     DB_USER: ${POSTGRES_USER}
+  #     DB_PASSWORD: ${POSTGRES_PASSWORD}
+  #     DB_HOST: db
+  #     APP_PORT: 8080
+  #   ports:
+  #     # - "92.205.189.60:8080:8080"
+  #     - "8080:8080"
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - container_network
   frontend:
     stdin_open: true
     image: container_frontend
