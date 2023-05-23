@@ -14,7 +14,7 @@ public class Response {
         String timestamp = new SimpleDateFormat("yyyy.MM.dd HH.mm.ss").format(new java.util.Date());
 
         response.put("timestamp", timestamp);
-        response.put("message", message);
+        response.put("msg", message);
         response.put("status", status);
         response.put("data", data);
 
@@ -26,7 +26,7 @@ public class Response {
         String timestamp = new SimpleDateFormat("yyyy.MM.dd HH.mm.ss").format(new java.util.Date());
 
         response.put("timestamp", timestamp);
-        response.put("message", message);
+        response.put("msg", message);
         response.put("status", status);
 
         return new ResponseEntity<Object>(response, status);
@@ -37,7 +37,7 @@ public class Response {
         String timestamp = new SimpleDateFormat("yyyy.MM.dd HH.mm.ss").format(new java.util.Date());
 
         response.put("timestamp", timestamp);
-        response.put("message", message);
+        response.put("msg", message);
         response.put("status", status);
 
         return new ResponseEntity<Object>(response, HttpStatusCode.valueOf(status));
