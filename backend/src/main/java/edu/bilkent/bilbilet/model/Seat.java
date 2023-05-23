@@ -2,6 +2,8 @@ package edu.bilkent.bilbilet.model;
 
 import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
+
+import edu.bilkent.bilbilet.enums.SeatType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,8 +21,8 @@ public class Seat {
 	@NotBlank
 	private String seat_class;
 
-	@NotBlank
-	private String seat_type;
+	@NotNull
+	private SeatType seat_type;
 
 	@NotNull
 	private int row;
