@@ -2,6 +2,8 @@ package edu.bilkent.bilbilet.model;
 
 import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
+
+import edu.bilkent.bilbilet.enums.FuelType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -37,8 +39,8 @@ public class Car {
 	@NotBlank
 	private String category;
 
-	@NotBlank
-	private String fuel_type;
+	@NotNull
+	private FuelType fuel_type;
 
 	@NotBlank
 	private String photo_url;

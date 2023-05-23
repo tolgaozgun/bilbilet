@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
 
+import edu.bilkent.bilbilet.enums.CompanyType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,8 +25,8 @@ public class Company {
     @NotBlank
     private String address;
 
-    @NotBlank
-    private String type;
+    @NotNull
+    private CompanyType type;
 
     @NotBlank
     private String contact_information;

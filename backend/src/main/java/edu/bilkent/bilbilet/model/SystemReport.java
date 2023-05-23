@@ -1,6 +1,7 @@
 package edu.bilkent.bilbilet.model;
 
 import lombok.AllArgsConstructor;
+import edu.bilkent.bilbilet.enums.ReportType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -18,8 +19,8 @@ public class SystemReport {
 	@NotBlank
 	private String report_url;
 
-	@NotBlank
-	private String report_type;
+	@NotNull
+	private ReportType report_type;
 
 	@NotBlank
 	private String report_month;

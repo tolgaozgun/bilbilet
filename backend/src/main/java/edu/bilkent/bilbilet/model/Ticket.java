@@ -1,6 +1,7 @@
 package edu.bilkent.bilbilet.model;
 
 import lombok.AllArgsConstructor;
+import edu.bilkent.bilbilet.enums.TicketStatus;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,8 +16,8 @@ public class Ticket {
 	@NotNull
 	private int ticket_id;
 
-	@NotBlank
-	private String status;
+	@NotNull
+	private TicketStatus status;
 
 	@NotNull
 	private int seat_id;

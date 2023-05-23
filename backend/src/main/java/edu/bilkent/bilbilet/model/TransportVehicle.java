@@ -1,6 +1,7 @@
 package edu.bilkent.bilbilet.model;
 
 import lombok.AllArgsConstructor;
+import edu.bilkent.bilbilet.enums.VehicleType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,8 +16,8 @@ public class TransportVehicle {
 	@NotNull
 	private int vehicle_id;
 
-	@NotBlank
-	private String vehicle_type;
+	@NotNull
+	private VehicleType vehicle_type;
 
 	@NotNull
 	private int seat_configuration_id;
