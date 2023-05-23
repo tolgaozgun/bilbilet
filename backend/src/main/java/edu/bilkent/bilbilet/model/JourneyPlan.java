@@ -1,9 +1,6 @@
 package edu.bilkent.bilbilet.model;
 
 import lombok.AllArgsConstructor;
-
-import java.math.BigDecimal;
-
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,20 +10,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Traveler {
-    @Id
-    @NotNull
-    private int user_id;
+public class JourneyPlan {
+	@Id
+	@NotNull
+	private int journey_plan_id;
 
-    @NotBlank
-    private String nationality;
+	@NotBlank
+	private String plan_title;
 
-    @NotBlank
-    private String passport_number;
+	@NotNull
+	private int traveler_id;
 
-    @NotNull
-    private BigDecimal balance;
-
-    @NotBlank
-    private String TCK;
 }

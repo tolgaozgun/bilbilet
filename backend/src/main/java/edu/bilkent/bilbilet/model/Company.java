@@ -1,6 +1,9 @@
 package edu.bilkent.bilbilet.model;
 
 import lombok.AllArgsConstructor;
+
+import java.math.BigDecimal;
+
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -31,7 +34,7 @@ public class Company {
     private String business_registration;
 
     @NotNull
-    private int balance;
+    private BigDecimal balance;
 
     @NotNull
     private int user_id;

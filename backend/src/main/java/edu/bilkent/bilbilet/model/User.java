@@ -1,9 +1,6 @@
 package edu.bilkent.bilbilet.model;
 
 import lombok.AllArgsConstructor;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-
 import edu.bilkent.bilbilet.enums.UserType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;

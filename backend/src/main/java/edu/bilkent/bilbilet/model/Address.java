@@ -1,6 +1,9 @@
 package edu.bilkent.bilbilet.model;
 
 import lombok.AllArgsConstructor;
+
+import java.math.BigDecimal;
+
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,8 +25,8 @@ public class Address {
     private String city;
 
     @NotNull
-    private int latitude;
+    private BigDecimal latitude;
 
     @NotNull
-    private int longitude;
+    private BigDecimal longitude;
 }
