@@ -1,18 +1,13 @@
 package edu.bilkent.bilbilet.repository;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
 import edu.bilkent.bilbilet.enums.UserType;
 import edu.bilkent.bilbilet.model.Traveler;
 import edu.bilkent.bilbilet.model.User;
@@ -60,18 +55,18 @@ public class AccountRepository {
         return null;
     }
 
-    public Traveler findTravelerByUserId(int id) {
+    public Optional<Traveler> findTravelerByUserId(int id) {
         String sql = "SELECT * FROM Traveler WHERE user_id = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, travelerRowMapper, id);
+            return Optional.of(jdbcTemplate.queryForObject(sql, travelerRowMapper, id));
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            return Optional.empty();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null;
+        return Optional.empty();
     }
 
     public User save(User user) { //check if exist????????????
@@ -93,7 +88,7 @@ public class AccountRepository {
         return new_user;
     }
 
-    public Traveler save(Traveler traveler) { //check if exist????????????
+    public Optional<Traveler> save(Traveler traveler) { //check if exist????????????
         String sql = "INSERT INTO Traveler (user_id, nationality, passport_number, balance, TCK) " +
                      "VALUES (?, ?, ?, ?, ?)";
         
@@ -105,9 +100,8 @@ public class AccountRepository {
             new BigDecimal(0),
             traveler.getTCK()
         );
-        
-        Traveler newTraveler = findTravelerByUserId(traveler.getUser_id());
-        return newTraveler;
+
+        return findTravelerByUserId(traveler.getUser_id());
     }
 
     // public User save(User user) {

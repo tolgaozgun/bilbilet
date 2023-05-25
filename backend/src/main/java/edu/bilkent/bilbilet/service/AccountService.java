@@ -3,13 +3,13 @@ package edu.bilkent.bilbilet.service;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import edu.bilkent.bilbilet.enums.UserType;
 import edu.bilkent.bilbilet.model.Traveler;
 import edu.bilkent.bilbilet.model.User;
@@ -152,9 +152,24 @@ public class AccountService {
 
     public TravelerRegister addTraveler(TravelerRegister travellerRegister) throws Exception {
         try {
-            User newUser = addUser(travellerRegister.getUser());
-            Traveler newTraveler = accountRepository.save(travellerRegister.getTraveler());
+            // Check if user already exists by email
+            if (accountRepository.existsByEmail(travellerRegister.getUser().getEmail())) {
+                throw new Exception("user already exists");
+            }
             
+            // Check if traveler already exists by user_id
+            if (accountRepository.findTravelerByUserId(travellerRegister.getUser().getUserId()).isPresent()) {
+                throw new Exception("traveler already exists");
+            }
+            
+            // Add user
+            User newUser = addUser(travellerRegister.getUser());
+            
+            // Add traveler
+            Optional<Traveler> optionalTraveler = accountRepository.save(travellerRegister.getTraveler());
+            Traveler newTraveler = optionalTraveler.isPresent() ? optionalTraveler.get() : null;
+
+            // Return both added user data and added traveler data
             TravelerRegister result = new TravelerRegister(newUser, newTraveler);
             return result;
         } catch (Exception e) {
