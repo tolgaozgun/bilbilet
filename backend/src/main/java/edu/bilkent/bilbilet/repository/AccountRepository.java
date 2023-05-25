@@ -60,7 +60,7 @@ public class AccountRepository {
         return null;
     }
 
-    public Traveler findTravelerByUser_id(int id) {
+    public Traveler findTravelerByUserId(int id) {
         String sql = "SELECT * FROM Traveler WHERE user_id = ?";
 
         try {
@@ -106,7 +106,7 @@ public class AccountRepository {
             traveler.getTCK()
         );
         
-        Traveler newTraveler = findTravelerByUser_id(traveler.getUser_id());
+        Traveler newTraveler = findTravelerByUserId(traveler.getUser_id());
         return newTraveler;
     }
 
