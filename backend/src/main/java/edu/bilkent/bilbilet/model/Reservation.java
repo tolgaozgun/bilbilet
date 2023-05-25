@@ -3,6 +3,8 @@ package edu.bilkent.bilbilet.model;
 import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+
+import edu.bilkent.bilbilet.enums.ReservationStatus;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,11 +19,14 @@ public class Reservation {
 	@NotNull
 	private int reservation_id;
 
-	@NotBlank
-	private String reservation_ttl;
+	@NotNull
+	private ReservationStatus reservation_status;
 
 	@NotNull
 	private Timestamp created_at;
+
+	@NotNull
+	private Timestamp reserved_until;
 
 	@NotNull
 	private BigDecimal reservation_fee;

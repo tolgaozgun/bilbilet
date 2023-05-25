@@ -4,15 +4,12 @@ import {
 	Center,
 	Container,
 	Flex,
-	Group,
 	Stack,
 	Stepper,
 	Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import {
-	IconArrowLeft,
-	IconArrowLeftSquare,
 	IconSquareRoundedArrowLeftFilled,
 	IconSquareRoundedArrowRightFilled,
 } from '@tabler/icons-react';
@@ -22,7 +19,7 @@ import SelectPaymentOption from '../../components/payment/ticket/SelectPaymentOp
 import TicketInformation from '../../components/payment/ticket/TicketInformation';
 import TravelerInformationForm from '../../components/payment/ticket/TravelerInformationForm';
 import PayWithCreditCardForm from '../../components/payment/transaction/PayWithCreditCardForm';
-import { useUser } from '../../hooks/useUser';
+import { useUser } from '../../hooks/auth';
 import { PaymentType } from '../../types/PaymentTypes';
 
 const PurchaseTicketPage = () => {
