@@ -34,7 +34,7 @@ public class AccountController {
             RUserToken token = accountService.login(userInfo);
             return Response.create("login is successful", HttpStatus.OK, token);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), 499);
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }        
     }
 
@@ -45,7 +45,7 @@ public class AccountController {
             User user = accountService.addUser(userInfo);
             return Response.create("account is created", HttpStatus.OK, user);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.CONFLICT);
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }        
     }
     
@@ -55,7 +55,7 @@ public class AccountController {
         try {
             return Response.create("ok", HttpStatus.OK, "hello world");
         } catch (Exception e) {
-            return null;
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }        
     }
 
@@ -65,7 +65,7 @@ public class AccountController {
         try {
             return Response.create("ok", HttpStatus.OK, "hello world login good");
         } catch (Exception e) {
-            return null;
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }        
     }
 }
