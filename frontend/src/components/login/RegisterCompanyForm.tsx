@@ -2,7 +2,6 @@ import {
 	Button,
 	Card,
 	Flex,
-	NumberInput,
 	PasswordInput,
 	Select,
 	Stack,
@@ -13,8 +12,9 @@ import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { useNavigate } from 'react-router-dom';
 import { primaryButtonColor } from '../../constants/colors';
-import { registerCompany } from '../../services/auth';
+import { useRegisterCompany } from '../../hooks/auth';
 import { CompanyType, RegisterCompany } from '../../types';
+import { isErrorResponse } from '../../utils/utils';
 import SubtleLinkButton from '../common/buttons/SubtleLinkButton';
 
 const RegisterCompanyForm = () => {
@@ -51,6 +51,7 @@ const RegisterCompanyForm = () => {
 		},
 	});
 	const navigate = useNavigate();
+	const { register } = useRegisterCompany();
 
 	const onRegister = async () => {
 		const validation = form.validate();
@@ -58,17 +59,28 @@ const RegisterCompanyForm = () => {
 			return;
 		}
 
-		// Send registration request
-		const res = await registerCompany(form.values as RegisterCompany);
+		const res = await register(form.values as RegisterCompany);
+		if (isErrorResponse(res)) {
+			notifications.show({
+				id: 'registration-fail',
+				title: 'Registration failed!',
+				message: res.msg,
+				autoClose: 5000,
+				withCloseButton: true,
+				style: { backgroundColor: 'red' },
+			});
+			return;
+		}
 
-		// Registration unsuccessful
-		// TODO
-
-		// Registration successful
-
-		// Automatically login
-
-		// Redirect to search page
+		notifications.show({
+			id: 'registration-success',
+			title: 'Registration successful!',
+			message:
+				'You have successfully registered! We are redirecting you to the main page...',
+			autoClose: 5000,
+			withCloseButton: true,
+			style: { backgroundColor: 'green' },
+		});
 		navigate('/search-fare');
 	};
 

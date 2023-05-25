@@ -11,7 +11,8 @@ import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { useNavigate } from 'react-router-dom';
 import { primaryButtonColor } from '../../constants/colors';
-import { useLogin } from '../../hooks/useLogin';
+import { useLogin } from '../../hooks/auth';
+import { isErrorResponse } from '../../utils/utils';
 import SubtleLinkButton from '../common/buttons/SubtleLinkButton';
 
 const LoginForm = () => {
@@ -30,7 +31,7 @@ const LoginForm = () => {
 		},
 	});
 
-	const onLogin = () => {
+	const onLogin = async () => {
 		// Validate input fields
 		const validation = form.validate();
 		if (validation.hasErrors) {
@@ -38,14 +39,13 @@ const LoginForm = () => {
 		}
 
 		const { email, password } = form.values;
-		// TODO: Modify to cover error message received from backend
-		const res = login(email, password);
-		if (!res) {
+		const res = await login(email, password);
+		if (isErrorResponse(res)) {
 			notifications.show({
 				id: 'login-fail',
 				title: 'Login failed!',
-				message: 'Please check your login credentials.',
-				autoClose: 10000,
+				message: res.msg,
+				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },
 			});
@@ -55,8 +55,8 @@ const LoginForm = () => {
 		notifications.show({
 			id: 'login-success',
 			title: 'Login successful!',
-			message: 'You have successfully logged in!.',
-			autoClose: 10000,
+			message: 'You have successfully logged in!',
+			autoClose: 5000,
 			withCloseButton: true,
 			style: { backgroundColor: 'green' },
 		});
