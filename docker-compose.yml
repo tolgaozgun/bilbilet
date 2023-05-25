@@ -2,55 +2,20 @@ version: "3.9"
    
 services:
   db:
-    image: postgres
+    image: mysql
     ports:
-      # - "92.205.189.60:5432:5432"
-      - "5431:5432"
+      - "3306:3306"
     volumes:
-      - ./database_folder/database_volume:/var/lib/postgresql/data
+      - /var/lib/mysql
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     networks:
       - container_network
     env_file:
       - .env
-  # backend:
-  #   image: container_backend
-  #   build: 
-  #     context: ./backend
-  #     dockerfile: Dockerfile
-  #     # target: dev
-  #   volumes:
-  #     - /backend
-  #     - /uploads
-  #   environment:
-  #     DB_NAME: ${POSTGRES_DB}
-  #     DB_USER: ${POSTGRES_USER}
-  #     DB_PASSWORD: ${POSTGRES_PASSWORD}
-  #     DB_HOST: db
-  #     APP_PORT: 8080
-  #   ports:
-  #     # - "92.205.189.60:8080:8080"
-  #     - "8080:8080"
-  #   depends_on:
-  #     - db
-  #   networks:
-  #     - container_network
-  frontend:
-    stdin_open: true
-    image: container_frontend
-    build: ./frontend
-    volumes:
-      - /frontend
-    ports:
-      # - "92.205.189.60:3000:3000"
-      - "3000:3000"
-    depends_on:
-      - db
-    networks:
-      - container_network
 networks:
   container_network:
     driver: bridge
