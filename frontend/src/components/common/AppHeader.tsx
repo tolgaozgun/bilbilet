@@ -1,6 +1,5 @@
-import { Button, Container, Flex, Group, Header, Title } from '@mantine/core';
-import UserButton from './buttons/UserButton';
-import UserMenu from './menus/UserMenu';
+import { Flex, Header, Title } from '@mantine/core';
+import ProfileMenu from './menus/ProfileMenu';
 
 const AppHeader = () => {
 	return (
@@ -9,7 +8,7 @@ const AppHeader = () => {
 				<Title color="blue" ml={20}>
 					BilBilet
 				</Title>
-				<UserMenu />
+				<ProfileMenu />
 			</Flex>
 		</Header>
 	);
