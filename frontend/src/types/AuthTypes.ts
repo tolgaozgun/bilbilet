@@ -20,11 +20,12 @@ export type RegisterCompany = {
 	businessRegistration: string;
 };
 
-export type RegisterUser = {
+export type RegisterTraveler = {
 	name: string;
 	surname: string;
 	email: string;
 	password: string;
 	telephone: string;
-	TCK: string;
+	TCK?: string;
+	passportNumber?: string;
 };

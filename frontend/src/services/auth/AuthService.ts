@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+
 import { baseUrl } from '../../constants/api';
 import { RegisterCompany, RegisterUser, Tokens, User } from '../../types';
 import { ErrorResponse, Response } from '../../types/ResponseTypes';

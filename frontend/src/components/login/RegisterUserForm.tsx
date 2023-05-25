@@ -12,6 +12,7 @@ import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { useNavigate } from 'react-router-dom';
 import { primaryButtonColor } from '../../constants/colors';
+
 import { useRegisterUser } from '../../hooks/auth';
 import { RegisterUser } from '../../types';
 import { isErrorResponse } from '../../utils/utils';
@@ -50,6 +51,7 @@ const RegisterUserForm = () => {
 		if (validation.hasErrors) {
 			return;
 		}
+
 
 		const res = await register(form.values as RegisterUser);
 		if (isErrorResponse(res)) {
