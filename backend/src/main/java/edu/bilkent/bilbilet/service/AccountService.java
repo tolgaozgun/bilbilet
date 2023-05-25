@@ -166,7 +166,10 @@ public class AccountService {
             User newUser = addUser(travellerRegister.getUser());
             
             // Add traveler
-            Optional<Traveler> optionalTraveler = accountRepository.save(travellerRegister.getTraveler());
+            Traveler travelerToAdd = travellerRegister.getTraveler();
+            travelerToAdd.setUser_id(newUser.getUserId());
+
+            Optional<Traveler> optionalTraveler = accountRepository.save(travelerToAdd);
             Traveler newTraveler = optionalTraveler.isPresent() ? optionalTraveler.get() : null;
 
             // Return both added user data and added traveler data
