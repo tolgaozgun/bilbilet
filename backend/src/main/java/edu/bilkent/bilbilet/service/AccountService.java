@@ -1,7 +1,7 @@
 package edu.bilkent.bilbilet.service;
 
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -11,8 +11,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import edu.bilkent.bilbilet.enums.UserType;
+import edu.bilkent.bilbilet.model.Traveler;
 import edu.bilkent.bilbilet.model.User;
 import edu.bilkent.bilbilet.repository.AccountRepository;
+import edu.bilkent.bilbilet.request.TravelerRegister;
 import edu.bilkent.bilbilet.request.UserLogin;
 import edu.bilkent.bilbilet.response.RRefreshToken;
 import edu.bilkent.bilbilet.response.RUserToken;
@@ -142,6 +144,19 @@ public class AccountService {
                 // System.out.println("user_id after register: " + accountRepository.findUserByEmail(user.getEmail()).get().getId());
                 return newUser;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public TravelerRegister addTraveler(TravelerRegister travellerRegister) throws Exception {
+        try {
+            User newUser = addUser(travellerRegister.getUser());
+            Traveler newTraveler = accountRepository.save(travellerRegister.getTraveler());
+            
+            TravelerRegister result = new TravelerRegister(newUser, newTraveler);
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
