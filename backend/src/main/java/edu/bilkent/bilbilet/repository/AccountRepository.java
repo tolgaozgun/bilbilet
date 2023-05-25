@@ -1,18 +1,15 @@
 package edu.bilkent.bilbilet.repository;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
+import java.math.BigDecimal;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
 import edu.bilkent.bilbilet.enums.UserType;
+import edu.bilkent.bilbilet.model.Traveler;
 import edu.bilkent.bilbilet.model.User;
 
 @Qualifier("account_repo")
@@ -34,6 +31,16 @@ public class AccountRepository {
         return user;
     };
     
+    private RowMapper<Traveler> travelerRowMapper = (rs, rowNum) -> {
+        Traveler traveler = new Traveler();
+        traveler.setUser_id(rs.getInt("user_id"));
+        traveler.setNationality(rs.getString("nationality"));
+        traveler.setPassport_number(rs.getString("passport_number"));
+        traveler.setBalance(rs.getBigDecimal("balance"));
+        traveler.setTCK(rs.getString("TCK"));
+        return traveler;
+    };
+    
     public User findUserByMail(String mail) {
         String sql = "SELECT * FROM User WHERE email = ?";
 
@@ -48,16 +55,53 @@ public class AccountRepository {
         return null;
     }
 
+    public Optional<Traveler> findTravelerByUserId(int id) {
+        String sql = "SELECT * FROM Traveler WHERE user_id = ?";
+
+        try {
+            return Optional.of(jdbcTemplate.queryForObject(sql, travelerRowMapper, id));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
+
     public User save(User user) { //check if exist????????????
         String sql = "INSERT INTO User (name, surname, email, telephone, password, user_type) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";
         
-        jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getEmail(),
-                            user.getTelephone(), user.getPassword(), user.getUserType().toString());
+        jdbcTemplate.update(
+            sql,
+            user.getName(),
+            user.getSurname(),
+            user.getEmail(),
+            user.getTelephone(),
+            user.getPassword(),
+            user.getUserType().toString()
+        );
         
         User new_user = findUserByMail(user.getEmail());
         new_user.setPassword(null);
         return new_user;
+    }
+
+    public Optional<Traveler> save(Traveler traveler) { //check if exist????????????
+        String sql = "INSERT INTO Traveler (user_id, nationality, passport_number, balance, TCK) " +
+                     "VALUES (?, ?, ?, ?, ?)";
+        
+        jdbcTemplate.update(
+            sql,
+            traveler.getUser_id(),
+            traveler.getNationality(),
+            traveler.getPassport_number(),
+            new BigDecimal(0),
+            traveler.getTCK()
+        );
+
+        return findTravelerByUserId(traveler.getUser_id());
     }
 
     // public User save(User user) {
