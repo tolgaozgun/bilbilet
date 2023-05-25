@@ -17,8 +17,9 @@ CREATE TABLE IF NOT EXISTS Company (
     contact_information TEXT,
     business_registration VARCHAR(255) NOT NULL,
     balance DECIMAL(10, 2) NOT NULL,
-    user_id INT NOT NULL,
     PRIMARY KEY (company_id),
+    FOREIGN KEY (user_id) REFERENCES User(user_id),
+    CONSTRAINT user_id_exists FOREIGN KEY (user_id) REFERENCES User(user_id),
     FOREIGN KEY (user_id) REFERENCES User(user_id)
 );
 
@@ -33,3 +34,41 @@ CREATE TABLE IF NOT EXISTS Traveler (
     CONSTRAINT user_id_exists FOREIGN KEY (user_id) REFERENCES User(user_id),
     CHECK (balance >= 0)
 );
+
+CREATE TABLE IF NOT EXISTS Address (
+    address_id INT NOT NULL AUTO_INCREMENT,
+    country VARCHAR(80) NOT NULL,
+    city VARCHAR(120) NOT NULL,
+    latitude DECIMAL(9, 6) NOT NULL,
+    longitude DECIMAL(9, 6) NOT NULL,
+    PRIMARY KEY (address_id),
+    CONSTRAINT latitude_valid_constraint CHECK (latitude BETWEEN -90 AND 90),
+    CONSTRAINT longitude_valid_constraint CHECK (longitude BETWEEN -180 AND 180)
+);
+
+CREATE TABLE IF NOT EXISTS Car (
+    car_id INT NOT NULL AUTO_INCREMENT,
+    is_available BOOLEAN NOT NULL,
+    capacity INT NOT NULL,
+    gear VARCHAR(255) NOT NULL,
+    price_per_day DECIMAL(10, 2) NOT NULL,
+    model TEXT NOT NULL,
+    brand TEXT NOT NULL,
+    category TEXT NOT NULL,
+    fuel_type TEXT NOT NULL,
+    photo_url VARCHAR(255),
+    website_url VARCHAR(255),
+    company_id INT NOT NULL,
+    address_id INT NOT NULL,
+    PRIMARY KEY (car_id),
+    FOREIGN KEY (company_id) REFERENCES Company(company_id),
+    FOREIGN KEY (address_id) REFERENCES Address(address_id),
+    -- CONSTRAINT company_fk_exists CHECK (EXISTS (SELECT 1 FROM Company C WHERE C.company_id = Car.company_id)), // no subquery in check in mysql
+    -- CONSTRAINT address_fk_exists CHECK (EXISTS (SELECT 1 FROM Address A WHERE A.address_id = Car.address_id)),
+    CONSTRAINT price_check CHECK (price_per_day > 0)
+);
+
+
+
+
+
