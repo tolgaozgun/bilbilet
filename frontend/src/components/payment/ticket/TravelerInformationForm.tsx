@@ -1,32 +1,50 @@
-import { Card, Stack, TextInput } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { useUser } from '../../../hooks/useUser';
+import { Card, Stack, Switch, TextInput } from '@mantine/core';
+import { UseFormReturnType } from '@mantine/form';
+import { useState } from 'react';
 
-const TravelerInformationForm = () => {
-	const user = useUser();
+interface TravelerInformationFormProps {
+	form: UseFormReturnType<
+		{
+			name: string;
+			lastName: string;
+			passportNumber: string;
+			TCK: string;
+			email: string;
+			phone: string;
+		},
+		(values: {
+			name: string;
+			lastName: string;
+			passportNumber: string;
+			TCK: string;
+			email: string;
+			phone: string;
+		}) => {
+			name: string;
+			lastName: string;
+			passportNumber: string;
+			TCK: string;
+			email: string;
+			phone: string;
+		}
+	>;
+}
 
-	const form = useForm({
-		initialValues: {
-			name: user?.name || '',
-			lastName: user?.surname || '',
-			TCK: user?.TCK || '',
-			email: user?.email || '',
-			phone: user?.phone || '',
-		},
-		validate: {
-			name: (value) => (value === '' ? 'This field cannot be left empty' : null),
-			lastName: (value) =>
-				value === '' ? 'This field cannot be left empty' : null,
-			TCK: (value) => (value === '' ? 'This field cannot be left empty' : null),
-			email: (value) => (value === '' ? 'This field cannot be left empty' : null),
-			phone: (value) => (value === '' ? 'This field cannot be left empty' : null),
-		},
-	});
+const TravelerInformationForm = ({ form }: TravelerInformationFormProps) => {
+	const [isForeigner, setIsForeigner] = useState(false);
+	const onNationalityChange = () => {
+		if (isForeigner) {
+			form.setValues({ passportNumber: '' });
+		} else {
+			form.setValues({ TCK: '' });
+		}
+		setIsForeigner((prev) => !prev);
+	};
 
 	return (
-		<Card withBorder>
+		<Card miw={300} withBorder p={24} shadow="lg">
 			<form>
-				<Stack spacing="md">
+				<Stack spacing="lg">
 					<TextInput
 						label="Name"
 						placeholder="John"
@@ -37,11 +55,27 @@ const TravelerInformationForm = () => {
 						placeholder="Doe"
 						{...form.getInputProps('lastName')}
 					/>
-					<TextInput
-						label="National ID (TCK) / Passport number"
-						placeholder="12345678910"
-						{...form.getInputProps('TCK')}
-					/>
+					<Stack spacing="xs">
+						{isForeigner ? (
+							<TextInput
+								label="Passport number"
+								placeholder="12345678910"
+								{...form.getInputProps('passportNumber')}
+							/>
+						) : (
+							<TextInput
+								label="National ID (TCK)"
+								placeholder="12345678910"
+								{...form.getInputProps('TCK')}
+							/>
+						)}
+						<Switch
+							label="I am a foreigner"
+							size="xs"
+							checked={isForeigner}
+							onChange={onNationalityChange}
+						/>
+					</Stack>
 					<TextInput
 						label="Email"
 						placeholder="example@gmail.com"

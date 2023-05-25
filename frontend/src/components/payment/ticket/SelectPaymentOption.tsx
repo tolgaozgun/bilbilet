@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Loader, Stack } from '@mantine/core';
+import { Button, Card, Divider, Flex, Loader, Stack, Title } from '@mantine/core';
 import { IconBrandCashapp, IconCreditCard } from '@tabler/icons-react';
 import { PaymentType } from '../../../types/PaymentTypes';
 import MoneyNumberInput from '../../common/inputs/MoneyNumberInput';
@@ -40,15 +40,20 @@ const SelectPaymentOption = ({
 					) : (
 						<MoneyNumberInput amount={amount} disabled={true} prefix="TL" />
 					)}
-
-					<Button onClick={onSelectBalance} leftIcon={<IconBrandCashapp />}>
+					<Button
+						size="lg"
+						onClick={onSelectBalance}
+						leftIcon={<IconBrandCashapp />}
+					>
 						Pay {pricePrefix} {price} {pricePostfix} From Balance
 					</Button>
 				</Stack>
+				<Divider orientation="vertical" />
 				<Button
 					onClick={onSelectCreditCard}
 					leftIcon={<IconCreditCard />}
 					variant="light"
+					size="lg"
 				>
 					Pay {pricePrefix} {price} {pricePostfix} with Credit Card
 				</Button>

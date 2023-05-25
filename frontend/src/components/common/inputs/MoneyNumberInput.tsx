@@ -34,6 +34,9 @@ const MoneyNumberInput = ({
 			onChange={setAmount}
 			parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
 			formatter={formatter}
+			size="md"
+			min={0}
+			max={100000}
 		/>
 	);
 };

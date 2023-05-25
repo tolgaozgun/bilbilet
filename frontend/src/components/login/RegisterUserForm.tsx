@@ -12,7 +12,7 @@ import {
 import { useForm } from '@mantine/form';
 import { primaryButtonColor } from '../../constants/colors';
 import { registerUser } from '../../services/auth';
-import { RegisterUser } from '../../types';
+import { RegisterTraveler } from '../../types';
 import SubtleLinkButton from '../common/buttons/SubtleLinkButton';
 
 const RegisterUserForm = () => {
@@ -45,7 +45,7 @@ const RegisterUserForm = () => {
 			return;
 		}
 
-		const res = await registerUser(form.values as RegisterUser);
+		const res = await registerUser(form.values as RegisterTraveler);
 
 		// Registration successful
 		// TODO:

@@ -1,4 +1,4 @@
-import { Button, Flex, NumberInput, Stack, TextInput, Title } from '@mantine/core';
+import { Button, Flex, Group, NumberInput, Stack, TextInput, Title } from '@mantine/core';
 import { MonthPickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
@@ -30,7 +30,7 @@ const UploadToBalanceWithCCForm = () => {
 	return (
 		<form>
 			<Stack spacing="xl">
-				<Title>Transfer money to your balance</Title>
+				<Title order={2}>Transfer money to your balance</Title>
 				<Stack spacing="md">
 					<TextInput
 						label="Card holder"
@@ -42,7 +42,7 @@ const UploadToBalanceWithCCForm = () => {
 						placeholder="XXXX XXXX XXXX XXXX"
 						{...form.getInputProps('cardNumber')}
 					/>
-					<Flex direction="column">
+					<Group>
 						<MonthPickerInput
 							label="Expiry date"
 							placeholder="Pick a date"
@@ -55,7 +55,7 @@ const UploadToBalanceWithCCForm = () => {
 							min={100}
 							max={9999}
 						/>
-					</Flex>
+					</Group>
 					<MoneyNumberInput amount={amount} setAmount={setAmount} />
 					<Button onClick={onTransfer}>Transfer to your balance</Button>
 				</Stack>

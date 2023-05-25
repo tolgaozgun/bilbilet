@@ -2,7 +2,6 @@ import {
 	Button,
 	Card,
 	Flex,
-	NumberInput,
 	PasswordInput,
 	Select,
 	Stack,
@@ -10,7 +9,6 @@ import {
 	Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
 import { useNavigate } from 'react-router-dom';
 import { primaryButtonColor } from '../../constants/colors';
 import { registerCompany } from '../../services/auth';
