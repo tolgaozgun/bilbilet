@@ -46,7 +46,6 @@ public class AccountRepository {
         return traveler;
     };
     
-
     public User findUserByMail(String mail) {
         String sql = "SELECT * FROM User WHERE email = ?";
 
