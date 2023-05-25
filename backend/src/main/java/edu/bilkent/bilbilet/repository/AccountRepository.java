@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import edu.bilkent.bilbilet.enums.UserType;
 import edu.bilkent.bilbilet.model.User;
 
-@Qualifier("example_repo")
+@Qualifier("account_repo")
 @Repository
 public class AccountRepository {
 
@@ -33,12 +33,9 @@ public class AccountRepository {
         user.setUserType(UserType.valueOf(rs.getString("user_type")));
         return user;
     };
-
-    static User[] arr = {new User(0, "elo", "elogus", "elo@elo.com", "555222", "123456", UserType.ADMIN)};
-    static List<User> users = Arrays.asList(arr);
     
     public User findUserByMail(String mail) {
-        String sql = "SELECT * FROM \"User\" WHERE email = ?";
+        String sql = "SELECT * FROM User WHERE email = ?";
 
         try {
             return jdbcTemplate.queryForObject(sql, userRowMapper, mail);
@@ -52,13 +49,15 @@ public class AccountRepository {
     }
 
     public User save(User user) { //check if exist????????????
-        String sql = "INSERT INTO \"User\" (name, surname, email, telephone, password, user_type) " +
+        String sql = "INSERT INTO User (name, surname, email, telephone, password, user_type) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";
         
         jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getEmail(),
                             user.getTelephone(), user.getPassword(), user.getUserType().toString());
         
-        return findUserByMail(user.getEmail());
+        User new_user = findUserByMail(user.getEmail());
+        new_user.setPassword(null);
+        return new_user;
     }
 
     // public User save(User user) {
