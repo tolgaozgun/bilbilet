@@ -1,13 +1,13 @@
 import { Group, Menu } from '@mantine/core';
-import { useUser } from '../../../hooks/useUser';
+import { useUser } from '../../../hooks/auth';
 import UserButton from '../buttons/UserButton';
 
-const UserMenu = () => {
+const TravelerMenu = () => {
 	const user = useUser();
 
-	// if (!user) {
-	// 	return null;
-	// }
+	if (!user) {
+		return null;
+	}
 
 	return (
 		<Group position="center">
@@ -25,4 +25,4 @@ const UserMenu = () => {
 	);
 };
 
-export default UserMenu;
+export default TravelerMenu;
