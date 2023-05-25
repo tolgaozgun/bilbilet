@@ -55,7 +55,11 @@ const PurchaseTicketPage = () => {
 					<Card>
 						<Stack>
 							<Title order={2}>Select payment option</Title>
-							<SelectPaymentOption price={price} />
+							<SelectPaymentOption
+								setPaymentOption={setSelectedPaymentOption}
+								nextStep={nextStep}
+								price={price}
+							/>
 						</Stack>
 					</Card>
 				</Stepper.Step>
