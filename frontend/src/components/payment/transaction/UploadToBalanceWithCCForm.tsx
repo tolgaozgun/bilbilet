@@ -1,15 +1,17 @@
 import { Button, Flex, NumberInput, Stack, TextInput, Title } from '@mantine/core';
 import { MonthPickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
+import { useState } from 'react';
+import MoneyNumberInput from '../../common/inputs/MoneyNumberInput';
 
 const UploadToBalanceWithCCForm = () => {
+	const [amount, setAmount] = useState(0);
 	const form = useForm({
 		initialValues: {
 			cardNumber: '',
 			expiryDate: null,
 			CVC: '',
 			cardHolder: '',
-			amount: 0,
 		},
 		validate: {
 			cardNumber: (value) =>
@@ -18,8 +20,6 @@ const UploadToBalanceWithCCForm = () => {
 			CVC: (value) => (value === '' ? 'This field cannot be left empty' : null),
 			cardHolder: (value) =>
 				value === '' ? 'This field cannot be left empty' : null,
-			amount: (value) =>
-				value <= 0 ? 'A negative amount is not possible to upload.' : null,
 		},
 	});
 
@@ -56,18 +56,7 @@ const UploadToBalanceWithCCForm = () => {
 							max={9999}
 						/>
 					</Flex>
-					<NumberInput
-						label="Amount"
-						parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
-						formatter={(value) =>
-							!Number.isNaN(parseFloat(value))
-								? `TL ${value}`.replace(
-										/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-										',',
-								  )
-								: 'TL '
-						}
-					/>
+					<MoneyNumberInput amount={amount} setAmount={setAmount} />
 					<Button onClick={onTransfer}>Transfer to your balance</Button>
 				</Stack>
 			</Stack>

@@ -3,10 +3,10 @@ import { MonthPickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 
 interface PayWithCreditCardFormProps {
-	fareId: string;
+	price: number;
 }
 
-const PayWithCreditCardForm = ({ fareId }: PayWithCreditCardFormProps) => {
+const PayWithCreditCardForm = ({ price }: PayWithCreditCardFormProps) => {
 	const form = useForm({
 		initialValues: {
 			cardNumber: '',
