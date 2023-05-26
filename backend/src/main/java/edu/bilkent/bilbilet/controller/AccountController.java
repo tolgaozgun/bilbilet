@@ -51,7 +51,7 @@ public class AccountController {
     
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register/traveler")
-    public ResponseEntity<Object> registerTraveller(@Valid @RequestBody TravelerRegister travelerInfo) {
+    public ResponseEntity<Object> registerTraveler(@Valid @RequestBody TravelerRegister travelerInfo) {
         try {
             TravelerRegister savedInfo = accountService.addTraveler(travelerInfo);
             return Response.create("Traveler account registered", HttpStatus.OK, savedInfo.getUser());
