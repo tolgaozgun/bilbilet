@@ -1,15 +1,19 @@
-import { Button, Flex, NumberInput, Stack, TextInput, Title } from '@mantine/core';
+import { Button, Flex, Group, NumberInput, Stack, TextInput } from '@mantine/core';
 import { MonthPickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
+import { IconArrowLeft } from '@tabler/icons-react';
 
-const UploadToBalanceWithCCForm = () => {
+interface PayWithCreditCardFormProps {
+	price: number;
+}
+
+const PayWithCreditCardForm = ({ price }: PayWithCreditCardFormProps) => {
 	const form = useForm({
 		initialValues: {
 			cardNumber: '',
 			expiryDate: null,
 			CVC: '',
 			cardHolder: '',
-			amount: 0,
 		},
 		validate: {
 			cardNumber: (value) =>
@@ -18,20 +22,17 @@ const UploadToBalanceWithCCForm = () => {
 			CVC: (value) => (value === '' ? 'This field cannot be left empty' : null),
 			cardHolder: (value) =>
 				value === '' ? 'This field cannot be left empty' : null,
-			amount: (value) =>
-				value <= 0 ? 'A negative amount is not possible to upload.' : null,
 		},
 	});
 
 	const onTransfer = () => {
-		// TODO: Upload money to the balance of the user
+		// TODO: Pay the amount, make the request using fareId to ensure safety
 	};
 
 	return (
-		<form>
-			<Stack spacing="xl">
-				<Title>Transfer money to your balance</Title>
-				<Stack spacing="md">
+		<Group>
+			<form>
+				<Stack>
 					<TextInput
 						label="Card holder"
 						placeholder="John Doe"
@@ -48,31 +49,13 @@ const UploadToBalanceWithCCForm = () => {
 							placeholder="Pick a date"
 							{...form.getInputProps('expiryDate')}
 						/>
-						<NumberInput
-							label="CVC"
-							placeholder="CVC"
-							parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
-							min={100}
-							max={9999}
-						/>
+						<NumberInput label="CVC" placeholder="CVC" min={100} max={9999} />
 					</Flex>
-					<NumberInput
-						label="Amount"
-						parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
-						formatter={(value) =>
-							!Number.isNaN(parseFloat(value))
-								? `TL ${value}`.replace(
-										/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-										',',
-								  )
-								: 'TL '
-						}
-					/>
-					<Button onClick={onTransfer}>Transfer to your balance</Button>
+					<Button onClick={onTransfer}>Pay {price}</Button>
 				</Stack>
-			</Stack>
-		</form>
+			</form>
+		</Group>
 	);
 };
 
-export default UploadToBalanceWithCCForm;
+export default PayWithCreditCardForm;

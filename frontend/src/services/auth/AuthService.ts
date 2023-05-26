@@ -1,50 +1,45 @@
-import { AxiosInstance } from "axios";
-import { RegisterCompany, RegisterUser, Tokens, User } from "../../types";
-import { axiosSecure as axios } from "../axios";
+import { AxiosInstance } from 'axios';
 
+import { baseUrl } from '../../constants/api';
+import { RegisterCompany, RegisterUser, Tokens, User } from '../../types';
+import { ErrorResponse, Response } from '../../types/ResponseTypes';
+import { axiosSecure as axios } from '../axios';
 
-export async function login(email: string, password: string): Promise<User | null> {
-    const res = await axios.post<User>('/auth/login', {
-        email,
-        password
-    })
-    
-    if (res.status !== 200) {
-        return null;
-    }
-
-    return {
-        email: res.data.email,
-        userType: res.data.userType,
-        accessToken: res.data.accessToken,
-        refreshToken: res.data.refreshToken
-    }
+export async function login(email: string, password: string): Promise<Response<User>> {
+	const res = await axios.post<Response<User>>(`${baseUrl}/auth/login`, {
+		email,
+		password,
+	});
+	return res.data;
 }
 
 export async function logout() {
-    // TODO: Send logout request to API
+	const res = await axios.post<Response<null>>(`${baseUrl}/auth/logout`);
+	return res.data;
 }
 
-// Returns { status, msg }
 export async function registerCompany(companyDetails: RegisterCompany) {
-    // TODO: Send registration request to API
+	const res = await axios.post<Response<User>>(
+		`${baseUrl}/auth/register`,
+		companyDetails,
+	);
+	return res.data;
 }
 
-export async function registerUser(userDetails: RegisterUser) {
-    // TODO: Send registration request to API
+export async function registerUser(userDetails: RegisterUser): Promise<Response<User>> {
+	const res = await axios.post<Response<User>>(`${baseUrl}/auth/register`, userDetails);
+	return res.data;
 }
 
-export async function refresh(refreshToken: string, axiosSecure: AxiosInstance): Promise<Tokens | null> {
-    const res = await axiosSecure.get<Tokens>('/auth/refresh', {
-        withCredentials: true,
-        headers: {
-            Authorization: `Bearer ${refreshToken}`
-        }
-    })
-    
-    if (res.status !== 200 || !res.data) {
-        return null;
-    }
-
-    return res.data;
+export async function refresh(
+	refreshToken: string,
+	axiosSecure: AxiosInstance,
+): Promise<Response<Tokens>> {
+	const res = await axiosSecure.get<Response<Tokens>>('/auth/refresh', {
+		withCredentials: true,
+		headers: {
+			Authorization: `Bearer ${refreshToken}`,
+		},
+	});
+	return res.data;
 }

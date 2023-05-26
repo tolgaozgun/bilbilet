@@ -10,6 +10,7 @@ import LoginPage from './pages/login/LoginPage';
 import RegisterPage from './pages/login/RegisterPage';
 import PurchaseFailed from './pages/purchase-ticket/PurchaseFailed';
 import PurchaseSucceeded from './pages/purchase-ticket/PurchaseSucceeded';
+import PurchaseTicketPage from './pages/purchase-ticket/PurchaseTicketPage';
 import AddCarPage from './pages/rent-car/AddCarPage';
 import SearchRentCarPage from './pages/rent-car/SearchRentCarPage';
 import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
 					{
 						path: '/search-fare',
 						element: <SearchFarePage />,
+					},
+					{
+						path: '/purchase-ticket',
+						element: <PurchaseTicketPage />,
 					},
 					{
 						path: '/purchase-succeeded',
