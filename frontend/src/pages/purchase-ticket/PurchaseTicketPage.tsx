@@ -22,7 +22,7 @@ import SelectPaymentOption from '../../components/payment/ticket/SelectPaymentOp
 import TicketInformation from '../../components/payment/ticket/TicketInformation';
 import TravelerInformationForm from '../../components/payment/ticket/TravelerInformationForm';
 import PayWithCreditCardForm from '../../components/payment/transaction/PayWithCreditCardForm';
-// import { useUser } from '../../hooks/useUser';
+import { useUser } from '../../hooks/useUser';
 import { PaymentType } from '../../types/PaymentTypes';
 import { useUser } from '../../hooks/auth';
 
