@@ -1,6 +1,7 @@
 import { Card, Flex, Title, Text } from '@mantine/core';
 import { IconPlane, IconArrowRight, IconEdit } from '@tabler/icons-react';
 import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
+import { Link } from 'react-router-dom';
 
 interface PastTicketCardProps {
 	companyName: string;
@@ -35,7 +36,7 @@ const PastTicketCard = ({
 					<IconPlane></IconPlane>
 					<Title order={3}>{companyName}</Title>
 				</Flex>
-				<Flex direction={'row'} gap={'sm'}>
+				<Flex direction={'row'} gap={'xl'}>
 					<Flex direction={'column'} gap={'xs'} align={'center'}>
 						<Text fw={700}>{departureTime}</Text>
 						<Text>{departureABB}</Text>
@@ -57,11 +58,14 @@ const PastTicketCard = ({
 						<Text>{arrivalABB}</Text>
 						<Text>{arrivalLocation}</Text>
 					</Flex>
-					<Flex direction={'column'} gap={'sm'}>
-						<CustomElevatedButton
-							leftIcon={<IconEdit />}
-							text={'Review Trip'}
-						></CustomElevatedButton>
+					<Flex direction={'column'} gap={'xs'} align={'center'}>
+						<Link to={'/add-review/trip/:'}>
+							<CustomElevatedButton
+								leftIcon={<IconEdit />}
+								text={'Review Trip'}
+							></CustomElevatedButton>
+						</Link>
+						<Link to={'/add-review/company/:id'}></Link>
 						<CustomElevatedButton
 							leftIcon={<IconEdit />}
 							text={'Review Company'}
@@ -71,17 +75,20 @@ const PastTicketCard = ({
 				<Flex direction={'row'} gap={'xl'}>
 					<Text fw={700}>
 						Seat:
-						<Text span>{seat}</Text>
+						<Text span> {seat}</Text>
 					</Text>
 					<Text fw={700}>
 						Price:
-						<Text span color="red">
+						<Text span fw={400}>
+							{' '}
 							{price}
+							{' TL'}
 						</Text>
 					</Text>
 					<Text fw={700}>
 						Status:
 						<Text span color="green">
+							{' '}
 							{status}
 						</Text>
 					</Text>
