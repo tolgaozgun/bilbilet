@@ -33,6 +33,7 @@ C:\Users\can\Desktop\bilkent\CS353\PROJECT\backend\src\main\java\edu\bilkent\bil
 C:\Users\can\Desktop\bilkent\CS353\PROJECT\backend\src\main\java\edu\bilkent\bilbilet\model\JourneyPlan.java
 C:\Users\can\Desktop\bilkent\CS353\PROJECT\backend\src\main\java\edu\bilkent\bilbilet\request\UserLogin.java
 C:\Users\can\Desktop\bilkent\CS353\PROJECT\backend\src\main\java\edu\bilkent\bilbilet\security\JWTFilter.java
+C:\Users\can\Desktop\bilkent\CS353\PROJECT\backend\src\main\java\edu\bilkent\bilbilet\security\SwaggerConfig.java
 C:\Users\can\Desktop\bilkent\CS353\PROJECT\backend\src\main\java\edu\bilkent\bilbilet\repository\ExampleRepository.java
 C:\Users\can\Desktop\bilkent\CS353\PROJECT\backend\src\main\java\edu\bilkent\bilbilet\service\AccountService.java
 C:\Users\can\Desktop\bilkent\CS353\PROJECT\backend\src\main\java\edu\bilkent\bilbilet\model\Address.java
