@@ -11,6 +11,8 @@ const AddHotelPage = () => {
 			websiteUrl: '',
 			coverPhotoUrl: '',
 			photoUrl: '',
+			country: '',
+			city: '',
 		},
 		validate: {
 			name: (value) => (value === '' ? 'This field cannot be left empty' : null),
@@ -22,6 +24,8 @@ const AddHotelPage = () => {
 				value === '' ? 'This field cannot be left empty' : null,
 			photoUrl: (value) =>
 				value === '' ? 'This field cannot be left empty' : null,
+			country: (value) => (value === '' ? 'This field cannot be left empty' : null),
+			city: (value) => (value === '' ? 'This field cannot be left empty' : null),
 		},
 	});
 	return (

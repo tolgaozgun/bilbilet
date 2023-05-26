@@ -20,6 +20,8 @@ interface HotelFormProps {
 			websiteUrl: string;
 			coverPhotoUrl: string;
 			photoUrl: string;
+			country: string;
+			city: string;
 		},
 		(values: {
 			name: string;
@@ -28,6 +30,8 @@ interface HotelFormProps {
 			websiteUrl: string;
 			coverPhotoUrl: string;
 			photoUrl: string;
+			country: string;
+			city: string;
 		}) => {
 			name: string;
 			avgPrice: number;
@@ -35,6 +39,8 @@ interface HotelFormProps {
 			websiteUrl: string;
 			coverPhotoUrl: string;
 			photoUrl: string;
+			country: string;
+			city: string;
 		}
 	>;
 }
@@ -119,6 +125,16 @@ const AddHotelForm = ({ form }: HotelFormProps) => {
 							withAsterisk
 							label="Photo URL"
 							{...form.getInputProps('photoUrl')}
+						></TextInput>
+						<TextInput
+							withAsterisk
+							label="Country"
+							{...form.getInputProps('country')}
+						></TextInput>
+						<TextInput
+							withAsterisk
+							label="City"
+							{...form.getInputProps('city')}
 						></TextInput>
 					</Flex>
 				</form>

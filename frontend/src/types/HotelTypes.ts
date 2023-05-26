@@ -5,6 +5,8 @@ export type AddHotel = {
 	websiteUrl: string;
 	coverPhotoUrl: string;
 	photoUrl: string;
+	country: string;
+	city: string;
 	rating: number;
 };
 
