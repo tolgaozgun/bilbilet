@@ -19,9 +19,12 @@ public class HotelService {
             if (hotelRepository.existsByName(hotelDetails.getHotel().getName())) {
                 throw new Exception("hotel already exists");
             }
+
+            // Check adress, get adress id if not exist create new adress and get adress id
+
             // Add hotel
             Hotel hotelToAdd = hotelDetails.getHotel();
-
+            // add adress_id to hotelToAdd
             Hotel newHotel = hotelRepository.save(hotelToAdd);
 
             return newHotel;

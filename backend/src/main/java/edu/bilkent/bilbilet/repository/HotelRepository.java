@@ -1,5 +1,7 @@
 package edu.bilkent.bilbilet.repository;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -43,18 +45,18 @@ public class HotelRepository {
         return null;
     }
 
-    public Hotel findHotelByName(String name) {
+    public Optional<Hotel> findHotelByName(String name) {
         String sql = "SELECT * FROM Hotel WHERE name = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, hotelRowMapper, name);
+            return Optional.of(jdbcTemplate.queryForObject(sql, hotelRowMapper, name));
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            return Optional.empty();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null;
+        return Optional.empty();
     }
 
     public Hotel save(Hotel hotel) { // check if exist????????????
@@ -72,13 +74,13 @@ public class HotelRepository {
                 hotel.getCoverPhotoUrl(),
                 hotel.getPhotoUrl());
 
-        Hotel new_hotel = findHotelByName(hotel.getName());
+        Hotel new_hotel = findHotelByName(hotel.getName()).isPresent() ? findHotelByName(hotel.getName()).get() : null;
         return new_hotel;
     }
 
     public boolean existsByName(String name) {
-        Hotel hotel = findHotelByName(name);
+        Optional<Hotel> hotel = findHotelByName(name);
 
-        return hotel != null;
+        return hotel.isPresent();
     }
 }
