@@ -7,6 +7,7 @@ import edu.bilkent.bilbilet.service.CompanyService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class CompanyController {
 
     }
 
-    @GetMapping("/{companyId}")
+    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path= "/{companyId}")
     public ResponseEntity<Object> getCompanyById(@PathVariable int companyId) {
         try{
             Company company = companyService.getCompanyById(companyId);
@@ -57,7 +58,7 @@ public class CompanyController {
         }
     }
 
-    @PutMapping("/{companyId}")
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path= "/{companyId}")
     public ResponseEntity<Object> updateCompany(@PathVariable int companyId, @RequestBody @Valid Company company) {
         try{
             Company updatedCompany = companyService.updateCompany(companyId, company);
@@ -71,7 +72,7 @@ public class CompanyController {
 
     }
 
-    @DeleteMapping("/{companyId}")
+    @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path= "/{companyId}")
     public ResponseEntity<Object> deleteCompany(@PathVariable int companyId) {
         try{
             if (companyService.deleteCompany(companyId)) {
