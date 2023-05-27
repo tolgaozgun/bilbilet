@@ -5,6 +5,7 @@ import edu.bilkent.bilbilet.model.Company;
 import edu.bilkent.bilbilet.response.Response;
 import edu.bilkent.bilbilet.service.CompanyService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,17 +14,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/companies")
 public class CompanyController {
 
     private final CompanyService companyService;
 
-    @Autowired
-    public CompanyController(CompanyService companyService) {
-        this.companyService = companyService;
-    }
-
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping
     public ResponseEntity<Object> getAllCompanies() {
         try{
@@ -35,6 +33,7 @@ public class CompanyController {
 
     }
 
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path= "/{companyId}")
     public ResponseEntity<Object> getCompanyById(@PathVariable int companyId) {
         try{
@@ -48,6 +47,7 @@ public class CompanyController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping
     public ResponseEntity<Object> createCompany(@RequestBody @Valid Company company) {
         try{
@@ -58,6 +58,7 @@ public class CompanyController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path= "/{companyId}")
     public ResponseEntity<Object> updateCompany(@PathVariable int companyId, @RequestBody @Valid Company company) {
         try{
@@ -71,7 +72,7 @@ public class CompanyController {
         }
 
     }
-
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path= "/{companyId}")
     public ResponseEntity<Object> deleteCompany(@PathVariable int companyId) {
         try{
