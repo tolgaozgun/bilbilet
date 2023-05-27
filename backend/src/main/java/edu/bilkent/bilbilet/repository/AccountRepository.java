@@ -3,6 +3,7 @@ package edu.bilkent.bilbilet.repository;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import edu.bilkent.bilbilet.enums.CompanyType;
 import edu.bilkent.bilbilet.model.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -51,7 +52,7 @@ public class AccountRepository {
         company.setContact_information(rs.getString("contact_information"));
         company.setBusiness_registration(rs.getString("business_registration"));
         company.setBalance(rs.getBigDecimal("balance"));
-//        company.setType(rs.get);
+        company.setType(CompanyType.valueOf(rs.getString("type")));
         return company;
     };
     
