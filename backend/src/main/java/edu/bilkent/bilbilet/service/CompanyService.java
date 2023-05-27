@@ -1,47 +1,39 @@
 package edu.bilkent.bilbilet.service;
 
 import edu.bilkent.bilbilet.model.Company;
+import edu.bilkent.bilbilet.repository.CompanyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class CompanyService {
 
-    private final Map<Integer, Company> companies = new HashMap<>();
-    private int nextCompanyId = 1;
+    private final CompanyRepository companyRepository;
+
+    @Autowired
+    public CompanyService(CompanyRepository companyRepository) {
+        this.companyRepository = companyRepository;
+    }
 
     public List<Company> getAllCompanies() {
-        return new ArrayList<>(companies.values());
+        return companyRepository.getAllCompanies();
     }
 
     public Company getCompanyById(int companyId) {
-        return companies.get(companyId);
+        return companyRepository.getCompanyById(companyId);
     }
 
     public Company createCompany(Company company) {
-        company.setCompany_id(nextCompanyId++);
-        companies.put(company.getCompany_id(), company);
-        return company;
+        return companyRepository.createCompany(company);
     }
 
-    public Company updateCompany(int companyId, Company updatedCompany) {
-        if (companies.containsKey(companyId)) {
-            updatedCompany.setCompany_id(companyId);
-            companies.put(companyId, updatedCompany);
-            return updatedCompany;
-        }
-        return null;
+    public Company updateCompany(int companyId, Company company) {
+        return companyRepository.updateCompany(companyId, company);
     }
 
     public boolean deleteCompany(int companyId) {
-        if (companies.containsKey(companyId)) {
-            companies.remove(companyId);
-            return true;
-        }
-        return false;
+        return companyRepository.deleteCompany(companyId);
     }
 }

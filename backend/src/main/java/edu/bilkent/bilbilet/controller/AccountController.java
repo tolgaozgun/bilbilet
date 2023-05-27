@@ -65,7 +65,7 @@ public class AccountController {
     public ResponseEntity<Object> registerCompany(@Valid @RequestBody TravelerRegister travelerInfo) {
         try {
             TravelerRegister savedInfo = accountService.addTraveler(travelerInfo);
-            return Response.create("Traveller account registered", HttpStatus.OK, savedInfo.getUser());
+            return Response.create("Company account registered", HttpStatus.OK, savedInfo.getUser());
         } catch (Exception e) {
             return Response.create(ExceptionLogger.error(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
