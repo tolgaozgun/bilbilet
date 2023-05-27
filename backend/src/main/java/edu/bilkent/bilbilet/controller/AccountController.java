@@ -61,6 +61,17 @@ public class AccountController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register/traveller")
+    public ResponseEntity<Object> registerCompany(@Valid @RequestBody TravelerRegister travelerInfo) {
+        try {
+            TravelerRegister savedInfo = accountService.addTraveler(travelerInfo);
+            return Response.create("Traveller account registered", HttpStatus.OK, savedInfo.getUser());
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.error(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping("hello")
     public ResponseEntity<Object> refreshToken() {
         try {

@@ -2,6 +2,8 @@ package edu.bilkent.bilbilet.repository;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+
+import edu.bilkent.bilbilet.model.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -40,6 +42,18 @@ public class AccountRepository {
         traveler.setTCK(rs.getString("TCK"));
         return traveler;
     };
+
+    private RowMapper<Company> companyRowMapper = (rs, rowNum) -> {
+        Company company = new Company();
+        company.setCompany_id(rs.getInt("company_id"));
+        company.setCompany_title(rs.getString("company_title"));
+        company.setAddress(rs.getString("address"));
+        company.setContact_information(rs.getString("contact_information"));
+        company.setBusiness_registration(rs.getString("business_registration"));
+        company.setBalance(rs.getBigDecimal("balance"));
+//        company.setType(rs.get);
+        return company;
+    };
     
     public User findUserByMail(String mail) {
         String sql = "SELECT * FROM User WHERE email = ?";
@@ -60,6 +74,20 @@ public class AccountRepository {
 
         try {
             return Optional.of(jdbcTemplate.queryForObject(sql, travelerRowMapper, id));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
+
+    public Optional<Company> findCompanyByUserId(int id) {
+        String sql = "SELECT * FROM Company WHERE user_id = ?";
+
+        try {
+            return Optional.of(jdbcTemplate.queryForObject(sql, companyRowMapper, id));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         } catch (Exception e) {
@@ -102,6 +130,27 @@ public class AccountRepository {
         );
 
         return findTravelerByUserId(traveler.getUser_id());
+    }
+
+
+    public Optional<Company> save(Company company) { //check if exist????????????
+        String sql = "INSERT INTO Company (company_id, company_title, address, type, contact_information, " +
+                "business_registration, balance, user_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        jdbcTemplate.update(
+                sql,
+                company.getCompany_id(),
+                company.getCompany_title(),
+                company.getAddress(),
+                company.getType(),
+                company.getContact_information(),
+                company.getBusiness_registration(),
+                company.getBalance(),
+                company.getUser_id()
+        );
+
+        return findCompanyByUserId(company.getUser_id());
     }
 
     // public User save(User user) {
