@@ -3,7 +3,7 @@ import { primaryButtonColor } from '../../../constants/colors';
 
 interface CustomElevatedButtonProps {
 	text: string;
-  leftIcon: React.ReactNode;
+	leftIcon?: React.ReactNode | undefined;
 	onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }
 const CustomElevatedButton = ({ text, leftIcon, onClick }: CustomElevatedButtonProps) => {
