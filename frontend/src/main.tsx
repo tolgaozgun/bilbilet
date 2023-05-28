@@ -13,6 +13,9 @@ import PurchaseSucceeded from './pages/purchase-ticket/PurchaseSucceeded';
 import PurchaseTicketPage from './pages/purchase-ticket/PurchaseTicketPage';
 import AddCarPage from './pages/rent-car/AddCarPage';
 import SearchRentCarPage from './pages/rent-car/SearchRentCarPage';
+import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
+import AddHotelPage from './pages/hotel/AddHotelPage';
+
 
 const router = createBrowserRouter([
 	{
@@ -52,6 +55,14 @@ const router = createBrowserRouter([
 					{
 						path: '/purchase-failed',
 						element: <PurchaseFailed />,
+					},
+					{
+						path: '/past-tickets',
+						element: <PastTicketsPage />,
+          },
+          {
+						path: '/add-hotel',
+						element: <AddHotelPage />,
 					},
 				],
 			},
