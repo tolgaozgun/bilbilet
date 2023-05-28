@@ -42,7 +42,7 @@ public class TicketController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "buy")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "{id}/buy")
     public ResponseEntity<Object> buyTicketById(@RequestBody BuyTicket ticketBuyingInfo) {
         try {
             return Response.create("login is successful", HttpStatus.OK);
@@ -52,7 +52,7 @@ public class TicketController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PutMapping(path = "/cancel/{id}")
+    @PutMapping(path = "{id}/cancel")
     public ResponseEntity<Object> cancelTicketById(@PathVariable Long id) {
         try {
             return Response.create("login is successful", HttpStatus.OK);
@@ -62,7 +62,7 @@ public class TicketController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PutMapping(path = "/reserve/{id}")
+    @PutMapping(path = "{id}/reserve")
     public ResponseEntity<Object> reserveTicketById(@PathVariable Long id) {
         try {
             return Response.create("login is successful", HttpStatus.OK);
