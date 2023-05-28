@@ -1,5 +1,6 @@
 package edu.bilkent.bilbilet.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,11 @@ public class HotelRepository {
         return hotel;
     };
 
-    public Hotel findHotelByAddressId(int addressId) {
+    public List<Hotel> findHotelsByAddressId(int addressId) {
         String sql = "SELECT * FROM Hotel WHERE adress_id = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, hotelRowMapper, addressId);
+            return jdbcTemplate.query(sql, hotelRowMapper, addressId);
         } catch (EmptyResultDataAccessException e) {
             return null;
         } catch (Exception e) {

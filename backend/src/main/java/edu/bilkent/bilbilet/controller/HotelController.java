@@ -1,9 +1,13 @@
 package edu.bilkent.bilbilet.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +33,17 @@ public class HotelController {
         try {
             Hotel newHotel = hotelService.addHotel(hotelInfo);
             return Response.create("Hotel created successfully", HttpStatus.OK, newHotel);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "{location}")
+    public ResponseEntity<Object> getHotels(@Valid @PathVariable("location") String location) {
+        try {
+            List<Hotel> hotelsList = hotelService.getHotels(location);
+            return Response.create("Hotel created successfully", HttpStatus.OK, hotelsList);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
