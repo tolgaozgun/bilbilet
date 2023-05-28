@@ -59,17 +59,18 @@ const PastTicketCard = ({
 						<Text>{arrivalLocation}</Text>
 					</Flex>
 					<Flex direction={'column'} gap={'xs'} align={'center'}>
-						<Link to={'/add-review/trip/:'}>
+						<Link to={`/add-review/trip/${5}`}>
 							<CustomElevatedButton
 								leftIcon={<IconEdit />}
 								text={'Review Trip'}
 							></CustomElevatedButton>
 						</Link>
-						<Link to={'/add-review/company/:id'}></Link>
-						<CustomElevatedButton
-							leftIcon={<IconEdit />}
-							text={'Review Company'}
-						></CustomElevatedButton>
+						<Link to={`/add-review/company/${4}`}>
+							<CustomElevatedButton
+								leftIcon={<IconEdit />}
+								text={'Review Company'}
+							></CustomElevatedButton>
+						</Link>
 					</Flex>
 				</Flex>
 				<Flex direction={'row'} gap={'xl'}>

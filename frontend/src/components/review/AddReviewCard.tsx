@@ -4,11 +4,19 @@ import { useState } from 'react';
 import { IconClock, IconWashMachine, IconMoodSmile } from '@tabler/icons-react';
 import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
 
-const AddReviewCard = () => {
+interface AddReviewCardProps {
+	isCompany: boolean;
+	id: string | undefined;
+}
+const AddReviewCard = ({ isCompany, id }: AddReviewCardProps) => {
 	const [cleanRating, setCleanRating] = useState(0);
 	const [puncRating, setPuncRating] = useState(0);
 	const [custServRating, setCustServRating] = useState(0);
 	const [comment, setComment] = useState('');
+	const handleReviewSubmit = () => {
+		console.log(isCompany);
+		console.log(id);
+	};
 	return (
 		<Card shadow="xl" radius={'lg'}>
 			<Flex direction={'column'} gap={'sm'}>
@@ -47,7 +55,10 @@ const AddReviewCard = () => {
 						setComment(event.currentTarget.value);
 					}}
 				></Textarea>
-				<CustomElevatedButton text={'Submit Review'}></CustomElevatedButton>
+				<CustomElevatedButton
+					onClick={handleReviewSubmit}
+					text={'Submit Review'}
+				></CustomElevatedButton>
 			</Flex>
 		</Card>
 	);

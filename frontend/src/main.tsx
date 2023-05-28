@@ -66,7 +66,11 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/add-review/company/:id',
-						element: <ReviewPage />,
+						element: <ReviewPage isCompany={true} />,
+					},
+					{
+						path: '/add-review/trip/:id',
+						element: <ReviewPage isCompany={false} />,
 					},
 				],
 			},
