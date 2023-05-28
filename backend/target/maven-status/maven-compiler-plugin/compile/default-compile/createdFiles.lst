@@ -12,6 +12,7 @@ edu\bilkent\bilbilet\model\Fare.class
 edu\bilkent\bilbilet\model\SystemReport.class
 edu\bilkent\bilbilet\request\UserLogin.class
 edu\bilkent\bilbilet\model\User.class
+edu\bilkent\bilbilet\security\SpringdocConfig.class
 edu\bilkent\bilbilet\exception\ExceptionLogger.class
 edu\bilkent\bilbilet\service\IExampleService.class
 edu\bilkent\bilbilet\exception\ExampleException.class
@@ -45,7 +46,6 @@ edu\bilkent\bilbilet\model\Hotel.class
 edu\bilkent\bilbilet\security\JWTFilter.class
 edu\bilkent\bilbilet\controller\AccountController.class
 edu\bilkent\bilbilet\database\DatabaseConfig.class
-edu\bilkent\bilbilet\security\SwaggerConfig.class
 edu\bilkent\bilbilet\enums\SeatType.class
 edu\bilkent\bilbilet\model\TransportVehicle.class
 edu\bilkent\bilbilet\repository\ExampleRepository.class
