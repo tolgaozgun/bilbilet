@@ -14,13 +14,13 @@ interface FareFormProps {
 		{
 			companyName: string;
 			price: number;
-			depDate: string;
-			depTime: string;
+			depDate: Date;
+			depTime: Date;
 			depLocation: string;
 			depAbb: string;
 			arrivalLocation: string;
 			arrivalAbb: string;
-			arrivalTime: string;
+			arrivalTime: Date;
 			capacity: number;
 			duration: string;
 			vehicleType: string;
@@ -28,26 +28,26 @@ interface FareFormProps {
 		(values: {
 			companyName: string;
 			price: number;
-			depDate: string;
-			depTime: string;
+			depDate: Date;
+			depTime: Date;
 			depLocation: string;
 			depAbb: string;
 			arrivalLocation: string;
 			arrivalAbb: string;
-			arrivalTime: string;
+			arrivalTime: Date;
 			capacity: number;
 			duration: string;
 			vehicleType: string;
 		}) => {
 			companyName: string;
 			price: number;
-			depDate: string;
-			depTime: string;
+			depDate: Date;
+			depTime: Date;
 			depLocation: string;
 			depAbb: string;
 			arrivalLocation: string;
 			arrivalAbb: string;
-			arrivalTime: string;
+			arrivalTime: Date;
 			capacity: number;
 			duration: string;
 			vehicleType: string;
@@ -55,39 +55,39 @@ interface FareFormProps {
 	>;
 }
 const AddFareForm = ({ form }: FareFormProps) => {
-	const { addFare } = useAddFare();
+	// const { addFare } = useAddFare();
 
 	const handleAddFare = async () => {
 		const validation = form.validate();
 		if (validation.hasErrors) {
 			return;
 		}
-		// Send add hotel request
+		// Send add fare request
 
 		const fareDetails: AddFare = {
 			...form.values,
 		};
-		const res = await addFare(fareDetails);
-		if (isErrorResponse(res)) {
-			notifications.show({
-				id: 'add-fail',
-				title: 'Fare Add failed!',
-				message: res.msg,
-				autoClose: 5000,
-				withCloseButton: true,
-				style: { backgroundColor: 'red' },
-			});
-			return;
-		}
+		// const res = await addFare(fareDetails);
+		// if (isErrorResponse(res)) {
+		// 	notifications.show({
+		// 		id: 'add-fail',
+		// 		title: 'Fare Add failed!',
+		// 		message: res.msg,
+		// 		autoClose: 5000,
+		// 		withCloseButton: true,
+		// 		style: { backgroundColor: 'red' },
+		// 	});
+		// 	return;
+		// }
 
-		notifications.show({
-			id: 'add-success',
-			title: 'Fare Add Successful!',
-			message: 'You have successfully added a new fare!',
-			autoClose: 5000,
-			withCloseButton: true,
-			style: { backgroundColor: 'green' },
-		});
+		// notifications.show({
+		// 	id: 'add-success',
+		// 	title: 'Fare Add Successful!',
+		// 	message: 'You have successfully added a new fare!',
+		// 	autoClose: 5000,
+		// 	withCloseButton: true,
+		// 	style: { backgroundColor: 'green' },
+		// });
 	};
 	return (
 		<Card padding={36} bg={primaryAccordionColor} withBorder radius="xl" shadow="xl">
@@ -110,8 +110,14 @@ const AddFareForm = ({ form }: FareFormProps) => {
 							label="Departure Date"
 							placeholder="Departure Date"
 							withAsterisk
+							valueFormat="DD MM YYYY"
+							{...form.getInputProps('depDate')}
 						/>
-						<TimeInput label="Departure Time" withAsterisk></TimeInput>
+						<TimeInput
+							label="Departure Time"
+							withAsterisk
+							{...form.getInputProps('depTime')}
+						></TimeInput>
 						<TextInput
 							withAsterisk
 							label="Departure Location"
