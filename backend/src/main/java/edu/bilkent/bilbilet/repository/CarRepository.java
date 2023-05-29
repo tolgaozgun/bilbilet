@@ -98,6 +98,14 @@ public class CarRepository {
         }        
     }
 
+    public List<Car> getCarsByModelAndBrandAndFuelType(String model, String brand, FuelType fuelType) {
+        String sql = "SELECT * FROM Car WHERE model = ? AND brand = ? AND fuel_type = ?";
+
+        List<Car> cars = jdbcTemplate.query(sql, carRowMapper, model, brand, fuelType);
+
+        return cars;
+    }
+
     public boolean carExistByModelAndBrandAndFuelType(String model, String brand, FuelType fuelType) {
         String sql = "SELECT * FROM Car WHERE model = ? AND brand = ? AND fuel_type = ?";
 
