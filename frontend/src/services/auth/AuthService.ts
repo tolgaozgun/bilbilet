@@ -1,5 +1,5 @@
-import { RegisterTraveler } from './../../types/AuthTypes';
 import { AxiosInstance } from 'axios';
+import { RegisterTraveler } from './../../types/AuthTypes';
 
 import { baseUrl } from '../../constants/api';
 import { RegisterCompany, Tokens, User } from '../../types';
@@ -27,8 +27,13 @@ export async function registerCompany(companyDetails: RegisterCompany) {
 	return res.data;
 }
 
-export async function registerUser(userDetails: RegisterTraveler): Promise<Response<User>> {
-	const res = await axios.post<Response<User>>(`${baseUrl}/auth/register`, userDetails);
+export async function registerTraveler(
+	userDetails: RegisterTraveler,
+): Promise<Response<User>> {
+	const res = await axios.post<Response<User>>(
+		`${baseUrl}/auth/register/traveler`,
+		userDetails,
+	);
 	return res.data;
 }
 
