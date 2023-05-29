@@ -15,11 +15,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Car {
 	@Id
-	@NotNull
-	private int car_id;
+	private int carId;
 
-	@NotNull
-	private boolean is_available;
+	// @NotNull
+	// private boolean isAvailable;
 
 	@NotNull
 	private int capacity;
@@ -27,8 +26,8 @@ public class Car {
 	@NotBlank
 	private String gear;
 
-	@NotNull
-	private BigDecimal price_per_day;
+	// @NotNull
+	// private BigDecimal pricePerDay;
 
 	@NotBlank
 	private String model;
@@ -40,18 +39,17 @@ public class Car {
 	private String category;
 
 	@NotNull
-	private FuelType fuel_type;
+	private FuelType fuelType;
 
 	@NotBlank
-	private String photo_url;
+	private String photoUrl;
 
 	@NotBlank
-	private String website_url;
+	private String websiteUrl;
 
-	@NotNull
-	private int company_id;
+	// @NotNull
+	// private int companyId;
 
-	@NotNull
-	private int address_id;
-
+	// @NotNull
+	// private int addressId;
 }
