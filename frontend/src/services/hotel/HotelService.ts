@@ -10,3 +10,10 @@ export async function addHotel(hotelDetails: AddHotel): Promise<Response<Hotel>>
 	);
 	return res.data;
 }
+
+export async function getHotels(location: string): Promise<Response<Array<Hotel>>> {
+	const res = await axiosSecure.get<Response<Array<Hotel>>>(
+		`${baseUrl}/hotels/${location}`,
+	);
+	return res.data;
+}

@@ -5,7 +5,7 @@ import { UseFormReturnType } from '@mantine/form';
 import { IconBuilding } from '@tabler/icons-react';
 import RatingBar from '../common/RatingBar';
 import { useState } from 'react';
-import { useAddHotel } from '../../hooks/useAddHotel';
+import { useAddHotel } from '../../hooks/hotel/useAddHotel';
 import { isErrorResponse } from '../../utils/utils';
 import { notifications } from '@mantine/notifications';
 import { useNavigate } from 'react-router-dom';
