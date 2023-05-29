@@ -17,27 +17,27 @@ import lombok.NoArgsConstructor;
 public class Reservation {
 	@Id
 	@NotNull
-	private int reservation_id;
+	private int reservationId;
 
 	@NotNull
-	private ReservationStatus reservation_status;
+	private ReservationStatus reservationStatus;
 
 	@NotNull
-	private Timestamp created_at;
+	private Timestamp createdAt;
 
 	@NotNull
-	private Timestamp reserved_until;
+	private Timestamp reservedUntil;
 
 	@NotNull
-	private BigDecimal reservation_fee;
+	private BigDecimal reservationFee;
 
 	@NotNull
-	private int seat_id;
+	private int seatId;
 
 	@NotNull
-	private int fare_id;
+	private int fareId;
 
 	@NotNull
-	private int traveler_id;
+	private int travelerId;
 
 }
