@@ -31,6 +31,7 @@ public class JourneyService {
     
             return newJourney.get();
         } catch (Exception e) {
+            e.printStackTrace();
             throw e;
         }
     }
@@ -44,8 +45,10 @@ public class JourneyService {
     
             return journey.get();
         } catch (EmptyResultDataAccessException e) {
+            e.printStackTrace();
             throw e;
         } catch (Exception e) {
+            e.printStackTrace();
             throw e;
         }
     }
