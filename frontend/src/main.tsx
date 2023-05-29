@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ProviderWrapper from './components/common/ProviderWrapper';
 import './index.css';
@@ -16,6 +16,7 @@ import SearchRentCarPage from './pages/rent-car/SearchRentCarPage';
 import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
 import AddHotelPage from './pages/hotel/AddHotelPage';
 import ReviewPage from './pages/review/ReviewPage';
+import AddFarePage from './pages/fare/AddFarePage';
 
 const router = createBrowserRouter([
 	{
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
 					{
 						path: '/add-review/trip/:id',
 						element: <ReviewPage isCompany={false} />,
+					},
+					{
+						path: '/add-fare',
+						element: <AddFarePage />,
 					},
 				],
 			},
