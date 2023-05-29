@@ -3,10 +3,8 @@ export type AddFare = {
 	price: number;
 	depDate: Date;
 	depTime: Date;
-	depLocation: string;
-	depAbb: string;
-	arrivalLocation: string;
-	arrivalAbb: string;
+	depStation: number;
+	arrivalStation: number;
 	arrivalTime: Date;
 	capacity: number;
 	duration: string;

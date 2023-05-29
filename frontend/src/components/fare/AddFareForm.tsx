@@ -1,13 +1,25 @@
-import { Card, Title, Flex, TextInput, NumberInput, Select } from '@mantine/core';
+import {
+	Card,
+	Title,
+	Flex,
+	TextInput,
+	NumberInput,
+	Select,
+	Group,
+	Text,
+} from '@mantine/core';
 import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
 import { primaryAccordionColor } from '../../constants/colors';
 import { UseFormReturnType } from '@mantine/form';
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { isErrorResponse } from '../../utils/utils';
 import { notifications } from '@mantine/notifications';
 import { useAddFare } from '../../hooks/fare/useAddFare';
 import { AddFare } from '../../types/FareTypes';
 import { DatePickerInput, TimeInput } from '@mantine/dates';
+import { IconBus, IconCircuitPushbutton } from '@tabler/icons-react';
+import { StationType } from '../../types/LocationTypes';
+import { IconPlane } from '@tabler/icons-react';
 
 interface FareFormProps {
 	form: UseFormReturnType<
@@ -16,10 +28,8 @@ interface FareFormProps {
 			price: number;
 			depDate: Date;
 			depTime: Date;
-			depLocation: string;
-			depAbb: string;
-			arrivalLocation: string;
-			arrivalAbb: string;
+			depStation: number;
+			arrivalStation: number;
 			arrivalTime: Date;
 			capacity: number;
 			duration: string;
@@ -30,10 +40,8 @@ interface FareFormProps {
 			price: number;
 			depDate: Date;
 			depTime: Date;
-			depLocation: string;
-			depAbb: string;
-			arrivalLocation: string;
-			arrivalAbb: string;
+			depStation: number;
+			arrivalStation: number;
 			arrivalTime: Date;
 			capacity: number;
 			duration: string;
@@ -43,10 +51,8 @@ interface FareFormProps {
 			price: number;
 			depDate: Date;
 			depTime: Date;
-			depLocation: string;
-			depAbb: string;
-			arrivalLocation: string;
-			arrivalAbb: string;
+			depStation: number;
+			arrivalStation: number;
 			arrivalTime: Date;
 			capacity: number;
 			duration: string;
@@ -54,9 +60,55 @@ interface FareFormProps {
 		}
 	>;
 }
+interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
+	stationType: StationType;
+	label: string;
+	description: string;
+}
+
+const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
+	({ stationType, label, description, ...others }: ItemProps, ref) => (
+		<div ref={ref} {...others}>
+			<Group noWrap>
+				{stationType == 'AIRPORT' ? <IconPlane /> : <IconBus />}
+				<div>
+					<Text size="sm">{label}</Text>
+					<Text size="xs" opacity={0.65}>
+						{description}
+					</Text>
+				</div>
+			</Group>
+		</div>
+	),
+);
 const AddFareForm = ({ form }: FareFormProps) => {
 	// const { addFare } = useAddFare();
-
+	const stationData = [
+		{
+			stationType: 'AIRPORT',
+			label: 'Esenboğa',
+			value: 'Bender Bending Rodríguez',
+			description: 'Ankara',
+		},
+		{
+			stationType: 'BUS_TERMINAL',
+			label: 'AŞTİ',
+			value: 'Carol Miller',
+			description: 'Ankara',
+		},
+		{
+			stationType: 'AIRPORT',
+			label: 'Sabiha Gökçen',
+			value: 'Homer Simpson',
+			description: 'İstanbul',
+		},
+		{
+			stationType: 'BUS_TERMINAL',
+			label: 'Esenler',
+			value: 'Spongebob Squarepants',
+			description: 'İstanbul',
+		},
+	];
 	const handleAddFare = async () => {
 		const validation = form.validate();
 		if (validation.hasErrors) {
@@ -110,7 +162,7 @@ const AddFareForm = ({ form }: FareFormProps) => {
 							label="Departure Date"
 							placeholder="Departure Date"
 							withAsterisk
-							valueFormat="DD MM YYYY"
+							valueFormat="DD-MM-YYYY"
 							{...form.getInputProps('depDate')}
 						/>
 						<TimeInput
@@ -118,33 +170,26 @@ const AddFareForm = ({ form }: FareFormProps) => {
 							withAsterisk
 							{...form.getInputProps('depTime')}
 						></TimeInput>
-						<TextInput
+						<Select
+							label="Departure Station"
+							placeholder="Pick one"
+							itemComponent={SelectItem}
+							data={stationData}
+							searchable
 							withAsterisk
-							label="Departure Location"
-							{...form.getInputProps('depLocation')}
-						></TextInput>
-						<TextInput
-							withAsterisk
-							label="Departure Abbreviation"
-							{...form.getInputProps('depAbb')}
-						></TextInput>
-
-						<DatePickerInput
-							type="default"
-							label="Arrival Date"
-							placeholder="Arrival Date"
-							withAsterisk
+							{...form.getInputProps('depStation')}
+							maxDropdownHeight={400}
+							nothingFound="No station found"
 						/>
-						<TimeInput label="Arrival Time" withAsterisk></TimeInput>
+						<TimeInput
+							label="Arrival Time"
+							withAsterisk
+							{...form.getInputProps('arrivalTime')}
+						></TimeInput>
 						<TextInput
 							withAsterisk
 							label="Arrival Location"
-							{...form.getInputProps('arrivalLocation')}
-						></TextInput>
-						<TextInput
-							withAsterisk
-							label="Arrival Abbreviation"
-							{...form.getInputProps('arrivalAbb')}
+							{...form.getInputProps('arrivalStation')}
 						></TextInput>
 						<NumberInput
 							withAsterisk
