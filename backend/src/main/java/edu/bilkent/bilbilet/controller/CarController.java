@@ -1,80 +1,68 @@
 package edu.bilkent.bilbilet.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import edu.bilkent.bilbilet.enums.FuelType;
 import edu.bilkent.bilbilet.exception.ExceptionLogger;
+import edu.bilkent.bilbilet.model.Car;
 import edu.bilkent.bilbilet.model.User;
 import edu.bilkent.bilbilet.request.TravelerRegister;
 import edu.bilkent.bilbilet.request.UserLogin;
 import edu.bilkent.bilbilet.response.RUserToken;
 import edu.bilkent.bilbilet.response.Response;
 import edu.bilkent.bilbilet.service.AccountService;
+import edu.bilkent.bilbilet.service.CarService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("api/v1/auth")
+@RequestMapping("api/v1/car")
 public class CarController {
     
-    private final AccountService accountService;
+    private final CarService carService;
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "login")
-    public ResponseEntity<Object> addCar(@Valid @RequestBody UserLogin userInfo) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "")
+    public ResponseEntity<Object> addCar(@Valid @RequestBody Car car) {
         try {
-            RUserToken token = accountService.login(userInfo);
-            return Response.create("login is successful", HttpStatus.OK, token);
-        } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }        
-    }
-
-    // @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    // @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register")
-    // public ResponseEntity<Object> register(@Valid @RequestBody User userInfo) {
-    //     try {
-    //         User user = accountService.addUser(userInfo);
-    //         return Response.create("account is created", HttpStatus.OK, user);
-    //     } catch (Exception e) {
-    //         return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-    //     }        
-    // }
-    
-    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register/traveller")
-    public ResponseEntity<Object> registerTraveller(@Valid @RequestBody TravelerRegister travelerInfo) {
-        try {
-            TravelerRegister savedInfo = accountService.addTraveler(travelerInfo);
-            return Response.create("Traveller account registered", HttpStatus.OK, savedInfo.getUser());
-        } catch (Exception e) {
-            return Response.create(ExceptionLogger.error(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }        
-    }
-
-    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping("hello")
-    public ResponseEntity<Object> refreshToken() {
-        try {
-            return Response.create("ok", HttpStatus.OK, "hello world");
+            Car addedCar = carService.addCar(car);
+            return Response.create("New car is added sucessfuly", HttpStatus.OK, addedCar);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }        
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "test")
-    public ResponseEntity<Object> testToken(@Valid @RequestBody String token) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "{companyId}/{carId}")
+    public ResponseEntity<Object> addCompanyCar(@Valid @PathVariable("companyId") int companyId, @Valid @PathVariable("carId") int carId) {
         try {
-            return Response.create("ok", HttpStatus.OK, "hello world login good");
+            Car addedCar = carService.addCar(car);
+            return Response.create("New car is added sucessfuly", HttpStatus.OK, addedCar);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("")
+    public ResponseEntity<Object> getCars(@RequestParam("model") String model, @RequestParam("brand") String brand, @RequestParam("fuelType") String fuelType) { // required true falan
+        try {
+            List<Car> carList = carService.getCarByModelAndBrandAndFuelType(model, brand, FuelType.valueOf(fuelType));
+            return Response.create("ok", HttpStatus.OK, carList);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }        
