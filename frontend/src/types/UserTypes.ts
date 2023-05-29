@@ -1,7 +1,7 @@
 export enum UserType {
-	Admin = 'Admin',
-	Company = 'Company',
-	Traveler = 'Traveler',
+	Admin = 'ADMIN',
+	Company = 'COMPANY',
+	Traveler = 'TRAVELER',
 }
 
 export type User = {

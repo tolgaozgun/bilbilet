@@ -27,14 +27,12 @@ const RegisterUserForm = () => {
 			password: '',
 			confirmPassword: '',
 			telephone: '',
-			TCK: '',
 		},
 		validate: {
 			name: (value) => (value === '' ? 'Name ame cannot be left empty.' : null),
 			surname: (value) => (value === '' ? 'Surname cannot be left empty.' : null),
 			email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email.'),
 			password: (value) => (value === '' ? 'Password cannot be left empty.' : null),
-			TCK: (value) => (value === '' ? 'National ID cannot be left empty.' : null),
 			confirmPassword: (value, values) =>
 				value !== values.password ? 'Passwords did not match' : null,
 			telephone: (value) =>
@@ -48,6 +46,7 @@ const RegisterUserForm = () => {
 
 	const onRegister = async () => {
 		const validation = form.validate();
+		console.log(validation);
 		if (validation.hasErrors) {
 			return;
 		}
@@ -68,12 +67,13 @@ const RegisterUserForm = () => {
 			TCK: '255',
 			passportNumber: '255',
 		};
-
 		const registerInfo: RegisterTraveler = {
 			user,
 			traveler,
 		};
+		console.log(registerInfo);
 		const res = await register(registerInfo);
+		console.log(res);
 		if (isErrorResponse(res)) {
 			notifications.show({
 				id: 'registration-fail',
