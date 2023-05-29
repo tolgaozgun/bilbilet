@@ -18,6 +18,7 @@ import edu.bilkent.bilbilet.model.Traveler;
 import edu.bilkent.bilbilet.model.User;
 import edu.bilkent.bilbilet.repository.AccountRepository;
 import edu.bilkent.bilbilet.repository.CarRepository;
+import edu.bilkent.bilbilet.repository.CompanyCarRepository;
 import edu.bilkent.bilbilet.request.TravelerRegister;
 import edu.bilkent.bilbilet.request.UserLogin;
 import edu.bilkent.bilbilet.response.RRefreshToken;
@@ -32,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 public class CarService {
 
     private final CarRepository carRepository;
+    private final CompanyCarRepository companyCarRepository;
 
     public Car addCar(Car car) throws Exception {
         try {
@@ -42,6 +44,26 @@ public class CarService {
             }
             
             Car savedCar = carRepository.save(car);
+            return savedCar;
+        } catch (Exception e) {
+            System.out.println("Car cannot be added yahu");
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public Car addCompanyCar(int companyId, int carId) throws Exception {
+        try {
+            boolean carExist = carRepository.carExistById(carId);
+
+            if (!carExist) {
+                throw new Exception("Car id does not belong to any car");
+            }
+
+            //check if company exists
+            boolean companyExists = true; //// update this TODO
+            
+            Car savedCar = companyCarRepository.
             return savedCar;
         } catch (Exception e) {
             System.out.println("Car cannot be added yahu");

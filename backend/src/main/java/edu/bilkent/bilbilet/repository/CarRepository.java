@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
 import edu.bilkent.bilbilet.enums.FuelType;
 import edu.bilkent.bilbilet.model.Car;
 
-@Qualifier("account_repo")
+@Qualifier("car_repo")
 @Repository
 public class CarRepository {
 
@@ -110,6 +110,14 @@ public class CarRepository {
         String sql = "SELECT * FROM Car WHERE model = ? AND brand = ? AND fuel_type = ?";
 
         Car c = jdbcTemplate.queryForObject(sql, carRowMapper, model, brand, fuelType);
+
+        return c != null;
+    }
+
+    public boolean carExistById(int carId) {
+        String sql = "SELECT * FROM Car WHERE car_id = ?";
+
+        Car c = jdbcTemplate.queryForObject(sql, carRowMapper, carId);
 
         return c != null;
     }

@@ -59,6 +59,20 @@ CREATE TABLE IF NOT EXISTS Car (
     website_url VARCHAR(255)
 );
 
+CREATE TABLE IF NOT EXISTS CompanyCar (
+    car_id INT NOT NULL AUTO_INCREMENT,
+    company_id INT NOT NULL,
+    company_car_id INT NOT NULL AUTO_INCREMENT
+    address_id INT NOT NULL,
+    photo_url VARCHAR(255),
+    website_url VARCHAR(255),
+    price_per_day DECIMAL(10, 2) NOT NULL,
+    PRIMARY KEY (company_car_id),
+    FOREIGN KEY (company_id) REFERENCES Company(company_id),
+    FOREIGN KEY (address_id) REFERENCES Address(address_id),
+    CONSTRAINT price_check CHECK (price_per_day > 0)
+);
+
 
 
 
