@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { primaryButtonColor } from '../../constants/colors';
 
 import { useRegisterUser } from '../../hooks/auth';
-import { RegisterUser } from '../../types';
+import { RegisterTraveler, TravelerModel, UserModel, UserType } from '../../types';
 import { isErrorResponse } from '../../utils/utils';
 import SubtleLinkButton from '../common/buttons/SubtleLinkButton';
 
@@ -27,14 +27,12 @@ const RegisterUserForm = () => {
 			password: '',
 			confirmPassword: '',
 			telephone: '',
-			TCK: '',
 		},
 		validate: {
 			name: (value) => (value === '' ? 'Name ame cannot be left empty.' : null),
 			surname: (value) => (value === '' ? 'Surname cannot be left empty.' : null),
 			email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email.'),
 			password: (value) => (value === '' ? 'Password cannot be left empty.' : null),
-			TCK: (value) => (value === '' ? 'National ID cannot be left empty.' : null),
 			confirmPassword: (value, values) =>
 				value !== values.password ? 'Passwords did not match' : null,
 			telephone: (value) =>
@@ -48,12 +46,34 @@ const RegisterUserForm = () => {
 
 	const onRegister = async () => {
 		const validation = form.validate();
+		console.log(validation);
 		if (validation.hasErrors) {
 			return;
 		}
 
-
-		const res = await register(form.values as RegisterUser);
+		const user: UserModel = {
+			userId: 0,
+			name: form.values.name,
+			surname: form.values.surname,
+			email: form.values.email,
+			password: form.values.password,
+			telephone: form.values.telephone,
+			userType: UserType.Traveler,
+		};
+		const traveler: TravelerModel = {
+			userId: 0,
+			nationality: 'TR',
+			balance: 0,
+			TCK: '255',
+			passportNumber: '255',
+		};
+		const registerInfo: RegisterTraveler = {
+			user,
+			traveler,
+		};
+		console.log(registerInfo);
+		const res = await register(registerInfo);
+		console.log(res);
 		if (isErrorResponse(res)) {
 			notifications.show({
 				id: 'registration-fail',
@@ -61,7 +81,7 @@ const RegisterUserForm = () => {
 				message: res.msg,
 				autoClose: 5000,
 				withCloseButton: true,
-				style: { backgroundColor: 'red' },
+				style: { backgroundColor: 'red', color: 'white' },
 			});
 			return;
 		}
@@ -73,7 +93,7 @@ const RegisterUserForm = () => {
 				'You have successfully registered! We are redirecting you to the main page...',
 			autoClose: 5000,
 			withCloseButton: true,
-			style: { backgroundColor: 'green' },
+			style: { backgroundColor: 'green', color: 'white' },
 		});
 		navigate('/search-fare');
 	};
@@ -102,7 +122,6 @@ const RegisterUserForm = () => {
 							label="Confirm Password"
 							{...form.getInputProps('confirmPassword')}
 						/>
-						<TextInput label="National ID" {...form.getInputProps('TCK')} />
 						<TextInput
 							label="Telephone"
 							{...form.getInputProps('telephone')}

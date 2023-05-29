@@ -1,3 +1,5 @@
+import { UserType } from '.';
+
 export type Tokens = {
 	accessToken: string;
 	refreshToken: string;
@@ -21,11 +23,24 @@ export type RegisterCompany = {
 };
 
 export type RegisterTraveler = {
+	user: UserModel;
+	traveler: TravelerModel;
+};
+
+export type UserModel = {
+	userId: number;
 	name: string;
 	surname: string;
 	email: string;
-	password: string;
 	telephone: string;
-	TCK?: string;
-	passportNumber?: string;
+	password: string;
+	userType: UserType;
+};
+
+export type TravelerModel = {
+	userId: number;
+	nationality: string;
+	balance: number;
+	passportNumber: string;
+	TCK: string;
 };
