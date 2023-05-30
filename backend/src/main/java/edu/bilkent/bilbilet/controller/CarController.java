@@ -22,6 +22,7 @@ import edu.bilkent.bilbilet.model.Car;
 import edu.bilkent.bilbilet.model.CarBrand;
 import edu.bilkent.bilbilet.model.CompanyCar;
 import edu.bilkent.bilbilet.model.User;
+import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
 import edu.bilkent.bilbilet.request.TravelerRegister;
 import edu.bilkent.bilbilet.request.UserLogin;
 import edu.bilkent.bilbilet.response.RUserToken;
@@ -62,7 +63,7 @@ public class CarController {
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping("")
-    public ResponseEntity<Object> getCars(@RequestParam Map<String, Object> requestParams) { // required true falan
+    public ResponseEntity<Object> getCars(@RequestParam Map<String, Object> requestParams) {
         try {
             List<Car> carList = carService.getCarByProperties(requestParams);
             return Response.create("ok", HttpStatus.OK, carList);
@@ -75,7 +76,7 @@ public class CarController {
     @GetMapping("{companyId}")
     public ResponseEntity<Object> getCompanyCars(@Valid @PathVariable("companyId") int companyId) {
         try {
-            List<CompanyCar> companyCarList = carService.getAllCompanyCar(companyId);
+            List<CompanyCarRM> companyCarList = carService.findAllCompanyCar(companyId);
             return Response.create("ok", HttpStatus.OK, companyCarList);
         } catch (Exception e) {
             return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -86,7 +87,7 @@ public class CarController {
     @GetMapping("brand")
     public ResponseEntity<Object> getBrands() {
         try {
-            List<CarBrand> brandList = carService.getAllBrand();
+            List<CarBrand> brandList = carService.findAllBrand();
             return Response.create("ok", HttpStatus.OK, brandList);
         } catch (Exception e) {
             return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
