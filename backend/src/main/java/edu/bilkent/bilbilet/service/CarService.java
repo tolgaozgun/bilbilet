@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import edu.bilkent.bilbilet.enums.FuelType;
 import edu.bilkent.bilbilet.enums.UserType;
+import edu.bilkent.bilbilet.exception.CarException;
 import edu.bilkent.bilbilet.model.Car;
 import edu.bilkent.bilbilet.model.CompanyCar;
 import edu.bilkent.bilbilet.model.Traveler;
@@ -42,11 +43,13 @@ public class CarService {
             boolean carExist = carRepository.carExistByModelAndBrandAndFuelType(car.getModel(), car.getBrand(), car.getFuelType());
 
             if (carExist) {
-                throw new Exception("Car already exists");
+                throw new CarException("Car already exists");
             }
-            
+
             Car savedCar = carRepository.save(car);
             return savedCar;
+        } catch (CarException ce) {
+            throw ce;
         } catch (Exception e) {
             System.out.println("Car cannot be added yahu");
             e.printStackTrace();
