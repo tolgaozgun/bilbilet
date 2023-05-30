@@ -29,7 +29,7 @@ public class CompanyCarRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private RowMapper<CompanyCar> carRowMapper = (rs, rowNum) -> {
+    private RowMapper<CompanyCar> companyCarRowMapper = (rs, rowNum) -> {
         CompanyCar cc = new CompanyCar();
         cc.setCarId(rs.getInt("car_id"));
         cc.setCompanyCarId(rs.getInt("company_id"));
@@ -41,23 +41,19 @@ public class CompanyCarRepository {
         return cc;
     };
 
-    public CompanyCar save(Car car) throws Exception {
+    public CompanyCar save(CompanyCar car) throws Exception {
         try {
             String sql = "INSERT INTO CompanyCar (car_id, company_id, address_id, price_per_day) " +
                      "VALUES (?, ?, ?, ?)";
         
             KeyHolder keyHolder = new GeneratedKeyHolder();
             
-            jdbcTemplate.update((PreparedStatementCreator) connection -> {
-                PreparedStatement ps = connection.prepareStatement(sql, new String[]{"car_id"});
-                ps.setInt(2, car.getCapacity());
-                ps.setString(3, car.getGear());
-                ps.setString(5, car.getModel());
-                ps.setString(6, car.getBrand());
-                ps.setString(7, car.getCategory());
-                ps.setString(8, car.getFuelType().toString());
-                ps.setString(9, car.getPhotoUrl());
-                ps.setString(10, car.getWebsiteUrl());
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(sql, new String[]{"company_car_id"});
+                ps.setInt(1, car.getCarId());
+                ps.setInt(2, car.getCompanyId());
+                ps.setInt(3, car.getAddressId());
+                ps.setBigDecimal(4, car.getPricePerDay());
                 return ps;
             }, keyHolder);
             
@@ -69,5 +65,10 @@ public class CompanyCarRepository {
         } catch (Exception e) {
             throw new Exception("New car cannot be added due to " + e);
         }        
+    }
+
+    public List<CompanyCar> getAll() {
+        String sql = "SELECT * FROM CompanyCar";
+        return jdbcTemplate.query(sql, companyCarRowMapper);
     }
 }

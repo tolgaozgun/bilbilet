@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import edu.bilkent.bilbilet.enums.FuelType;
 import edu.bilkent.bilbilet.enums.UserType;
 import edu.bilkent.bilbilet.model.Car;
+import edu.bilkent.bilbilet.model.CompanyCar;
 import edu.bilkent.bilbilet.model.Traveler;
 import edu.bilkent.bilbilet.model.User;
 import edu.bilkent.bilbilet.repository.AccountRepository;
@@ -52,21 +53,41 @@ public class CarService {
         }
     }
 
-    public Car addCompanyCar(int companyId, int carId) throws Exception {
+    public CompanyCar addCompanyCar(CompanyCar companyCar) throws Exception {
         try {
-            boolean carExist = carRepository.carExistById(carId);
+            boolean carExist = carRepository.carExistById(companyCar.getCarId());
 
             if (!carExist) {
-                throw new Exception("Car id does not belong to any car");
+                throw new Exception("Car does not exist!");
             }
 
             //check if company exists
             boolean companyExists = true; //// update this TODO
             
-            Car savedCar = companyCarRepository.
+            if (!companyExists) {
+                throw new Exception("Company does not exist!");
+            }
+            CompanyCar savedCar = companyCarRepository.save(companyCar);
             return savedCar;
         } catch (Exception e) {
             System.out.println("Car cannot be added yahu");
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public List<CompanyCar> getAllCompanyCar(int companyId) throws Exception {
+        try {
+          //check if company exists
+            boolean companyExists = true; //// update this TODO
+                
+            if (!companyExists) {
+                throw new Exception("Company does not exist!");
+            }
+
+            return companyCarRepository.getAll();  
+        } catch (Exception e) {
+            System.out.println("Car cannot be fetched");
             e.printStackTrace();
             throw e;
         }

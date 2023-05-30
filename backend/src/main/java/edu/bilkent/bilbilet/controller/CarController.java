@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.bilkent.bilbilet.enums.FuelType;
 import edu.bilkent.bilbilet.exception.ExceptionLogger;
 import edu.bilkent.bilbilet.model.Car;
+import edu.bilkent.bilbilet.model.CompanyCar;
 import edu.bilkent.bilbilet.model.User;
 import edu.bilkent.bilbilet.request.TravelerRegister;
 import edu.bilkent.bilbilet.request.UserLogin;
@@ -36,7 +37,7 @@ public class CarController {
     private final CarService carService;
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> addCar(@Valid @RequestBody Car car) {
         try {
             Car addedCar = carService.addCar(car);
@@ -47,10 +48,10 @@ public class CarController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "{companyId}/{carId}")
-    public ResponseEntity<Object> addCompanyCar(@Valid @PathVariable("companyId") int companyId, @Valid @PathVariable("carId") int carId) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "company")
+    public ResponseEntity<Object> addCompanyCar(@Valid @RequestBody CompanyCar companyCar) {
         try {
-            Car addedCar = carService.addCar(car);
+            CompanyCar addedCar = carService.addCompanyCar(companyCar);
             return Response.create("New car is added sucessfuly", HttpStatus.OK, addedCar);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -63,6 +64,17 @@ public class CarController {
         try {
             List<Car> carList = carService.getCarByModelAndBrandAndFuelType(model, brand, FuelType.valueOf(fuelType));
             return Response.create("ok", HttpStatus.OK, carList);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("{companyId}")
+    public ResponseEntity<Object> getCompanyCars(@Valid @PathVariable("companyId") int companyId) { // required true falan
+        try {
+            List<CompanyCar> companyCarList = carService.getAllCompanyCar(companyId);
+            return Response.create("ok", HttpStatus.OK, companyCarList);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }        
