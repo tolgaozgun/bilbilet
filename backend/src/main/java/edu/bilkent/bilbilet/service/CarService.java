@@ -16,10 +16,12 @@ import edu.bilkent.bilbilet.enums.FuelType;
 import edu.bilkent.bilbilet.enums.UserType;
 import edu.bilkent.bilbilet.exception.CarException;
 import edu.bilkent.bilbilet.model.Car;
+import edu.bilkent.bilbilet.model.CarBrand;
 import edu.bilkent.bilbilet.model.CompanyCar;
 import edu.bilkent.bilbilet.model.Traveler;
 import edu.bilkent.bilbilet.model.User;
 import edu.bilkent.bilbilet.repository.AccountRepository;
+import edu.bilkent.bilbilet.repository.CarBrandRepository;
 import edu.bilkent.bilbilet.repository.CarRepository;
 import edu.bilkent.bilbilet.repository.CompanyCarRepository;
 import edu.bilkent.bilbilet.request.TravelerRegister;
@@ -37,13 +39,22 @@ public class CarService {
 
     private final CarRepository carRepository;
     private final CompanyCarRepository companyCarRepository;
+    private final CarBrandRepository carBrandRepository;
 
     public Car addCar(Car car) throws Exception {
         try {
+            // check if car already exists
             boolean carExist = carRepository.carExistByModelAndBrandAndFuelType(car.getModel(), car.getBrand(), car.getFuelType());
 
             if (carExist) {
                 throw new CarException("Car already exists");
+            }
+
+            // check if brand exist
+            boolean brandExist = carBrandRepository.brandExist(car.getBrand());
+
+            if (!brandExist) {
+                throw new CarException("Brand not found");
             }
 
             Car savedCar = carRepository.save(car);
@@ -91,6 +102,16 @@ public class CarService {
             }
 
             return companyCarRepository.getAll();  
+        } catch (Exception e) {
+            System.out.println("Car cannot be fetched");
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public List<CarBrand> getAllBrand() throws Exception {
+        try {
+            return carBrandRepository.findAll();  
         } catch (Exception e) {
             System.out.println("Car cannot be fetched");
             e.printStackTrace();

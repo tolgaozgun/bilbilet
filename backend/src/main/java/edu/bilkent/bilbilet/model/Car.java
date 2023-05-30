@@ -1,8 +1,6 @@
 package edu.bilkent.bilbilet.model;
 
 import lombok.AllArgsConstructor;
-import java.math.BigDecimal;
-
 import edu.bilkent.bilbilet.enums.FuelType;
 import edu.bilkent.bilbilet.enums.GearType;
 import jakarta.persistence.Id;

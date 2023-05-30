@@ -45,17 +45,23 @@ CREATE TABLE IF NOT EXISTS Address (
     CONSTRAINT longitude_valid_constraint CHECK (longitude BETWEEN -180 AND 180)
 );
 
+CREATE TABLE IF NOT EXISTS CarBrand (
+    brand VARCHAR(255) NOT NULL,
+    PRIMARY KEY (brand)
+);
+
 CREATE TABLE IF NOT EXISTS Car (
     car_id INT NOT NULL AUTO_INCREMENT,
     capacity INT NOT NULL,
     gear VARCHAR(255) NOT NULL,
-    model TEXT NOT NULL,
-    brand TEXT NOT NULL,
-    category TEXT NOT NULL,
-    fuel_type TEXT NOT NULL,
+    model VARCHAR(255) NOT NULL,
+    brand VARCHAR(255) NOT NULL,
+    category VARCHAR(255) NOT NULL,
+    fuel_type VARCHAR(255) NOT NULL,
     photo_url VARCHAR(255),
     website_url VARCHAR(255),
-    PRIMARY KEY (car_id)
+    PRIMARY KEY (car_id),
+    FOREIGN KEY (brand) REFERENCES CarBrand(brand)
 );
 
 CREATE TABLE IF NOT EXISTS CompanyCar (

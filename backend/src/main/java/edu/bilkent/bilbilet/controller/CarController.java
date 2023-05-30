@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.bilkent.bilbilet.enums.FuelType;
 import edu.bilkent.bilbilet.exception.ExceptionLogger;
 import edu.bilkent.bilbilet.model.Car;
+import edu.bilkent.bilbilet.model.CarBrand;
 import edu.bilkent.bilbilet.model.CompanyCar;
 import edu.bilkent.bilbilet.model.User;
 import edu.bilkent.bilbilet.request.TravelerRegister;
@@ -44,7 +45,7 @@ public class CarController {
             Car addedCar = carService.addCar(car);
             return Response.create("New car is added sucessfuly", HttpStatus.OK, addedCar);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }        
     }
 
@@ -55,7 +56,7 @@ public class CarController {
             CompanyCar addedCar = carService.addCompanyCar(companyCar);
             return Response.create("New car is added sucessfuly", HttpStatus.OK, addedCar);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }        
     }
 
@@ -66,18 +67,29 @@ public class CarController {
             List<Car> carList = carService.getCarByProperties(requestParams);
             return Response.create("ok", HttpStatus.OK, carList);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }        
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping("{companyId}")
-    public ResponseEntity<Object> getCompanyCars(@Valid @PathVariable("companyId") int companyId) { // required true falan
+    public ResponseEntity<Object> getCompanyCars(@Valid @PathVariable("companyId") int companyId) {
         try {
             List<CompanyCar> companyCarList = carService.getAllCompanyCar(companyId);
             return Response.create("ok", HttpStatus.OK, companyCarList);
         } catch (Exception e) {
-            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("brand")
+    public ResponseEntity<Object> getBrands() {
+        try {
+            List<CarBrand> brandList = carService.getAllBrand();
+            return Response.create("ok", HttpStatus.OK, brandList);
+        } catch (Exception e) {
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }        
     }
 }
