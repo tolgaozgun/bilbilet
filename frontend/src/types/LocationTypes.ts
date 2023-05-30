@@ -1,4 +1,5 @@
 export type Station = {
+	title: string;
 	stationId: number;
 	stationType: StationType;
 	addressId: number;

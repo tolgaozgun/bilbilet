@@ -7,6 +7,7 @@ import {
 	Select,
 	Group,
 	Text,
+	SelectItem,
 } from '@mantine/core';
 import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
 import { primaryAccordionColor } from '../../constants/colors';
@@ -20,6 +21,10 @@ import { DatePickerInput, TimeInput } from '@mantine/dates';
 import { IconBus, IconCircuitPushbutton } from '@tabler/icons-react';
 import { StationType } from '../../types/LocationTypes';
 import { IconPlane } from '@tabler/icons-react';
+import useGetStations from '../../hooks/location/useGetStations';
+import LoadingLottie from '../common/LoadingLottie';
+import LoadingPage from '../../pages/LoadingPage';
+import ErrorPage from '../../pages/ErrorPage';
 
 interface FareFormProps {
 	form: UseFormReturnType<
@@ -66,7 +71,7 @@ interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
 	description: string;
 }
 
-const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
+const CustomSelectItem = forwardRef<HTMLDivElement, ItemProps>(
 	({ stationType, label, description, ...others }: ItemProps, ref) => (
 		<div ref={ref} {...others}>
 			<Group noWrap>
@@ -83,32 +88,56 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
 );
 const AddFareForm = ({ form }: FareFormProps) => {
 	// const { addFare } = useAddFare();
-	const stationData = [
-		{
-			stationType: 'AIRPORT',
-			label: 'Esenboğa',
-			value: 'Bender Bending Rodríguez',
-			description: 'Ankara',
-		},
-		{
-			stationType: 'BUS_TERMINAL',
-			label: 'AŞTİ',
-			value: 'Carol Miller',
-			description: 'Ankara',
-		},
-		{
-			stationType: 'AIRPORT',
-			label: 'Sabiha Gökçen',
-			value: 'Homer Simpson',
-			description: 'İstanbul',
-		},
-		{
-			stationType: 'BUS_TERMINAL',
-			label: 'Esenler',
-			value: 'Spongebob Squarepants',
-			description: 'İstanbul',
-		},
-	];
+	const {
+		data: stationsData,
+		isLoading: isStationsLoading,
+		isError: isStationsError,
+	} = useGetStations();
+
+	if (isStationsLoading) {
+		return <LoadingPage />;
+	}
+	if (isStationsError || !stationsData) {
+		return <ErrorPage />;
+	}
+
+	const stations = stationsData.data;
+	const stationData: Array<SelectItem> = stations!.map((station) => {
+		return {
+			stationType: station.stationType,
+			label: station.title,
+			value: station.title,
+			description: station.city,
+		};
+	});
+
+	// const stationData = [
+	// 	{
+	// 		stationType: 'AIRPORT',
+	// 		label: 'Esenboğa',
+	// 		value: 'Bender Bending Rodríguez',
+	// 		description: 'Ankara',
+	// 	},
+	// 	{
+	// 		stationType: 'BUS_TERMINAL',
+	// 		label: 'AŞTİ',
+	// 		value: 'Carol Miller',
+	// 		description: 'Ankara',
+	// 	},
+	// 	{
+	// 		stationType: 'AIRPORT',
+	// 		label: 'Sabiha Gökçen',
+	// 		value: 'Homer Simpson',
+	// 		description: 'İstanbul',
+	// 	},
+	// 	{
+	// 		stationType: 'BUS_TERMINAL',
+	// 		label: 'Esenler',
+	// 		value: 'Spongebob Squarepants',
+	// 		description: 'İstanbul',
+	// 	},
+	// ];
+
 	const handleAddFare = async () => {
 		const validation = form.validate();
 		if (validation.hasErrors) {
@@ -173,7 +202,7 @@ const AddFareForm = ({ form }: FareFormProps) => {
 						<Select
 							label="Departure Station"
 							placeholder="Pick one"
-							itemComponent={SelectItem}
+							itemComponent={CustomSelectItem}
 							data={stationData}
 							searchable
 							withAsterisk

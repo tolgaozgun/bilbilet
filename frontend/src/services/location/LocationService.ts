@@ -4,6 +4,6 @@ import { axiosSecure } from '../axios';
 import { Response } from '../../types/ResponseTypes';
 
 export async function getStations() {
-	const res = await axiosSecure.get<Response<Station>>(`${baseUrl}/stations`);
+	const res = await axiosSecure.get<Response<Array<Station>>>(`${baseUrl}/stations`);
 	return res.data;
 }
