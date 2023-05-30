@@ -6,7 +6,7 @@ import TravelerMenu from './TravelerMenu';
 
 const ProfileMenu = () => {
 	const user = useUser();
-
+	console.log(user?.userType);
 	if (!user) {
 		return null;
 	}

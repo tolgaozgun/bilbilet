@@ -1,11 +1,11 @@
 import Cookies from 'js-cookie';
-import { registerUser } from '../../services/auth';
-import { RegisterUser } from '../../types';
+import { registerTraveler } from '../../services/auth';
+import { RegisterTraveler } from '../../types';
 import { isErrorResponse } from '../../utils/utils';
 
 export const useRegisterUser = () => {
-	const register = async (userDetails: RegisterUser) => {
-		const res = await registerUser(userDetails);
+	const register = async (userDetails: RegisterTraveler) => {
+		const res = await registerTraveler(userDetails);
 		// Return without setting cookies if login failed
 		if (isErrorResponse(res)) {
 			return res;
