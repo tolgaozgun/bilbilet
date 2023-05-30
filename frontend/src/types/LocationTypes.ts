@@ -1,9 +1,12 @@
-export type Station = {
-	title: string;
+export type Station = AddStation & {
 	stationId: number;
-	stationType: StationType;
 	addressId: number;
-	city: string;
-	country: string;
 };
 export type StationType = 'AIRPORT' | 'BUS_TERMINAL' | 'TRAIN_STATION' | 'PORT' | 'OTHER';
+
+export type AddStation = {
+	title: string;
+	abbreviation: string;
+	stationType: StationType;
+	city: string;
+};
