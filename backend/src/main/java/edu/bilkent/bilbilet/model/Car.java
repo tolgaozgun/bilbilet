@@ -41,10 +41,10 @@ public class Car {
 	@NotNull
 	private FuelType fuelType;
 
-	@NotBlank
+	// @NotBlank
 	private String photoUrl;
 
-	@NotBlank
+	// @NotBlank
 	private String websiteUrl;
 
 	// @NotNull

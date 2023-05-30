@@ -43,9 +43,15 @@ public class CarRepository {
     };    
     
     public List<Car> findCarByProperties(Map<String, Object> properties) {
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Car WHERE ");
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Car ");
         List<Object> parameterValues = new ArrayList<>();
         boolean andNeeded = false;
+
+        if (properties.isEmpty()) {
+            return jdbcTemplate.query(sqlBuilder.toString(), carRowMapper);
+        }
+
+        sqlBuilder.append(" WHERE ");
 
         for (String property : properties.keySet()) {
             if (andNeeded) {
@@ -77,14 +83,14 @@ public class CarRepository {
             
             jdbcTemplate.update((PreparedStatementCreator) connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql, new String[]{"car_id"});
-                ps.setInt(2, car.getCapacity());
-                ps.setString(3, car.getGear());
-                ps.setString(5, car.getModel());
-                ps.setString(6, car.getBrand());
-                ps.setString(7, car.getCategory());
-                ps.setString(8, car.getFuelType().toString());
-                ps.setString(9, car.getPhotoUrl());
-                ps.setString(10, car.getWebsiteUrl());
+                ps.setInt(1, car.getCapacity());
+                ps.setString(2, car.getGear());
+                ps.setString(3, car.getModel());
+                ps.setString(4, car.getBrand());
+                ps.setString(5, car.getCategory());
+                ps.setString(6, car.getFuelType().toString());
+                ps.setString(7, car.getPhotoUrl());
+                ps.setString(8, car.getWebsiteUrl());
                 return ps;
             }, keyHolder);
             
@@ -98,7 +104,7 @@ public class CarRepository {
         }        
     }
 
-    public List<Car> getCarsByModelAndBrandAndFuelType(String model, String brand, FuelType fuelType) {
+    public List<Car> findCarsByModelAndBrandAndFuelType(String model, String brand, FuelType fuelType) {
         String sql = "SELECT * FROM Car WHERE model = ? AND brand = ? AND fuel_type = ?";
 
         List<Car> cars = jdbcTemplate.query(sql, carRowMapper, model, brand, fuelType);
@@ -107,18 +113,22 @@ public class CarRepository {
     }
 
     public boolean carExistByModelAndBrandAndFuelType(String model, String brand, FuelType fuelType) {
-        String sql = "SELECT * FROM Car WHERE model = ? AND brand = ? AND fuel_type = ?";
-
-        Car c = jdbcTemplate.queryForObject(sql, carRowMapper, model, brand, fuelType);
-
-        return c != null;
+        try {
+            String sql = "SELECT COUNT(*) FROM Car WHERE model = ? AND brand = ? AND fuel_type = ?";
+            int count = jdbcTemplate.queryForObject(sql, Integer.class, model, brand, fuelType);
+            return count > 0;
+        } catch (EmptyResultDataAccessException e) {
+            return false;
+        }
     }
 
     public boolean carExistById(int carId) {
-        String sql = "SELECT * FROM Car WHERE car_id = ?";
-
-        Car c = jdbcTemplate.queryForObject(sql, carRowMapper, carId);
-
-        return c != null;
+        try {
+            String sql = "SELECT COUNT(*) FROM Car WHERE car_id = ?";
+            int count = jdbcTemplate.queryForObject(sql, Integer.class, carId);
+            return count > 0;
+        } catch (EmptyResultDataAccessException e) {
+            return false;
+        }
     }
 }

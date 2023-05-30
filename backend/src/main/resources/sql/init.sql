@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS User (
 
 CREATE TABLE IF NOT EXISTS Company (
     company_id INT NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
     company_title VARCHAR(255) UNIQUE NOT NULL,
     address TEXT NOT NULL,
     type VARCHAR(255) NOT NULL,
@@ -18,8 +19,6 @@ CREATE TABLE IF NOT EXISTS Company (
     business_registration VARCHAR(255) NOT NULL,
     balance DECIMAL(10, 2) NOT NULL,
     PRIMARY KEY (company_id),
-    FOREIGN KEY (user_id) REFERENCES User(user_id),
-    CONSTRAINT user_id_exists FOREIGN KEY (user_id) REFERENCES User(user_id),
     FOREIGN KEY (user_id) REFERENCES User(user_id)
 );
 
@@ -48,7 +47,6 @@ CREATE TABLE IF NOT EXISTS Address (
 
 CREATE TABLE IF NOT EXISTS Car (
     car_id INT NOT NULL AUTO_INCREMENT,
-    is_available BOOLEAN NOT NULL,
     capacity INT NOT NULL,
     gear VARCHAR(255) NOT NULL,
     model TEXT NOT NULL,
@@ -56,13 +54,14 @@ CREATE TABLE IF NOT EXISTS Car (
     category TEXT NOT NULL,
     fuel_type TEXT NOT NULL,
     photo_url VARCHAR(255),
-    website_url VARCHAR(255)
+    website_url VARCHAR(255),
+    PRIMARY KEY (car_id)
 );
 
 CREATE TABLE IF NOT EXISTS CompanyCar (
-    car_id INT NOT NULL AUTO_INCREMENT,
+    company_car_id INT NOT NULL AUTO_INCREMENT,
+    car_id INT NOT NULL,
     company_id INT NOT NULL,
-    company_car_id INT NOT NULL AUTO_INCREMENT
     address_id INT NOT NULL,
     photo_url VARCHAR(255),
     website_url VARCHAR(255),
@@ -72,8 +71,3 @@ CREATE TABLE IF NOT EXISTS CompanyCar (
     FOREIGN KEY (address_id) REFERENCES Address(address_id),
     CONSTRAINT price_check CHECK (price_per_day > 0)
 );
-
-
-
-
-

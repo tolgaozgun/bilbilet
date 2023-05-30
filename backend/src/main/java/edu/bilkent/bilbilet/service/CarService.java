@@ -3,6 +3,7 @@ package edu.bilkent.bilbilet.service;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -93,9 +94,9 @@ public class CarService {
         }
     }
 
-    public List<Car> getCarByModelAndBrandAndFuelType(String model, String brand, FuelType fuelType) throws Exception {
+    public List<Car> getCarByProperties(Map<String, Object> requestParams) throws Exception {
         try {
-            return carRepository.getCarsByModelAndBrandAndFuelType(model, brand, fuelType);            
+            return carRepository.findCarByProperties(requestParams);            
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

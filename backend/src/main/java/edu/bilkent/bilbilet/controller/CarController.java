@@ -1,6 +1,7 @@
 package edu.bilkent.bilbilet.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -60,9 +61,9 @@ public class CarController {
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping("")
-    public ResponseEntity<Object> getCars(@RequestParam("model") String model, @RequestParam("brand") String brand, @RequestParam("fuelType") String fuelType) { // required true falan
+    public ResponseEntity<Object> getCars(@RequestParam Map<String, Object> requestParams) { // required true falan
         try {
-            List<Car> carList = carService.getCarByModelAndBrandAndFuelType(model, brand, FuelType.valueOf(fuelType));
+            List<Car> carList = carService.getCarByProperties(requestParams);
             return Response.create("ok", HttpStatus.OK, carList);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
