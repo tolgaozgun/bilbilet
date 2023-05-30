@@ -1,5 +1,5 @@
 const AdminMenu = () => {
-	return <div></div>;
+	return <div>hey</div>;
 };
 
 export default AdminMenu;

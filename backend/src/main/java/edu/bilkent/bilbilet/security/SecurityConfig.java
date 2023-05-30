@@ -26,6 +26,15 @@ public class SecurityConfig {
 	// @Autowired
 	// private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	private static final String[] AUTH_WHITELIST = {
+		"/v3/api-docs/**",
+		"/swagger-ui/**",
+		"/api/v1/auth/hello",
+		"/api/v1/auth/login",
+		"/api/v1/auth/register",
+		"/api/v1/auth/register/traveler"
+	};
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.cors();
@@ -34,7 +43,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests((request) -> {
 					try {
 						request
-							.requestMatchers("/api/v1/auth/hello", "/api/v1/auth/login", "/api/v1/auth/register/*")							
+							.requestMatchers(AUTH_WHITELIST)							
 							.permitAll()						
 							.anyRequest().authenticated()							
 							.and()
