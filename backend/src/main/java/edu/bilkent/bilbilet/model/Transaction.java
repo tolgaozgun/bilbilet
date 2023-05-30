@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 
 import edu.bilkent.bilbilet.enums.TransactionType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;

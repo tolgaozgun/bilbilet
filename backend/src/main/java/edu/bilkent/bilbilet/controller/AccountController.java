@@ -38,16 +38,16 @@ public class AccountController {
         }        
     }
 
-    // @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    // @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register")
-    // public ResponseEntity<Object> register(@Valid @RequestBody User userInfo) {
-    //     try {
-    //         User user = accountService.addUser(userInfo);
-    //         return Response.create("account is created", HttpStatus.OK, user);
-    //     } catch (Exception e) {
-    //         return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-    //     }        
-    // }
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register/admin")
+    public ResponseEntity<Object> register(@Valid @RequestBody User userInfo) {
+        try {
+            User user = accountService.addUser(userInfo);
+            return Response.create("account is created", HttpStatus.OK, user);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
+    }
     
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register/traveler")
