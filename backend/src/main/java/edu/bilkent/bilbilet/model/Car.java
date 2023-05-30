@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
 
 import edu.bilkent.bilbilet.enums.FuelType;
+import edu.bilkent.bilbilet.enums.GearType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,7 +25,7 @@ public class Car {
 	private int capacity;
 
 	@NotBlank
-	private String gear;
+	private GearType gear;
 
 	// @NotNull
 	// private BigDecimal pricePerDay;
@@ -36,7 +37,7 @@ public class Car {
 	private String brand;
 
 	@NotBlank
-	private String category;
+	private CarCategoryType category;
 
 	@NotNull
 	private FuelType fuelType;

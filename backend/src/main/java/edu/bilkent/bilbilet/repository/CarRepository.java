@@ -19,7 +19,9 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import edu.bilkent.bilbilet.enums.FuelType;
+import edu.bilkent.bilbilet.enums.GearType;
 import edu.bilkent.bilbilet.model.Car;
+import edu.bilkent.bilbilet.model.CarCategoryType;
 
 @Qualifier("car_repo")
 @Repository
@@ -32,10 +34,10 @@ public class CarRepository {
         Car car = new Car();
         car.setCarId(rs.getInt("car_id"));
         car.setCapacity(rs.getInt("capacity"));
-        car.setGear(rs.getString("gear"));
+        car.setGear(GearType.valueOf(rs.getString("gear")));
         car.setModel(rs.getString("model"));
         car.setBrand(rs.getString("brand"));
-        car.setCategory(rs.getString("category"));
+        car.setCategory(CarCategoryType.valueOf(rs.getString("category")));
         car.setFuelType(FuelType.valueOf(rs.getString("fuel_type")));
         car.setPhotoUrl(rs.getString("photo_url"));
         car.setWebsiteUrl(rs.getString("website_url"));
@@ -84,10 +86,10 @@ public class CarRepository {
             jdbcTemplate.update((PreparedStatementCreator) connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql, new String[]{"car_id"});
                 ps.setInt(1, car.getCapacity());
-                ps.setString(2, car.getGear());
+                ps.setString(2, car.getGear().toString());
                 ps.setString(3, car.getModel());
                 ps.setString(4, car.getBrand());
-                ps.setString(5, car.getCategory());
+                ps.setString(5, car.getCategory().toString());
                 ps.setString(6, car.getFuelType().toString());
                 ps.setString(7, car.getPhotoUrl());
                 ps.setString(8, car.getWebsiteUrl());
@@ -107,7 +109,7 @@ public class CarRepository {
     public List<Car> findCarsByModelAndBrandAndFuelType(String model, String brand, FuelType fuelType) {
         String sql = "SELECT * FROM Car WHERE model = ? AND brand = ? AND fuel_type = ?";
 
-        List<Car> cars = jdbcTemplate.query(sql, carRowMapper, model, brand, fuelType);
+        List<Car> cars = jdbcTemplate.query(sql, carRowMapper, model, brand, fuelType.toString());
 
         return cars;
     }
@@ -115,7 +117,7 @@ public class CarRepository {
     public boolean carExistByModelAndBrandAndFuelType(String model, String brand, FuelType fuelType) {
         try {
             String sql = "SELECT COUNT(*) FROM Car WHERE model = ? AND brand = ? AND fuel_type = ?";
-            int count = jdbcTemplate.queryForObject(sql, Integer.class, model, brand, fuelType);
+            int count = jdbcTemplate.queryForObject(sql, Integer.class, model, brand, fuelType.toString());
             return count > 0;
         } catch (EmptyResultDataAccessException e) {
             return false;

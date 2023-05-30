@@ -68,6 +68,7 @@ public class CarService {
             if (!companyExists) {
                 throw new Exception("Company does not exist!");
             }
+
             CompanyCar savedCar = companyCarRepository.save(companyCar);
             return savedCar;
         } catch (Exception e) {
