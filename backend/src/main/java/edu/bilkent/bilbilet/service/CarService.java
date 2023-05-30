@@ -24,6 +24,7 @@ import edu.bilkent.bilbilet.repository.AccountRepository;
 import edu.bilkent.bilbilet.repository.CarBrandRepository;
 import edu.bilkent.bilbilet.repository.CarRepository;
 import edu.bilkent.bilbilet.repository.CompanyCarRepository;
+import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
 import edu.bilkent.bilbilet.request.TravelerRegister;
 import edu.bilkent.bilbilet.request.UserLogin;
 import edu.bilkent.bilbilet.response.RRefreshToken;
@@ -92,16 +93,16 @@ public class CarService {
         }
     }
 
-    public List<CompanyCar> getAllCompanyCar(int companyId) throws Exception {
+    public List<CompanyCarRM> findAllCompanyCar(int companyId) throws Exception {
         try {
-          //check if company exists
+            //check if company exists
             boolean companyExists = true; //// update this TODO
                 
             if (!companyExists) {
                 throw new Exception("Company does not exist!");
             }
 
-            return companyCarRepository.getAll();  
+            return companyCarRepository.findByCompanyId(companyId);  
         } catch (Exception e) {
             System.out.println("Car cannot be fetched");
             e.printStackTrace();
@@ -109,7 +110,7 @@ public class CarService {
         }
     }
 
-    public List<CarBrand> getAllBrand() throws Exception {
+    public List<CarBrand> findAllBrand() throws Exception {
         try {
             return carBrandRepository.findAll();  
         } catch (Exception e) {
