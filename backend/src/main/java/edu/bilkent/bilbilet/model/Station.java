@@ -14,12 +14,17 @@ import lombok.NoArgsConstructor;
 public class Station {
 	@Id
 	@NotNull
-	private int station_id;
+	private int stationId;
 
 	@NotNull
-	private StationType station_type;
+	private StationType stationType;
 
 	@NotNull
-	private int address_id;
+	private int addressId;
 
+	@NotBlank
+	private String title;
+
+	@NotBlank
+	private String abbreviation;
 }
