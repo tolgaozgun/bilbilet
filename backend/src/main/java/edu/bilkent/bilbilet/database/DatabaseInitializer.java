@@ -21,18 +21,16 @@ public class DatabaseInitializer {
     @PostConstruct
     public void initializeDatabase() throws IOException {
         ClassPathResource resource = new ClassPathResource("sql/init.sql");
+        ClassPathResource data = new ClassPathResource("sql/data.sql");
         String sqlScript = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
 
         try {
             ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), resource);
+            ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), data);
         } catch (ScriptException | SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
         System.out.println("db is initialized");
-
-        // You can also execute the SQL script directly using jdbcTemplate:
-        // jdbcTemplate.execute(sqlScript);
     }
 }
