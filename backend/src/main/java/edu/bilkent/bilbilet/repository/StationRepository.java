@@ -1,5 +1,6 @@
 package edu.bilkent.bilbilet.repository;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import edu.bilkent.bilbilet.enums.StationType;
@@ -96,23 +99,24 @@ public class StationRepository {
         String sql = "INSERT INTO Station (station_type, title, abbreviation, address_id) "
                 +
                 "VALUES (?, ?, ?, ?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        jdbcTemplate.update(
-                sql,
-                station.getStationType(),
-                station.getTitle(),
-                station.getAbbreviation(),
-                station.getAddressId());
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[] { "station_id" });
+            ps.setString(1, station.getStationType().toString());
+            ps.setString(2, station.getTitle());
+            ps.setString(3, station.getAbbreviation());
+            ps.setInt(4, station.getAddressId());
+            return ps;
+        }, keyHolder);
 
-        // TODO: yeni oluşan? stationId'yi al
-        // Station new_station = findStationById(station.getStationId()).isPresent()
-        // ? findStationById(station.getStation().getStationId()).get()
-        // : null;
+        int generatedId = keyHolder.getKey().intValue();
+        station.setStationId(generatedId);
 
-        // TODO: silinecek
-        Station new_station = findStationById(1).isPresent()
-                ? findStationById(1).get()
+        Station new_station = findStationById(station.getStationId()).isPresent()
+                ? findStationById(station.getStationId()).get()
                 : null;
+
         return new_station;
     }
 
