@@ -3,6 +3,7 @@ package edu.bilkent.bilbilet.repository;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,12 +42,13 @@ public class HotelRepository {
         try {
             return jdbcTemplate.query(sql, hotelRowMapper, addressId);
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            List<Hotel> emptyList = Collections.<Hotel>empty();
+            return emptyList;
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return null;
+        List<Hotel> emptyList = Collections.<Hotel>empty();
+        return emptyList;
     }
 
     public Optional<Hotel> findHotelByName(String name) {
