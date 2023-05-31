@@ -3,7 +3,7 @@ package edu.bilkent.bilbilet.repository;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -36,12 +36,13 @@ public class AddressRepository {
         try {
             return jdbcTemplate.query(sql, addressRowMapper);
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            List<Address> emptyList = Collections.<Address>emptyList();
+            return emptyList;
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return null;
+        List<Address> emptyList = Collections.<Address>emptyList();
+        return emptyList;
     }
 
     public Optional<Address> findAddressById(int id) {
