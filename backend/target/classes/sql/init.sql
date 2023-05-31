@@ -33,3 +33,22 @@ CREATE TABLE IF NOT EXISTS Traveler (
     CONSTRAINT user_id_exists FOREIGN KEY (user_id) REFERENCES User(user_id),
     CHECK (balance >= 0)
 );
+
+CREATE TABLE IF NOT EXISTS Address (
+    address_id INT NOT NULL AUTO_INCREMENT,
+    country VARCHAR(50) NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    latitude DECIMAL(10, 8) NOT NULL,
+    longitude DECIMAL(11, 8) NOT NULL,
+    PRIMARY KEY (address_id)
+);
+
+CREATE TABLE IF NOT EXISTS Station (
+    station_id INT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(50) NOT NULL,
+    abbreviation VARCHAR(50) NOT NULL,
+    station_type VARCHAR(50) NOT NULL,
+    address_id INT NOT NULL,
+    PRIMARY KEY (station_id),
+    FOREIGN KEY (address_id) REFERENCES Address(address_id)
+);
