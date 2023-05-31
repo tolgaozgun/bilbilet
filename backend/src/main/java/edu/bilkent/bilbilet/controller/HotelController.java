@@ -44,7 +44,7 @@ public class HotelController {
             @Valid @PathVariable("country") String country) {
         try {
             List<Hotel> hotelsList = hotelService.getHotels(city, country);
-            return Response.create("Hotel created successfully", HttpStatus.OK, hotelsList);
+            return Response.create("Hotels fetched successfully", HttpStatus.OK, hotelsList);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }

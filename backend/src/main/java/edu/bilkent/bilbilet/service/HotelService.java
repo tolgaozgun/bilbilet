@@ -42,8 +42,9 @@ public class HotelService {
             }
             // Add hotel
             Hotel hotelToAdd = hotelDetails.getHotel();
-            hotelToAdd.setAddressId(address.getAddressId());
             // add adress_id to hotelToAdd
+            hotelToAdd.setAddressId(address.getAddressId());
+
             Hotel newHotel = hotelRepository.save(hotelToAdd);
 
             return newHotel;

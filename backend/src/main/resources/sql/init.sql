@@ -41,7 +41,6 @@ CREATE TABLE IF NOT EXISTS SeatConfiguration (
     PRIMARY KEY (seat_configuration_id)
 );
 
-
 CREATE TABLE IF NOT EXISTS Seat (
     seat_id INT NOT NULL AUTO_INCREMENT,
     seat_class VARCHAR(50) NOT NULL,
@@ -114,6 +113,21 @@ CREATE TABLE IF NOT EXISTS Station (
     address_id INT NOT NULL,
     PRIMARY KEY (station_id),
     FOREIGN KEY (address_id) REFERENCES Address(address_id)
+);
+
+CREATE TABLE IF NOT EXISTS Hotel (
+    hotel_id INT NOT NULL AUTO_INCREMENT,
+    `name` TEXT NOT NULL,
+    avg_price NUMERIC NOT NULL,
+    telephone VARCHAR(255) NOT NULL,
+    rating NUMERIC NOT NULL,
+    website_url VARCHAR(255) NOT NULL,
+    cover_photo_url VARCHAR(255) NOT NULL,
+    photo_url VARCHAR(255) NOT NULL,
+    address_id INT NOT NULL,
+    PRIMARY KEY (hotel_id),
+    FOREIGN KEY (address_id) REFERENCES Address(address_id)
+);
 
 CREATE TABLE IF NOT EXISTS Fare (
     fare_id INT NOT NULL AUTO_INCREMENT,
@@ -153,7 +167,6 @@ CREATE TABLE IF NOT EXISTS Reservation (
     PRIMARY KEY (reservation_id),
     FOREIGN KEY (ticket_id) REFERENCES Ticket(ticket_id)
 );
-
 
 CREATE TABLE IF NOT EXISTS JourneyPlan (
     journey_plan_id INT NOT NULL AUTO_INCREMENT,
