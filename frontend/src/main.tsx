@@ -16,6 +16,7 @@ import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
 import AddHotelPage from './pages/hotel/AddHotelPage';
 import ReviewPage from './pages/review/ReviewPage';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import AddStationPage from './pages/location/AddStationPage';
 
 const router = createBrowserRouter([
 	{
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
 					{
 						path: '/add-review/trip/:id',
 						element: <ReviewPage isCompany={false} />,
+					},
+					{
+						path: '/add-station',
+						element: <AddStationPage />,
 					},
 				],
 			},
