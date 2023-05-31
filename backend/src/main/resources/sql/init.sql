@@ -108,12 +108,12 @@ CREATE TABLE IF NOT EXISTS TransportVehicle (
 
 CREATE TABLE IF NOT EXISTS Station (
     station_id INT NOT NULL AUTO_INCREMENT,
-    station_name VARCHAR(50) NOT NULL,
+    title VARCHAR(50) NOT NULL,
+    abbreviation VARCHAR(50) NOT NULL,
     station_type VARCHAR(50) NOT NULL,
     address_id INT NOT NULL,
     PRIMARY KEY (station_id),
     FOREIGN KEY (address_id) REFERENCES Address(address_id)
-);
 
 CREATE TABLE IF NOT EXISTS Fare (
     fare_id INT NOT NULL AUTO_INCREMENT,
