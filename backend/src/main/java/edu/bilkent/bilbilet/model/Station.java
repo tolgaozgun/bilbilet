@@ -3,6 +3,7 @@ package edu.bilkent.bilbilet.model;
 import lombok.AllArgsConstructor;
 import edu.bilkent.bilbilet.enums.StationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
