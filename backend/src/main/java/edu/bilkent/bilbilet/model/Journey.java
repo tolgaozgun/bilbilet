@@ -23,5 +23,4 @@ public class Journey {
 
 	@NotNull
 	private int fare_id;
-
 }
