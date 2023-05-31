@@ -14,27 +14,33 @@ interface StationFormProps {
 			abbreviation: string;
 			stationType: StationType;
 			city: string;
+			country: string;
 		},
 		(values: {
 			title: string;
 			abbreviation: string;
 			stationType: StationType;
 			city: string;
+			country: string;
 		}) => {
 			title: string;
 			abbreviation: string;
 			stationType: StationType;
 			city: string;
+			country: string;
 		}
 	>;
 }
 const AddStationForm = ({ form }: StationFormProps) => {
 	//TODO: from enum
 	const stationTypes = ['Airport', 'Bus Terminal', 'Port', 'Etc.'];
-	//TODO: from backend get all cities available
 
+	//TODO: from backend get all cities available
 	const cities = ['Ankara', 'İstanbul'];
-	//const { addStation } = useAddStation();
+	//TODO: from backend get all cities available
+	const countries = ['Turkey', 'Italy'];
+
+	// const { addStation } = useAddStation();
 
 	const handleAddStation = async () => {
 		const validation = form.validate();
@@ -95,6 +101,12 @@ const AddStationForm = ({ form }: StationFormProps) => {
 							data={cities}
 							label="City"
 							{...form.getInputProps('city')}
+						/>
+						<Select
+							withAsterisk
+							data={countries}
+							label="Country"
+							{...form.getInputProps('country')}
 						/>
 					</Flex>
 				</form>
