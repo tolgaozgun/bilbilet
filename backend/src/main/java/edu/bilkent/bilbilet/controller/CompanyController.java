@@ -34,7 +34,7 @@ public class CompanyController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path= "/{companyId}")
+    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path= "{companyId}")
     public ResponseEntity<Object> getCompanyById(@PathVariable int companyId) {
         try {
             Company company = companyService.getCompanyById(companyId);
@@ -59,7 +59,7 @@ public class CompanyController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path= "/{companyId}")
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path= "{companyId}")
     public ResponseEntity<Object> updateCompany(@PathVariable int companyId, @RequestBody @Valid Company company) {
         try {
             Company updatedCompany = companyService.updateCompany(companyId, company);
@@ -73,7 +73,7 @@ public class CompanyController {
 
     }
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path= "/{companyId}")
+    @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path= "{companyId}")
     public ResponseEntity<Object> deleteCompany(@PathVariable int companyId) {
         try {
             if (companyService.deleteCompany(companyId)) {

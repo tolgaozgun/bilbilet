@@ -5,14 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8d35c2c8-8cbe-4b34-9285-9bd25f26f1ae" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/bilkent/bilbilet/controller/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/bilkent/bilbilet/controller/AccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-edu.bilkent.bilbilet.BilBiletApplicationTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-edu.bilkent.bilbilet.BilBiletApplicationTests.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/edu.bilkent.bilbilet.BilBiletApplicationTests.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/edu.bilkent.bilbilet.BilBiletApplicationTests.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/bilkent/bilbilet/controller/CompanyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/bilkent/bilbilet/controller/CompanyController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +101,7 @@
       <workItem from="1684682067871" duration="18000" />
       <workItem from="1684682095958" duration="3460000" />
       <workItem from="1685174827364" duration="5440000" />
-      <workItem from="1685513817477" duration="1027000" />
+      <workItem from="1685513817477" duration="1742000" />
     </task>
     <servers />
   </component>
