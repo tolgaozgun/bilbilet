@@ -88,55 +88,55 @@ const CustomSelectItem = forwardRef<HTMLDivElement, ItemProps>(
 );
 const AddFareForm = ({ form }: FareFormProps) => {
 	// const { addFare } = useAddFare();
-	const {
-		data: stationsData,
-		isLoading: isStationsLoading,
-		isError: isStationsError,
-	} = useGetStations();
+	// const {
+	// 	data: stationsData,
+	// 	isLoading: isStationsLoading,
+	// 	isError: isStationsError,
+	// } = useGetStations();
 
-	if (isStationsLoading) {
-		return <LoadingPage />;
-	}
-	if (isStationsError || !stationsData) {
-		return <ErrorPage />;
-	}
+	// if (isStationsLoading) {
+	// 	return <LoadingPage />;
+	// }
+	// if (isStationsError || !stationsData) {
+	// 	return <ErrorPage />;
+	// }
 
-	const stations = stationsData.data;
-	const stationData: Array<SelectItem> = stations!.map((station) => {
-		return {
-			stationType: station.stationType,
-			label: station.title,
-			value: station.title,
-			description: station.city,
-		};
-	});
+	// const stations = stationsData.data;
+	// const stationData: Array<SelectItem> = stations!.map((station) => {
+	// 	return {
+	// 		stationType: station.stationType,
+	// 		label: station.title,
+	// 		value: station.title,
+	// 		description: station.city,
+	// 	};
+	// });
 
-	// const stationData = [
-	// 	{
-	// 		stationType: 'AIRPORT',
-	// 		label: 'Esenboğa',
-	// 		value: 'Bender Bending Rodríguez',
-	// 		description: 'Ankara',
-	// 	},
-	// 	{
-	// 		stationType: 'BUS_TERMINAL',
-	// 		label: 'AŞTİ',
-	// 		value: 'Carol Miller',
-	// 		description: 'Ankara',
-	// 	},
-	// 	{
-	// 		stationType: 'AIRPORT',
-	// 		label: 'Sabiha Gökçen',
-	// 		value: 'Homer Simpson',
-	// 		description: 'İstanbul',
-	// 	},
-	// 	{
-	// 		stationType: 'BUS_TERMINAL',
-	// 		label: 'Esenler',
-	// 		value: 'Spongebob Squarepants',
-	// 		description: 'İstanbul',
-	// 	},
-	// ];
+	const stationData = [
+		{
+			stationType: 'AIRPORT',
+			label: 'Esenboğa',
+			value: 'Bender Bending Rodríguez',
+			description: 'Ankara',
+		},
+		{
+			stationType: 'BUS_TERMINAL',
+			label: 'AŞTİ',
+			value: 'Carol Miller',
+			description: 'Ankara',
+		},
+		{
+			stationType: 'AIRPORT',
+			label: 'Sabiha Gökçen',
+			value: 'Homer Simpson',
+			description: 'İstanbul',
+		},
+		{
+			stationType: 'BUS_TERMINAL',
+			label: 'Esenler',
+			value: 'Spongebob Squarepants',
+			description: 'İstanbul',
+		},
+	];
 
 	const handleAddFare = async () => {
 		const validation = form.validate();
@@ -215,11 +215,17 @@ const AddFareForm = ({ form }: FareFormProps) => {
 							withAsterisk
 							{...form.getInputProps('arrivalTime')}
 						></TimeInput>
-						<TextInput
+						<Select
+							label="Arrival Station"
+							placeholder="Pick one"
+							itemComponent={CustomSelectItem}
+							data={stationData}
+							searchable
 							withAsterisk
-							label="Arrival Location"
 							{...form.getInputProps('arrivalStation')}
-						></TextInput>
+							maxDropdownHeight={400}
+							nothingFound="No station found"
+						/>
 						<NumberInput
 							withAsterisk
 							label="Capacity"
