@@ -17,6 +17,7 @@ import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
 import AddHotelPage from './pages/hotel/AddHotelPage';
 import ReviewPage from './pages/review/ReviewPage';
 import AddStationPage from './pages/location/AddStationPage';
+import AddAddressPage from './pages/location/AddAddressPage';
 
 const router = createBrowserRouter([
 	{
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
 					{
 						path: '/add-station',
 						element: <AddStationPage />,
+					},
+					{
+						path: '/add-address',
+						element: <AddAddressPage />,
 					},
 				],
 			},

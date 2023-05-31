@@ -10,3 +10,13 @@ export type AddStation = {
 	stationType: StationType;
 	city: string;
 };
+
+export type AddAddress = {
+	city: string;
+	country: string;
+	longitude: number;
+	latitude: number;
+};
+export type Address = AddAddress & {
+	addressId: number;
+};
