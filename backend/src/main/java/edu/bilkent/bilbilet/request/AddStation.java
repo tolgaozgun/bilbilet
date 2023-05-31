@@ -17,6 +17,9 @@ public class AddStation {
     private String city;
 
     @NotBlank
+    private String country;
+
+    @NotBlank
     private String abbreviation;
 
     @NotNull
