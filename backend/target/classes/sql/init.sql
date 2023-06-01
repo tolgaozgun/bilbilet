@@ -158,17 +158,18 @@ CREATE TABLE IF NOT EXISTS Reservation (
 CREATE TABLE IF NOT EXISTS JourneyPlan (
     journey_plan_id INT NOT NULL AUTO_INCREMENT,
     plan_title VARCHAR(255) NOT NULL,
-    traveler_id INT NOT NULL,
+    user_id INT NOT NULL,
     PRIMARY KEY (journey_plan_id),
-    FOREIGN KEY (traveler_id) REFERENCES Traveler(user_id)
+    FOREIGN KEY (user_id) REFERENCES Traveler(user_id),
+    CONSTRAINT uc_user_plan UNIQUE (user_id, plan_title) /* user can have only one plan with the same title */
 );
 
 CREATE TABLE IF NOT EXISTS Journey (
     journey_id INT NOT NULL AUTO_INCREMENT,
     journey_title VARCHAR(255) NOT NULL,
     journey_plan_id INT NOT NULL,
-    fare_id INT NOT NULL,
+    ticket_id INT NOT NULL,
     PRIMARY KEY (journey_id),
     FOREIGN KEY (journey_plan_id) REFERENCES JourneyPlan(journey_plan_id),
-    FOREIGN KEY (fare_id) REFERENCES Fare(fare_id)
+    FOREIGN KEY (ticket_id) REFERENCES Ticket(ticket_id)
 );

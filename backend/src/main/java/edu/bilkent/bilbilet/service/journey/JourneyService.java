@@ -1,29 +1,42 @@
 package edu.bilkent.bilbilet.service.journey;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import edu.bilkent.bilbilet.exception.InsertionFailedException;
 import edu.bilkent.bilbilet.exception.ItemNotFoundException;
+import edu.bilkent.bilbilet.exception.TicketConflictException;
 import edu.bilkent.bilbilet.model.Journey;
+import edu.bilkent.bilbilet.model.Ticket;
 import edu.bilkent.bilbilet.repository.journey.JourneyRepository;
 import edu.bilkent.bilbilet.request.journey.CreateJourney;
+import edu.bilkent.bilbilet.service.TicketService;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class JourneyService {
-    private final  JourneyRepository journeyRepository;    
+    
+
+    private final  JourneyRepository journeyRepository;   
+    private final TicketService ticketService; 
 
     public Journey createJourney(CreateJourney createJourney) throws Exception, InsertionFailedException{
-        Journey j = new Journey();
-        j.setJourney_id(0);
-        j.setJourney_title(createJourney.getJourney_title());
-        j.setJourney_plan_id(createJourney.getJourney_plan_id());
-        j.setFare_id(createJourney.getFare_id());
+        Journey j = new Journey(createJourney);
+
         try {
+            boolean isTicketAvailable = ticketService.isTicketAvailable(j.getTicketId());
+            if (!isTicketAvailable) {
+                throw new Exception("Ticket is not available");
+            }
+
+            // TODO: Check time conflict
+
+            // Failed for some reason -_-
             Optional<Journey> newJourney = journeyRepository.createJourney(j);
             if (!newJourney.isPresent()) {
                 throw new InsertionFailedException("Journey could not be created.");
@@ -36,7 +49,7 @@ public class JourneyService {
         }
     }
 
-    public Journey getJourney(Long journeyId) throws Exception, EmptyResultDataAccessException {
+    public Journey getJourney(int journeyId) throws Exception, EmptyResultDataAccessException {
         try {
             Optional<Journey> journey = journeyRepository.getJourney(journeyId);
             if (!journey.isPresent()) {
@@ -52,4 +65,8 @@ public class JourneyService {
             throw e;
         }
     }
+
+    // public boolean timeConflictExists(int ticketId, int journeyPlanId) {
+
+    // }
 }

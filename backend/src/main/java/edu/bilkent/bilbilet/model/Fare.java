@@ -14,27 +14,27 @@ import lombok.NoArgsConstructor;
 public class Fare {
 	@Id
 	@NotNull
-	private int fare_id;
+	private int fareId;
 
 	@NotNull
-	private Timestamp departure_time;
+	private Timestamp departureTime;
 
 	@NotNull
-	private Timestamp estimated_arrival_time;
+	private Timestamp estimatedArrivalTime;
 
 	@NotNull
 	private BigDecimal price;
 
 	@NotNull
-	private int company_id;
+	private int companyId;
 
 	@NotNull
-	private int vehicle_id;
+	private int vehicleId;
 
 	@NotNull
-	private int dep_stat_id;
+	private int depStatId;
 
 	@NotNull
-	private int arrive_stat_id;
+	private int arriveStatId;
 
 }

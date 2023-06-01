@@ -1,5 +1,7 @@
 package edu.bilkent.bilbilet.repository.journey;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,28 +26,27 @@ public class JourneyRepository {
     @Autowired
     private NamedParameterJdbcTemplate namedJdbcTemplate;
 
-
     private RowMapper<Journey> journeyRowMapper = (rs, rowNum) -> {
         Journey journey = new Journey();
-        journey.setJourney_id(0); // FIXME: Is this field important? It is generated automatically no?
-        journey.setFare_id(rs.getInt("fare_id"));
-        journey.setJourney_plan_id(rs.getInt("journey_plan_id"));
-        journey.setJourney_title(rs.getString("journey_title"));
+        journey.setJourneyId(0); // FIXME: Is this field important? It is generated automatically no?
+        journey.setTicketId(rs.getInt("ticket_id"));
+        journey.setJourneyPlanId(rs.getInt("journey_plan_id"));
+        journey.setJourneyTitle(rs.getString("journey_title"));
         return journey;
     };
 
     public Optional<Journey> createJourney(Journey newJourney) throws DataAccessException {
-        String sql = "INSERT INTO Journey (journey_title, journey_plan_id, fare_id) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Journey (journey_title, journey_plan_id, ticket_id) VALUES (?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("journey_title", newJourney.getJourney_title());
-        parameters.addValue("journey_plan_id", newJourney.getJourney_plan_id());
-        parameters.addValue("fare_id", newJourney.getFare_id());
+        parameters.addValue("journey_title", newJourney.getJourneyTitle());
+        parameters.addValue("journey_plan_id", newJourney.getJourneyPlanId());
+        parameters.addValue("ticket_id", newJourney.getTicketId());
 
         try {
             int status = namedJdbcTemplate.update(sql, parameters, keyHolder, new String[]{"journey_id"});
-            Long journeyId = keyHolder.getKey().longValue();
+            int journeyId = keyHolder.getKey().intValue();
             Optional<Journey> journey = getJourney(journeyId);
             
             return journey;
@@ -57,7 +58,19 @@ public class JourneyRepository {
         }
     }
 
-    public Optional<Journey> getJourney(Long journeyId) throws Exception, EmptyResultDataAccessException {
+    public Optional<Journey> deleteJourney(int journeyId) {
+        String sql = "DELETE FROM Journey WHERE journey_id = ?";
+        try {
+            return Optional.of(jdbcTemplate.queryForObject(sql, journeyRowMapper, journeyId));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public Optional<Journey> getJourney(int journeyId) throws Exception, EmptyResultDataAccessException {
         String sql = "SELECT * FROM Journey WHERE journey_id = ?";
 
         try {
@@ -68,5 +81,14 @@ public class JourneyRepository {
             e.printStackTrace();
             throw e;
         }
+    }
+
+    public List<Optional<Journey>> checkTimeConflictWithinJourneyPlan(Journey newJourney, int journeyPlanId) {
+        final int ticketId = newJourney.getTicketId();
+        String sql = "SELECT F1.departure_time AS new_dep_time, F1.estimated_arrival_time AS new_arr_time" +
+                    "FROM Ticket T JOIN Fare F1 ON T.fare_id = F1.fare_id" +
+                    "WHERE T.ticket_id = ?";
+
+        return new ArrayList<Optional<Journey>>();
     }
 }

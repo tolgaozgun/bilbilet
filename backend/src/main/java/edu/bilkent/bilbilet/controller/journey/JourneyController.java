@@ -42,7 +42,7 @@ public class JourneyController {
     @GetMapping(path = "{id}")
     public ResponseEntity<Object> getJourneyDetailsByJourneyId(@Valid @PathVariable("id") String id) {
         try {
-            Journey journey = journeyService.getJourney(Long.parseLong(id));
+            Journey journey = journeyService.getJourney(Integer.parseInt(id));
             return Response.create("Accessed journey successfully", HttpStatus.OK, journey);
         } catch (EmptyResultDataAccessException e) {
             return Response.create("Journey could not be found.", HttpStatus.NOT_FOUND);
