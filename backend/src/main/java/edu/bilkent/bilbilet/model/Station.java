@@ -3,6 +3,7 @@ package edu.bilkent.bilbilet.model;
 import lombok.AllArgsConstructor;
 import edu.bilkent.bilbilet.enums.StationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,12 +14,17 @@ import lombok.NoArgsConstructor;
 public class Station {
 	@Id
 	@NotNull
-	private int station_id;
+	private int stationId;
 
 	@NotNull
-	private StationType station_type;
+	private StationType stationType;
 
 	@NotNull
-	private int address_id;
+	private int addressId;
 
+	@NotBlank
+	private String title;
+
+	@NotBlank
+	private String abbreviation;
 }

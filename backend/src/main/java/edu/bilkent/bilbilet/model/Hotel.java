@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 public class Hotel {
 	@Id
 	@NotNull
-	private int hotel_id;
+	private int hotelId;
 
 	@NotBlank
 	private String name;
 
 	@NotNull
-	private BigDecimal avg_price;
+	private BigDecimal avgPrice;
 
 	@NotBlank
 	private String telephone;
@@ -29,15 +29,15 @@ public class Hotel {
 	private BigDecimal rating;
 
 	@NotBlank
-	private String website_url;
+	private String websiteUrl;
 
 	@NotBlank
-	private String cover_photo_url;
+	private String coverPhotoUrl;
 
 	@NotBlank
-	private String photo_url;
+	private String photoUrl;
 
 	@NotNull
-	private int address_id;
+	private int addressId;
 
 }
