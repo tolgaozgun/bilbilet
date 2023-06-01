@@ -44,7 +44,7 @@ public class CompanyService {
     public Company createCompany(Company company) throws Exception {
         try {
             Optional<Company> registeredCompany = companyRepository.getCompanyById(company.getCompany_id());
-            if(registeredCompany.isPresent()){
+            if (registeredCompany.isPresent()) {
                 throw new Exception("Company with ID " + company.getCompany_id() + " already exists!");
             }
 
