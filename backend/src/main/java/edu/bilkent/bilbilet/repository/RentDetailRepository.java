@@ -168,6 +168,4 @@ public class RentDetailRepository {
 
         return rents;
     }
-
-    public int rentCar(RentDetail rd)
 }

@@ -42,8 +42,6 @@ public class CompanyCarRepository {
         cc.setCompanyCarId(rs.getInt("company_car_id"));
         cc.setAddressId(rs.getInt("address_id"));
         cc.setPricePerDay(rs.getBigDecimal("price_per_day"));
-        cc.setPhotoUrl(rs.getString("photo_url"));
-        cc.setWebsiteUrl(rs.getString("website_url"));
         return cc;
     };
 
@@ -107,5 +105,10 @@ public class CompanyCarRepository {
     public List<CompanyCarRM> findByCompanyId(int companyId) {
         String sql = "SELECT * FROM CompanyCar cc INNER JOIN Car c ON c.car_id = cc.car_id INNER JOIN Address a ON a.address_id = cc.address_id WHERE cc.company_id = ?";
         return jdbcTemplate.query(sql, BilBiletRowMapper.COMPANY_CAR_MAPPED_RM, companyId);
+    }
+
+    public boolean existByCompanyCarId(int companyCarId) {
+        String sql = "SELECT * FROM CompanyCar cc WHERE cc.company_car_id = ?";
+        return !(jdbcTemplate.query(sql, companyCarRowMapper, companyCarId).isEmpty());
     }
 }
