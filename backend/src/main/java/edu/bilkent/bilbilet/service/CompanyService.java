@@ -63,7 +63,7 @@ public class CompanyService {
     public Company updateCompany(int companyId, Company company) throws Exception {
         try {
             Optional<Company> registeredCompany = companyRepository.getCompanyById(company.getCompany_id());
-            if(registeredCompany.isEmpty()){
+            if (registeredCompany.isEmpty()) {
                 throw new Exception("Company with ID " + company.getCompany_id() + " does not exist!");
             }
             Optional<Company> updatedCompany = companyRepository.updateCompany(companyId, company);
@@ -83,7 +83,7 @@ public class CompanyService {
     public boolean deleteCompany(int companyId) throws Exception {
         try {
             Optional<Company> registeredCompany = companyRepository.getCompanyById(companyId);
-            if(registeredCompany.isEmpty()){
+            if (registeredCompany.isEmpty()) {
                 throw new Exception("Company with ID " + companyId + " does not exist!");
             }
             return companyRepository.deleteCompany(companyId);
