@@ -5,10 +5,7 @@ import { UseFormReturnType } from '@mantine/form';
 import { IconBuilding } from '@tabler/icons-react';
 import RatingBar from '../common/RatingBar';
 import { useState } from 'react';
-import { useAddHotel } from '../../hooks/hotel/useAddHotel';
-import { isErrorResponse } from '../../utils/utils';
 import { notifications } from '@mantine/notifications';
-import { useNavigate } from 'react-router-dom';
 import { AddHotel, Hotel } from '../../types/HotelTypes';
 import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
 import { useMutation } from '@tanstack/react-query';
@@ -33,6 +30,8 @@ interface HotelFormProps {
 			websiteUrl: string;
 			coverPhotoUrl: string;
 			photoUrl: string;
+			country: string;
+			city: string;
 		}) => {
 			name: string;
 			avgPrice: number;
@@ -40,6 +39,8 @@ interface HotelFormProps {
 			websiteUrl: string;
 			coverPhotoUrl: string;
 			photoUrl: string;
+			country: string;
+			city: string;
 		}
 	>;
 }
