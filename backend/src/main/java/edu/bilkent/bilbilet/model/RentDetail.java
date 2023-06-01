@@ -13,18 +13,18 @@ import lombok.NoArgsConstructor;
 public class RentDetail {
 	@Id
 	@NotNull
-	private int rent_id;
+	private int rentId;
 
 	@NotNull
-	private Timestamp start_date;
+	private Timestamp startDate;
 
 	@NotNull
-	private Timestamp end_date;
+	private Timestamp endDate;
 
 	@NotNull
-	private int user_id;
+	private int userId;
 
 	@NotNull
-	private int car_id;
+	private int companyCarId;
 
 }

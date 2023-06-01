@@ -185,3 +185,14 @@ CREATE TABLE IF NOT EXISTS Journey (
     FOREIGN KEY (journey_plan_id) REFERENCES JourneyPlan(journey_plan_id),
     FOREIGN KEY (fare_id) REFERENCES Fare(fare_id)
 );
+
+CREATE TABLE RentDetail(
+    rent_id INT NOT NULL AUTO_INCREMENT,
+    start_date DATETIME NOT NULL,
+    end_date DATETIME NOT NULL,
+    user_id INT NOT NULL,
+    company_car_id INT NOT NULL,
+    PRIMARY KEY (rent_id),
+    FOREIGN KEY (company_car_id) REFERENCES CompanyCar(company_car_id),
+    FOREIGN KEY (user_id) REFERENCES Traveler(user_id),
+);

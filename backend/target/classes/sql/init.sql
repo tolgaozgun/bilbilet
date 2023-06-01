@@ -41,7 +41,6 @@ CREATE TABLE IF NOT EXISTS SeatConfiguration (
     PRIMARY KEY (seat_configuration_id)
 );
 
-
 CREATE TABLE IF NOT EXISTS Seat (
     seat_id INT NOT NULL AUTO_INCREMENT,
     seat_class VARCHAR(50) NOT NULL,
@@ -116,6 +115,20 @@ CREATE TABLE IF NOT EXISTS Station (
     FOREIGN KEY (address_id) REFERENCES Address(address_id)
 );
 
+CREATE TABLE IF NOT EXISTS Hotel (
+    hotel_id INT NOT NULL AUTO_INCREMENT,
+    `name` TEXT NOT NULL,
+    avg_price NUMERIC NOT NULL,
+    telephone VARCHAR(255) NOT NULL,
+    rating NUMERIC NOT NULL,
+    website_url VARCHAR(255) NOT NULL,
+    cover_photo_url VARCHAR(255) NOT NULL,
+    photo_url VARCHAR(255) NOT NULL,
+    address_id INT NOT NULL,
+    PRIMARY KEY (hotel_id),
+    FOREIGN KEY (address_id) REFERENCES Address(address_id)
+);
+
 CREATE TABLE IF NOT EXISTS Fare (
     fare_id INT NOT NULL AUTO_INCREMENT,
     departure_time TIMESTAMP NOT NULL,
@@ -155,7 +168,6 @@ CREATE TABLE IF NOT EXISTS Reservation (
     FOREIGN KEY (ticket_id) REFERENCES Ticket(ticket_id)
 );
 
-
 CREATE TABLE IF NOT EXISTS JourneyPlan (
     journey_plan_id INT NOT NULL AUTO_INCREMENT,
     plan_title VARCHAR(255) NOT NULL,
@@ -172,4 +184,15 @@ CREATE TABLE IF NOT EXISTS Journey (
     PRIMARY KEY (journey_id),
     FOREIGN KEY (journey_plan_id) REFERENCES JourneyPlan(journey_plan_id),
     FOREIGN KEY (fare_id) REFERENCES Fare(fare_id)
+);
+
+CREATE TABLE RentDetail(
+    rent_id INT NOT NULL AUTO_INCREMENT,
+    start_date DATETIME NOT NULL,
+    end_date DATETIME NOT NULL,
+    user_id INT NOT NULL,
+    company_car_id INT NOT NULL,
+    PRIMARY KEY (rent_id),
+    FOREIGN KEY (company_car_id) REFERENCES CompanyCar(company_car_id),
+    FOREIGN KEY (user_id) REFERENCES Traveler(user_id),
 );
