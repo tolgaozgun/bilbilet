@@ -22,11 +22,13 @@ public class DatabaseInitializer {
     public void initializeDatabase() throws IOException {
         ClassPathResource resource = new ClassPathResource("sql/init.sql");
         ClassPathResource data = new ClassPathResource("sql/data.sql");
+        ClassPathResource trigger = new ClassPathResource("sql/triggers.sql");
         String sqlScript = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
 
         try {
             ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), resource);
             ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), data);
+            ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), trigger);
         } catch (ScriptException | SQLException e) {
             e.printStackTrace();
         }

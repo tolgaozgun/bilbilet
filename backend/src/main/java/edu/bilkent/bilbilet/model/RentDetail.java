@@ -26,5 +26,4 @@ public class RentDetail {
 
 	@NotNull
 	private int companyCarId;
-
 }
