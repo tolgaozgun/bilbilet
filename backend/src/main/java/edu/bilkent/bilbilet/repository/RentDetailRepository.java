@@ -2,6 +2,7 @@ package edu.bilkent.bilbilet.repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +21,11 @@ import org.springframework.stereotype.Repository;
 
 import edu.bilkent.bilbilet.enums.FuelType;
 import edu.bilkent.bilbilet.enums.GearType;
+import edu.bilkent.bilbilet.model.Address;
 import edu.bilkent.bilbilet.model.Car;
 import edu.bilkent.bilbilet.model.CarCategoryType;
 import edu.bilkent.bilbilet.model.RentDetail;
+import edu.bilkent.bilbilet.repository.rowmapper.BilBiletRowMapper;
 import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
 import edu.bilkent.bilbilet.repository.rowmapper.RentDetailRM;
 
@@ -53,7 +56,6 @@ public class RentDetailRepository {
         CompanyCarRM cc = new CompanyCarRM();
         cc.setCompanyId(rs.getInt("cc.company_id"));
         cc.setCompanyCarId(rs.getInt("cc.company_car_id"));
-        cc.setAddressId(rs.getInt("cc.address_id"));
         cc.setPricePerDay(rs.getBigDecimal("cc.price_per_day"));
         cc.setPhotoUrl(rs.getString("cc.photo_url"));
         cc.setWebsiteUrl(rs.getString("cc.website_url"));
@@ -69,20 +71,28 @@ public class RentDetailRepository {
         c.setPhotoUrl(rs.getString("c.photo_url"));
         c.setWebsiteUrl(rs.getString("c.website_url"));
 
+        Address a = new Address();
+        a.setAddressId(rs.getInt("a.address_id"));
+        a.setCity(rs.getString("a.city"));
+        a.setCountry(rs.getString("a.country"));
+        a.setLatitude(rs.getBigDecimal("a.latitude"));
+        a.setLongitude(rs.getBigDecimal("a.longitude"));
+
         cc.setCar(c);
         rd.setCompanyCar(cc);
+        cc.setAddress(a);
         return rd;
     };
     
-    public List<RentDetailRM> findAvailableCarsByProperties(Map<String, Object> properties) {
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Car c INNER JOIN CompanyCar cc ON c.car_id = cc.car_id");
+    public List<CompanyCarRM> findAvailableCarsByProperties(Map<String, Object> properties) {
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Car c INNER JOIN CompanyCar cc ON c.car_id = cc.car_id INNER JOIN Address a ON a.address_id = cc.address_id");
         // sqlBuilder.append("INNER JOIN RentDetail rd ON rd.company_car_id = cc.company_car_id");
 
         List<Object> parameterValues = new ArrayList<>();
         boolean andNeeded = false;
 
         if (properties.isEmpty()) {
-            return jdbcTemplate.query(sqlBuilder.toString(), rentDetailDetailedRM);
+            return jdbcTemplate.query(sqlBuilder.toString(), BilBiletRowMapper.COMPANY_CAR_MAPPED_RM);
         }
 
         sqlBuilder.append(" WHERE ");
@@ -92,10 +102,24 @@ public class RentDetailRepository {
                 sqlBuilder.append(" AND ");
             }
 
-            if (property.equals("start_date"))
-            sqlBuilder.append(property).append(" = ?");
-            parameterValues.add(properties.get(property));
+            if (!property.equals("start_date") && !property.equals("end_date")) {
+                sqlBuilder.append(property).append(" = ?");
+                parameterValues.add(properties.get(property));
+            }
             andNeeded = true;
+        }
+
+        Object start = properties.get("start_date");
+        Object end = properties.get("end_date");
+
+        // if dates are provided add date search query to the end of the sql
+        if (start != null && end != null) {
+            sqlBuilder.append(" AND cc.company_car_id NOT IN ( ")
+                      .append(" SELECT rd.company_car_id FROM RentDetail rd")
+                      .append(" WHERE (rd.start_date <= ? AND r.end_date >= ?))");
+            
+            parameterValues.add(start);
+            parameterValues.add(end);
         }
         
         String sql = sqlBuilder.toString();
@@ -107,7 +131,7 @@ public class RentDetailRepository {
                     ps.setObject(i + 1, parameterValues.get(i));
                 }
             }
-        }, carRowMapper); // check if empty
+        }, BilBiletRowMapper.COMPANY_CAR_MAPPED_RM); // check if empty
     }
 
     public RentDetail save(RentDetail rentDetail) throws Exception {
@@ -144,4 +168,6 @@ public class RentDetailRepository {
 
         return rents;
     }
+
+    public int rentCar(RentDetail rd)
 }
