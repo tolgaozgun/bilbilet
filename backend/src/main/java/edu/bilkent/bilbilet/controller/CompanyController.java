@@ -38,10 +38,7 @@ public class CompanyController {
     public ResponseEntity<Object> getCompanyById(@PathVariable int companyId) {
         try {
             Company company = companyService.getCompanyById(companyId);
-            if (company != null) {
-                return Response.create("Gathered company", HttpStatus.OK, company);
-            }
-            return Response.create("Could not find company", HttpStatus.NOT_FOUND);
+            return Response.create("Gathered company", HttpStatus.OK, company);
         } catch(Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -63,10 +60,7 @@ public class CompanyController {
     public ResponseEntity<Object> updateCompany(@PathVariable int companyId, @RequestBody @Valid Company company) {
         try {
             Company updatedCompany = companyService.updateCompany(companyId, company);
-            if (updatedCompany != null) {
-                return Response.create("Updated company", HttpStatus.OK, company);
-            }
-            return Response.create("Could not find company", HttpStatus.NOT_FOUND);
+            return Response.create("Updated company", HttpStatus.OK, updatedCompany);
         } catch(Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -76,10 +70,8 @@ public class CompanyController {
     @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path= "{companyId}")
     public ResponseEntity<Object> deleteCompany(@PathVariable int companyId) {
         try {
-            if (companyService.deleteCompany(companyId)) {
-                return Response.create("Deleted company", HttpStatus.OK);
-            }
-            return Response.create("Could not find company", HttpStatus.NOT_FOUND);
+            companyService.deleteCompany(companyId);
+            return Response.create("Deleted company", HttpStatus.OK);
         } catch(Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }

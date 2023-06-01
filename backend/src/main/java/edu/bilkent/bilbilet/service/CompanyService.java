@@ -21,7 +21,6 @@ public class CompanyService {
             Optional<List<Company>> companies = companyRepository.getAllCompanies();
             return companies.orElse(Collections.emptyList());
         } catch (Exception e) {
-            System.out.println("Get All Companies exception");
             e.printStackTrace();
             throw e;
         }
@@ -35,7 +34,6 @@ public class CompanyService {
             }
             return company.get();
         } catch (Exception e) {
-            System.out.println("Get Company By ID Exception");
             e.printStackTrace();
             throw e;
         }
@@ -54,7 +52,6 @@ public class CompanyService {
             }
             return createdCompany.get();
         } catch (Exception e) {
-            System.out.println("Create Company Exception");
             e.printStackTrace();
             throw e;
         }
@@ -73,7 +70,6 @@ public class CompanyService {
 
             return updatedCompany.get();
         } catch (Exception e) {
-            System.out.println("Update company exception");
             e.printStackTrace();
             throw e;
 
@@ -88,7 +84,6 @@ public class CompanyService {
             }
             return companyRepository.deleteCompany(companyId);
         } catch (Exception e) {
-            System.out.println("Delete company exception");
             e.printStackTrace();
             throw e;
 
