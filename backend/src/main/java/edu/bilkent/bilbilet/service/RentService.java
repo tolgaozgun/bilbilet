@@ -52,7 +52,7 @@ public class RentService {
     private final AddressRepository addressRepository;
     private final RentDetailRepository rentDetailRepository;
 
-    public Car rentCar(RentDetail rd) throws Exception {
+    public RentDetail rentCar(RentDetail rd) throws Exception {
         try {
             // check if car already exists
             boolean carExist = companyCarRepository.existByCompanyCarId(rd.getCompanyCarId());
@@ -61,12 +61,13 @@ public class RentService {
                 throw new RentException("Car not found");
             }
 
-            if (rd.getStartDate() > rd.getEndDate()) {
-                throw new RentException("End date cannot be before the start date");
+            // if start date is after end date throw error
+            if ((rd.getStartDate() != null && rd.getEndDate() != null) && (rd.getStartDate().compareTo(rd.getEndDate()) > 0)) {
+                throw new RentException("Start date cannot be after end date");
             }
 
-            Car savedCar = carRepository.save(car);
-            return savedCar;
+            RentDetail rentDetail = rentDetailRepository.save(rd);
+            return rentDetail;
         } catch (RentException ce) {
             throw ce;
         } catch (Exception e) {

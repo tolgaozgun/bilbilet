@@ -188,8 +188,8 @@ CREATE TABLE IF NOT EXISTS Journey (
 
 CREATE TABLE RentDetail(
     rent_id INT NOT NULL AUTO_INCREMENT,
-    start_date DATETIME NOT NULL,
-    end_date DATETIME NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
     user_id INT NOT NULL,
     company_car_id INT NOT NULL,
     PRIMARY KEY (rent_id),

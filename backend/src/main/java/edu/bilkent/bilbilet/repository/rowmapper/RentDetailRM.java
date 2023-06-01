@@ -1,7 +1,7 @@
 package edu.bilkent.bilbilet.repository.rowmapper;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.util.Date;
 
 import edu.bilkent.bilbilet.model.Car;
 import jakarta.persistence.Id;
@@ -18,9 +18,9 @@ public class RentDetailRM {
 
     private int rentId;
 
-	private Timestamp startDate;
+	private Date startDate;
 
-	private Timestamp endDate;
+	private Date endDate;
 
 	private int userId; 
 }

@@ -1,8 +1,8 @@
 package edu.bilkent.bilbilet.repository;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +41,8 @@ public class RentDetailRepository {
         rd.setRentId(rs.getInt("rd.rent_id"));
         rd.setUserId(rs.getInt("rd.user_id"));
         rd.setCompanyCarId(rs.getInt("rd.company_car_id"));
-        rd.setStartDate(rs.getTimestamp("rd.start_date"));
-        rd.setEndDate(rs.getTimestamp("rd.end_date"));
+        rd.setStartDate(rs.getDate("rd.start_date"));
+        rd.setEndDate(rs.getDate("rd.end_date"));
         return rd;
     };  
 
@@ -50,8 +50,8 @@ public class RentDetailRepository {
         RentDetailRM rd = new RentDetailRM();
         rd.setRentId(rs.getInt("rd.rent_id"));
         rd.setUserId(rs.getInt("rd.user_id"));
-        rd.setStartDate(rs.getTimestamp("rd.start_date"));
-        rd.setEndDate(rs.getTimestamp("rd.end_date"));
+        rd.setStartDate(rs.getDate("rd.start_date"));
+        rd.setEndDate(rs.getDate("rd.end_date"));
 
         CompanyCarRM cc = new CompanyCarRM();
         cc.setCompanyId(rs.getInt("cc.company_id"));
@@ -97,7 +97,7 @@ public class RentDetailRepository {
 
         sqlBuilder.append(" WHERE ");
 
-        for (String property : properties.keySet()) {
+        for (String property : properties.keySet()) { // TO DO test this
             if (andNeeded) {
                 sqlBuilder.append(" AND ");
             }
@@ -105,8 +105,10 @@ public class RentDetailRepository {
             if (!property.equals("start_date") && !property.equals("end_date")) {
                 sqlBuilder.append(property).append(" = ?");
                 parameterValues.add(properties.get(property));
-            }
-            andNeeded = true;
+                andNeeded = true;
+            } else {
+                andNeeded = false;
+            }         
         }
 
         Object start = properties.get("start_date");
@@ -143,8 +145,8 @@ public class RentDetailRepository {
             
             jdbcTemplate.update((PreparedStatementCreator) connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql, new String[]{"rent_id"});
-                ps.setTimestamp(1, rentDetail.getStartDate());
-                ps.setTimestamp(2, rentDetail.getEndDate());
+                ps.setDate(1, (Date) rentDetail.getStartDate());
+                ps.setDate(2, (Date) rentDetail.getEndDate());
                 ps.setInt(3, rentDetail.getUserId());
                 ps.setInt(4, rentDetail.getCompanyCarId());
                 return ps;
