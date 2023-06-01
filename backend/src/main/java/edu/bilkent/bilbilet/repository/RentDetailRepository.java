@@ -74,13 +74,15 @@ public class RentDetailRepository {
         return rd;
     };
     
-    public List<Car> findAvailableCarsByProperties(Map<String, Object> properties) {
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Car ");
+    public List<RentDetailRM> findAvailableCarsByProperties(Map<String, Object> properties) {
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Car c INNER JOIN CompanyCar cc ON c.car_id = cc.car_id");
+        // sqlBuilder.append("INNER JOIN RentDetail rd ON rd.company_car_id = cc.company_car_id");
+
         List<Object> parameterValues = new ArrayList<>();
         boolean andNeeded = false;
 
         if (properties.isEmpty()) {
-            return jdbcTemplate.query(sqlBuilder.toString(), carRowMapper);
+            return jdbcTemplate.query(sqlBuilder.toString(), rentDetailDetailedRM);
         }
 
         sqlBuilder.append(" WHERE ");
@@ -89,38 +91,8 @@ public class RentDetailRepository {
             if (andNeeded) {
                 sqlBuilder.append(" AND ");
             }
-            sqlBuilder.append(property).append(" = ?");
-            parameterValues.add(properties.get(property));
-            andNeeded = true;
-        }
-        
-        String sql = sqlBuilder.toString();
-        
-        return jdbcTemplate.query(sql, new PreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps) throws SQLException {
-                for (int i = 0; i < parameterValues.size(); i++) {
-                    ps.setObject(i + 1, parameterValues.get(i));
-                }
-            }
-        }, carRowMapper); // check if empty
-    }
-    
-    public List<Car> findCarByProperties(Map<String, Object> properties) {
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Car ");
-        List<Object> parameterValues = new ArrayList<>();
-        boolean andNeeded = false;
 
-        if (properties.isEmpty()) {
-            return jdbcTemplate.query(sqlBuilder.toString(), carRowMapper);
-        }
-
-        sqlBuilder.append(" WHERE ");
-
-        for (String property : properties.keySet()) {
-            if (andNeeded) {
-                sqlBuilder.append(" AND ");
-            }
+            if (property.equals("start_date"))
             sqlBuilder.append(property).append(" = ?");
             parameterValues.add(properties.get(property));
             andNeeded = true;
@@ -164,31 +136,12 @@ public class RentDetailRepository {
         }        
     }
 
-    public List<Car> findRentDetailByTravller(int userId) {
-        String sql = "SELECT * FROM RentDetails WHERE user_id = ?";
+    public List<RentDetailRM> findRentDetailByTraveler(int userId) {
+        String sql = "SELECT * FROM RentDetails rd WHERE rd.user_id = ? "
+                   + "INNER JOIN CompanyCar cc ON rd.company_car_id = cc.company_car_id INNER JOIN Car c ON cc.car_id = c.car_id";
 
-        List<Car> cars = jdbcTemplate.query(sql, carRowMapper, userId);
+        List<RentDetailRM> rents = jdbcTemplate.query(sql, rentDetailDetailedRM, userId);
 
-        return cars;
-    }
-
-    public boolean carExistByModelAndBrandAndFuelType(String model, String brand, FuelType fuelType) {
-        try {
-            String sql = "SELECT COUNT(*) FROM Car WHERE model = ? AND brand = ? AND fuel_type = ?";
-            int count = jdbcTemplate.queryForObject(sql, Integer.class, model, brand, fuelType.toString());
-            return count > 0;
-        } catch (EmptyResultDataAccessException e) {
-            return false;
-        }
-    }
-
-    public boolean carExistById(int carId) {
-        try {
-            String sql = "SELECT COUNT(*) FROM Car WHERE car_id = ?";
-            int count = jdbcTemplate.queryForObject(sql, Integer.class, carId);
-            return count > 0;
-        } catch (EmptyResultDataAccessException e) {
-            return false;
-        }
+        return rents;
     }
 }
