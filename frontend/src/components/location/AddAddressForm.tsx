@@ -49,6 +49,7 @@ const AddAddressForm = ({ form }: AddressFormProps) => {
 				withCloseButton: true,
 				style: { backgroundColor: 'green' },
 			});
+			form.reset();
 		},
 		onError: () =>
 			notifications.show({

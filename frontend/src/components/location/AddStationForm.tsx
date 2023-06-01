@@ -1,11 +1,12 @@
 import { Card, Title, Flex, TextInput, Select } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
-import { useState } from 'react';
 import { primaryAccordionColor } from '../../constants/colors';
-import { isErrorResponse } from '../../utils/utils';
 import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
 import { AddStation, StationType } from '../../types/LocationTypes';
+import { useMutation } from '@tanstack/react-query';
+import { addStation } from '../../services/location';
+import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
 
 interface StationFormProps {
 	form: UseFormReturnType<
@@ -32,47 +33,47 @@ interface StationFormProps {
 	>;
 }
 const AddStationForm = ({ form }: StationFormProps) => {
+	const axiosSecure = useAxiosSecure();
 	//TODO: from enum
-	const stationTypes = ['Airport', 'Bus Terminal', 'Port', 'Etc.'];
+	const stationTypes = ['AIRPORT', 'BUS_TERMINAL', 'TRAIN_STATION', 'PORT', 'OTHER'];
 
-	//TODO: from backend get all cities available
-	const cities = ['Ankara', 'İstanbul'];
-	//TODO: from backend get all cities available
-	const countries = ['Turkey', 'Italy'];
-
+	const stationDetails: AddStation = {
+		...form.values,
+	};
 	// const { addStation } = useAddStation();
-
+	const { mutate: submitMutation, isLoading: isSubmitLoading } = useMutation({
+		mutationKey: ['addStation'],
+		mutationFn: () => addStation(axiosSecure, stationDetails),
+		onSuccess: () => {
+			//queryClient.invalidateQueries(['wishlist']);
+			notifications.show({
+				id: 'add-success',
+				title: 'Station Add Successful!',
+				message: 'You have successfully added a new station!',
+				autoClose: 5000,
+				withCloseButton: true,
+				style: { backgroundColor: 'green' },
+			});
+			form.reset();
+		},
+		onError: () =>
+			notifications.show({
+				id: 'add-fail',
+				title: 'Station Add failed!',
+				message: 'Hmmmmmmmm',
+				autoClose: 5000,
+				withCloseButton: true,
+				style: { backgroundColor: 'red' },
+			}),
+	});
 	const handleAddStation = async () => {
 		const validation = form.validate();
 		if (validation.hasErrors) {
 			return;
 		}
+
 		// Send add station request
-
-		const stationDetails: AddStation = {
-			...form.values,
-		};
-		// const res = await addStation(stationDetails);
-		// if (isErrorResponse(res)) {
-		// 	notifications.show({
-		// 		id: 'add-fail',
-		// 		title: 'Station Add failed!',
-		// 		message: res.msg,
-		// 		autoClose: 5000,
-		// 		withCloseButton: true,
-		// 		style: { backgroundColor: 'red' },
-		// 	});
-		// 	return;
-		// }
-
-		// notifications.show({
-		// 	id: 'add-success',
-		// 	title: 'Station Add Successful!',
-		// 	message: 'You have successfully added a new station!',
-		// 	autoClose: 5000,
-		// 	withCloseButton: true,
-		// 	style: { backgroundColor: 'green' },
-		// });
+		submitMutation();
 	};
 	return (
 		<Card padding={36} bg={primaryAccordionColor} withBorder radius="xl" shadow="xl">
@@ -96,15 +97,13 @@ const AddStationForm = ({ form }: StationFormProps) => {
 							label="Station Type"
 							{...form.getInputProps('stationType')}
 						/>
-						<Select
+						<TextInput
 							withAsterisk
-							data={cities}
 							label="City"
 							{...form.getInputProps('city')}
 						/>
-						<Select
+						<TextInput
 							withAsterisk
-							data={countries}
 							label="Country"
 							{...form.getInputProps('country')}
 						/>
@@ -113,6 +112,7 @@ const AddStationForm = ({ form }: StationFormProps) => {
 				<CustomElevatedButton
 					text={'Add Station'}
 					onClick={handleAddStation}
+					isLoading={isSubmitLoading}
 				></CustomElevatedButton>
 			</Flex>
 		</Card>
