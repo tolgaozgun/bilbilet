@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
+
+import edu.bilkent.bilbilet.model.Company;
+import edu.bilkent.bilbilet.request.CompanyRegister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -144,6 +147,34 @@ public class AccountService {
                 // System.out.println("user_id after register: " + accountRepository.findUserByEmail(user.getEmail()).get().getId());
                 return newUser;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public CompanyRegister addCompany(CompanyRegister companyRegister) throws Exception {
+        try {
+            // Check if user already exists by email
+            if (accountRepository.existsByEmail(companyRegister.getUser().getEmail())) {
+                throw new Exception("User already exists");
+            }
+
+            // Check if traveler already exists by user_id
+            if (accountRepository.findCompanyByUserId(companyRegister.getUser().getUserId()).isPresent()) {
+                throw new Exception("Company already exists");
+            }
+
+            // Add user
+            User newUser = addUser(companyRegister.getUser());
+
+            // Add Company
+            Optional<Company> optionalCompany = accountRepository.save(companyRegister.getCompany());
+            Company newCompany = optionalCompany.isPresent() ? optionalCompany.get() : null;
+
+            // Return both added user data and added traveler data
+            CompanyRegister result = new CompanyRegister(newUser, newCompany);
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
