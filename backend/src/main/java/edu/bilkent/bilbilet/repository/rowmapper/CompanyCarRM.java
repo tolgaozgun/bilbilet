@@ -19,10 +19,6 @@ public class CompanyCarRM {
     private int companyId;
 
     private Address address;
-    
-    private String country;
-
-    private String city;
 
     private String photoUrl;
     

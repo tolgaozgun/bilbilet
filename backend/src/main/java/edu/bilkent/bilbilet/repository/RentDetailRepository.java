@@ -87,6 +87,7 @@ public class RentDetailRepository {
 
         List<Object> parameterValues = new ArrayList<>();
         boolean andNeeded = false;
+        boolean and2Needed = false;
 
         if (properties.isEmpty()) {
             return jdbcTemplate.query(sqlBuilder.toString(), BilBiletRowMapper.COMPANY_CAR_MAPPED_RM);
@@ -103,6 +104,7 @@ public class RentDetailRepository {
                 sqlBuilder.append(property).append(" = ?");
                 parameterValues.add(properties.get(property));
                 andNeeded = true;
+                and2Needed = true;
             } else {
                 andNeeded = false;
             }         
@@ -113,9 +115,13 @@ public class RentDetailRepository {
 
         // if dates are provided add date search query to the end of the sql
         if (start != null && end != null) {
-            sqlBuilder.append(" AND cc.company_car_id NOT IN ( ")
-                      .append(" SELECT rd.company_car_id FROM RentDetail rd")
-                      .append(" WHERE (rd.start_date <= ? AND r.end_date >= ?))");
+            if (and2Needed) {
+                sqlBuilder.append(" AND ");
+            }
+
+            sqlBuilder.append("cc.company_car_id NOT IN ( ")
+                      .append("SELECT rd.company_car_id FROM RentDetail rd ")
+                      .append("WHERE (rd.start_date <= ? AND rd.end_date >= ?))");
             
             parameterValues.add(start);
             parameterValues.add(end);
@@ -142,16 +148,17 @@ public class RentDetailRepository {
             
             jdbcTemplate.update((PreparedStatementCreator) connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql, new String[]{"rent_id"});
-                ps.setDate(1, (Date) rentDetail.getStartDate());
-                ps.setDate(2, (Date) rentDetail.getEndDate());
+                ps.setDate(1, new Date(rentDetail.getStartDate().getTime()));
+                ps.setDate(2, new Date(rentDetail.getEndDate().getTime()));
                 ps.setInt(3, rentDetail.getUserId());
                 ps.setInt(4, rentDetail.getCompanyCarId());
                 return ps;
             }, keyHolder);
             
+            
             int generatedId = keyHolder.getKey().intValue();
             
-            rentDetail.setCompanyCarId(generatedId);
+            rentDetail.setRentId(generatedId);
             
             return rentDetail;
         } catch (Exception e) {

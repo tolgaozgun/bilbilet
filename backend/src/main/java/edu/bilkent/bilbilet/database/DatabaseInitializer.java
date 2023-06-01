@@ -26,7 +26,7 @@ public class DatabaseInitializer {
         try {
             ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), resource);
             ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), data);
-            ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), trigger);
+            // ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), trigger);
         } catch (ScriptException | SQLException e) {
             e.printStackTrace();
         }
