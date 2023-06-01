@@ -10,24 +10,17 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import edu.bilkent.bilbilet.model.JourneyPlan;
-import edu.bilkent.bilbilet.model.User;
 
 @Qualifier("journey_plan_repo")
 @Repository
 public class JourneyPlanRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    
-    @Autowired
-    private NamedParameterJdbcTemplate namedJdbcTemplate;
-
 
     private RowMapper<JourneyPlan> journeyPlanRowMapper = (rs, rowNum) -> {
         JourneyPlan jp = new JourneyPlan();

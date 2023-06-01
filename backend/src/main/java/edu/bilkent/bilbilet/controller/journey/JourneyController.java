@@ -40,6 +40,19 @@ public class JourneyController {
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "{id}")
+    public ResponseEntity<Object> deleteJourney(@Valid @PathVariable("id") String id) {
+        try {
+            Journey journey = journeyService.deleteJourney(Integer.parseInt(id));
+            return Response.create("Deleted journey successfully", HttpStatus.OK, journey);
+        } catch (EmptyResultDataAccessException e) {
+            return Response.create("Journey could not be found.", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.error(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "{id}")
     public ResponseEntity<Object> getJourneyDetailsByJourneyId(@Valid @PathVariable("id") String id) {
         try {
             Journey journey = journeyService.getJourney(Integer.parseInt(id));

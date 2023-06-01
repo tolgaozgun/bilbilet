@@ -34,9 +34,11 @@ public class JourneyService {
                 throw new Exception("Ticket is not available");
             }
 
-            // TODO: Check time conflict
+            int count = journeyRepository.getTimeConflictCountWithinJourneys(j);
+            if (count > 1) {
+                throw new TicketConflictException("Couldn't create the journey because it would result in a time conflict within your journey plan.");
+            }
 
-            // Failed for some reason -_-
             Optional<Journey> newJourney = journeyRepository.createJourney(j);
             if (!newJourney.isPresent()) {
                 throw new InsertionFailedException("Journey could not be created.");
@@ -66,7 +68,8 @@ public class JourneyService {
         }
     }
 
-    // public boolean timeConflictExists(int ticketId, int journeyPlanId) {
-
-    // }
+    public Journey deleteJourney(int journeyId) {
+        // TODO:
+        return new Journey();
+    }
 }

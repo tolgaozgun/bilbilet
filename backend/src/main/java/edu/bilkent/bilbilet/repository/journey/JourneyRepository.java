@@ -1,5 +1,6 @@
 package edu.bilkent.bilbilet.repository.journey;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,13 @@ public class JourneyRepository {
         journey.setJourneyPlanId(rs.getInt("journey_plan_id"));
         journey.setJourneyTitle(rs.getString("journey_title"));
         return journey;
+    };
+
+    private RowMapper<NewJourneyDepArrRM> journeyDepArrTimesRowMapper = (rs, rowNum) -> {
+        NewJourneyDepArrRM depArr = new NewJourneyDepArrRM();
+        depArr.setNewArrTime(rs.getTimestamp("new_arr_time"));
+        depArr.setNewDepTime(rs.getTimestamp("new_dep_time"));
+        return depArr;
     };
 
     public Optional<Journey> createJourney(Journey newJourney) throws DataAccessException {
@@ -83,12 +91,50 @@ public class JourneyRepository {
         }
     }
 
-    public List<Optional<Journey>> checkTimeConflictWithinJourneyPlan(Journey newJourney, int journeyPlanId) {
-        final int ticketId = newJourney.getTicketId();
-        String sql = "SELECT F1.departure_time AS new_dep_time, F1.estimated_arrival_time AS new_arr_time" +
-                    "FROM Ticket T JOIN Fare F1 ON T.fare_id = F1.fare_id" +
-                    "WHERE T.ticket_id = ?";
+    public Optional<NewJourneyDepArrRM> getJourneyAffiliatedTicketDepArr(Journey j) {
+        final int ticketId = j.getTicketId();
+        String GET_FARE_DEP_ARR_TIMES_QUERY = "SELECT F.departure_time AS new_dep_time, F.estimated_arrival_time AS new_arr_time" +
+                                            "FROM Ticket T JOIN Fare F ON T.fare_id = F.fare_id" +
+                                            "WHERE T.ticket_id = ?";
+        try{ 
+            NewJourneyDepArrRM depArr = jdbcTemplate.queryForObject(GET_FARE_DEP_ARR_TIMES_QUERY, journeyDepArrTimesRowMapper, ticketId);
+            
+            return Optional.of(depArr);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 
-        return new ArrayList<Optional<Journey>>();
+    public int getTimeConflictCountWithinJourneys(Journey newJourney) {
+        final int journeyPlanId = newJourney.getJourneyPlanId();
+        // journey_plan_id, dep_time, arr_time, dep_time, arr_time, dep_time, arr_time
+        String CHECK_TIME_CONFLICT_COUNT_QUERY = "SELECT COUNT(*) AS conflict_count" +
+                                                "FROM Journey j" +
+                                                "INNER JOIN Ticket t ON j.ticket_id = t.ticket_id" +
+                                                "INNER JOIN Fare f ON t.fare_id = f.fare_id"+
+                                                "WHERE j.journey_plan_id = ? "+
+                                                "AND ("+
+                                                        "(f.departure_time <= ? AND f.estimated_arrival_time >= ?) "+
+                                                        "OR (f.departure_time <= ? AND f.estimated_arrival_time >= ?) "+
+                                                        "OR (? <= f.departure_time AND ? >= f.estimated_arrival_time)"+
+                                                    ")";
+        try {
+            Optional<NewJourneyDepArrRM> depArr = getJourneyAffiliatedTicketDepArr(newJourney);
+            Timestamp dep_time = depArr.get().getNewDepTime();
+            Timestamp arr_time = depArr.get().getNewArrTime();
+            int conflictCount = jdbcTemplate.queryForObject(CHECK_TIME_CONFLICT_COUNT_QUERY, Integer.class, journeyPlanId, 
+                dep_time, arr_time,
+                dep_time, arr_time,
+                dep_time, arr_time);
+            return conflictCount;
+        } catch (EmptyResultDataAccessException e) {
+            return -1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 }
