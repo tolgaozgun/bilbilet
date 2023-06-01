@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class Address {
     @Id
     @NotNull
-    private int address_id;
+    private int addressId;
 
     @NotBlank
     private String country;
@@ -29,4 +29,5 @@ public class Address {
 
     @NotNull
     private BigDecimal longitude;
+
 }

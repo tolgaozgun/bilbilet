@@ -181,23 +181,26 @@ public class AccountService {
         }
     }
 
-    public TravelerRegister addTraveler(TravelerRegister travellerRegister) throws Exception {
+    public TravelerRegister addTraveler(TravelerRegister travelerRegister) throws Exception {
         try {
             // Check if user already exists by email
-            if (accountRepository.existsByEmail(travellerRegister.getUser().getEmail())) {
+            if (accountRepository.existsByEmail(travelerRegister.getUser().getEmail())) {
                 throw new Exception("user already exists");
             }
             
             // Check if traveler already exists by user_id
-            if (accountRepository.findTravelerByUserId(travellerRegister.getUser().getUserId()).isPresent()) {
+            if (accountRepository.findTravelerByUserId(travelerRegister.getUser().getUserId()).isPresent()) {
                 throw new Exception("traveler already exists");
             }
             
             // Add user
-            User newUser = addUser(travellerRegister.getUser());
+            User newUser = addUser(travelerRegister.getUser());
             
             // Add traveler
-            Optional<Traveler> optionalTraveler = accountRepository.save(travellerRegister.getTraveler());
+            Traveler travelerToAdd = travelerRegister.getTraveler();
+            travelerToAdd.setUser_id(newUser.getUserId());
+
+            Optional<Traveler> optionalTraveler = accountRepository.save(travelerToAdd);
             Traveler newTraveler = optionalTraveler.isPresent() ? optionalTraveler.get() : null;
 
             // Return both added user data and added traveler data
