@@ -9,6 +9,7 @@ export type AddStation = {
 	abbreviation: string;
 	stationType: StationType;
 	city: string;
+	country: string;
 };
 
 export type AddAddress = {
