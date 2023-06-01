@@ -6,6 +6,9 @@ import { primaryAccordionColor } from '../../constants/colors';
 import { isErrorResponse } from '../../utils/utils';
 import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
 import { AddAddress } from '../../types/LocationTypes';
+import { useMutation } from '@tanstack/react-query';
+import { addAddress } from '../../services/location';
+import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
 
 interface AddressFormProps {
 	form: UseFormReturnType<
@@ -29,37 +32,41 @@ interface AddressFormProps {
 	>;
 }
 const AddAddressForm = ({ form }: AddressFormProps) => {
+	const axiosSecure = useAxiosSecure();
+	const addressDetails: AddAddress = {
+		...form.values,
+	};
+	const { mutate: submitMutation, isLoading: isSubmitLoading } = useMutation({
+		mutationKey: ['submitAddress'],
+		mutationFn: () => addAddress(axiosSecure, addressDetails),
+		onSuccess: () => {
+			//queryClient.invalidateQueries(['address']);
+			notifications.show({
+				id: 'add-success',
+				title: 'Address Add Successful!',
+				message: 'You have successfully added a new address!',
+				autoClose: 5000,
+				withCloseButton: true,
+				style: { backgroundColor: 'green' },
+			});
+		},
+		onError: () =>
+			notifications.show({
+				id: 'add-fail',
+				title: 'Address Add failed!',
+				message: 'Hmmmmmm...',
+				autoClose: 5000,
+				withCloseButton: true,
+				style: { backgroundColor: 'red' },
+			}),
+	});
 	const handleAddAddress = async () => {
 		const validation = form.validate();
 		if (validation.hasErrors) {
 			return;
 		}
 		// Send add address request
-
-		const addressDetails: AddAddress = {
-			...form.values,
-		};
-		// const res = await addAddress(addressDetails);
-		// if (isErrorResponse(res)) {
-		// 	notifications.show({
-		// 		id: 'add-fail',
-		// 		title: 'Address Add failed!',
-		// 		message: res.msg,
-		// 		autoClose: 5000,
-		// 		withCloseButton: true,
-		// 		style: { backgroundColor: 'red' },
-		// 	});
-		// 	return;
-		// }
-
-		// notifications.show({
-		// 	id: 'add-success',
-		// 	title: 'Address Add Successful!',
-		// 	message: 'You have successfully added a new address!',
-		// 	autoClose: 5000,
-		// 	withCloseButton: true,
-		// 	style: { backgroundColor: 'green' },
-		// });
+		submitMutation();
 	};
 	return (
 		<Card padding={36} bg={primaryAccordionColor} withBorder radius="xl" shadow="xl">
@@ -95,6 +102,7 @@ const AddAddressForm = ({ form }: AddressFormProps) => {
 				<CustomElevatedButton
 					text={'Add Address'}
 					onClick={handleAddAddress}
+					isLoading={isSubmitLoading}
 				></CustomElevatedButton>
 			</Flex>
 		</Card>
