@@ -21,14 +21,17 @@ import edu.bilkent.bilbilet.exception.ExceptionLogger;
 import edu.bilkent.bilbilet.model.Car;
 import edu.bilkent.bilbilet.model.CarBrand;
 import edu.bilkent.bilbilet.model.CompanyCar;
+import edu.bilkent.bilbilet.model.RentDetail;
 import edu.bilkent.bilbilet.model.User;
 import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
+import edu.bilkent.bilbilet.repository.rowmapper.RentDetailRM;
 import edu.bilkent.bilbilet.request.TravelerRegister;
 import edu.bilkent.bilbilet.request.UserLogin;
 import edu.bilkent.bilbilet.response.RUserToken;
 import edu.bilkent.bilbilet.response.Response;
 import edu.bilkent.bilbilet.service.AccountService;
 import edu.bilkent.bilbilet.service.CarService;
+import edu.bilkent.bilbilet.service.RentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -37,5 +40,38 @@ import lombok.AllArgsConstructor;
 @RequestMapping("api/v1/rentCar")
 public class RentDetailController {
     
-    private final CarRentService CarRentService
+    private final RentService rentService;
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> rentCar(@Valid @RequestBody RentDetail rd) {
+        try {
+            RentDetail addedCar = rentService.rentCar(rd);
+            return Response.create("Car rent is successful", HttpStatus.OK, addedCar);
+        } catch (Exception e) {
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("")
+    public ResponseEntity<Object> findAvailableCars(@RequestParam Map<String, Object> requestParams) {
+        try {
+            List<CompanyCarRM> carList = rentService.findAvaliableCars(requestParams);
+            return Response.create("ok", HttpStatus.OK, carList);
+        } catch (Exception e) {
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("{userId}")
+    public ResponseEntity<Object> getUserRentList(@Valid @PathVariable("userId") int userId) {
+        try {
+            List<RentDetailRM> carList = rentService.getUserRentList(userId);
+            return Response.create("ok", HttpStatus.OK, carList);
+        } catch (Exception e) {
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
+    }
 }

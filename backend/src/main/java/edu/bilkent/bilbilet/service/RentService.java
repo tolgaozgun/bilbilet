@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import edu.bilkent.bilbilet.enums.FuelType;
 import edu.bilkent.bilbilet.enums.UserType;
 import edu.bilkent.bilbilet.exception.CarException;
+import edu.bilkent.bilbilet.exception.ItemNotFoundException;
 import edu.bilkent.bilbilet.exception.RentException;
 import edu.bilkent.bilbilet.model.Address;
 import edu.bilkent.bilbilet.model.Car;
@@ -31,6 +32,7 @@ import edu.bilkent.bilbilet.repository.CarRepository;
 import edu.bilkent.bilbilet.repository.CompanyCarRepository;
 import edu.bilkent.bilbilet.repository.RentDetailRepository;
 import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
+import edu.bilkent.bilbilet.repository.rowmapper.RentDetailRM;
 import edu.bilkent.bilbilet.request.AddCompanyCar;
 import edu.bilkent.bilbilet.request.TravelerRegister;
 import edu.bilkent.bilbilet.request.UserLogin;
@@ -51,6 +53,7 @@ public class RentService {
     private final CarBrandRepository carBrandRepository;
     private final AddressRepository addressRepository;
     private final RentDetailRepository rentDetailRepository;
+    private final AccountRepository accountRepository;
 
     public RentDetail rentCar(RentDetail rd) throws Exception {
         try {
@@ -90,6 +93,24 @@ public class RentService {
 
             return rentDetailRepository.findAvailableCarsByProperties(snakeParams); // TODO test // TODO check when start and end date is the same maybe change data type to date ????  
         } catch (RentException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public List<RentDetailRM> getUserRentList(int userId) throws Exception {
+        try {
+            // check if traveler exist
+            boolean travelerExist = accountRepository.travelerExistByUserId(userId);
+
+            if (!travelerExist) {
+                throw new ItemNotFoundException("User not found");
+            }
+
+            return rentDetailRepository.findRentDetailByTraveler(userId); // TODO test // TODO check when start and end date is the same maybe change data type to date ????  
+        } catch (ItemNotFoundException e) {
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
