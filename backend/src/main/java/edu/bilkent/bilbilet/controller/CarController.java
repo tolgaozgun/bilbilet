@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.bilkent.bilbilet.model.Car;
 import edu.bilkent.bilbilet.model.CarBrand;
-import edu.bilkent.bilbilet.model.CompanyCar;
 import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
 import edu.bilkent.bilbilet.request.AddCompanyCar;
 import edu.bilkent.bilbilet.response.Response;
@@ -66,10 +65,21 @@ public class CarController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping("{companyId}")
+    @GetMapping("company/{companyId}")
     public ResponseEntity<Object> getCompanyCars(@Valid @PathVariable("companyId") int companyId) {
         try {
             List<CompanyCarRM> companyCarList = carService.findAllCompanyCar(companyId);
+            return Response.create("ok", HttpStatus.OK, companyCarList);
+        } catch (Exception e) {
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("{companyCarId}")
+    public ResponseEntity<Object> getCompanyCarById(@Valid @PathVariable("companyCarId") int companyCarId) {
+        try {
+            List<CompanyCarRM> companyCarList = carService.findAllCompanyCar(companyCarId);
             return Response.create("ok", HttpStatus.OK, companyCarList);
         } catch (Exception e) {
             return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
