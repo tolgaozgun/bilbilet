@@ -1,12 +1,13 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ProviderWrapper from './components/common/other/ProviderWrapper';
 import './index.css';
 import Layout from './layout';
 import SearchFarePage from './pages/fare/SearchFarePage';
 import AddHotelPage from './pages/hotel/AddHotelPage';
+import AddAddressPage from './pages/location/AddAddressPage';
 import AddStationPage from './pages/location/AddStationPage';
 import LoginPage from './pages/login/LoginPage';
 import RegisterPage from './pages/login/RegisterPage';
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
 					{
 						path: '/add-station',
 						element: <AddStationPage />,
+					},
+					{
+						path: '/add-address',
+						element: <AddAddressPage />,
 					},
 				],
 			},

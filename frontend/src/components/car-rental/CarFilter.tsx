@@ -1,5 +1,11 @@
 import { Accordion, Box, Checkbox, Flex, MultiSelect, RangeSlider } from '@mantine/core';
+<<<<<<< HEAD
 import CustomAccordionItem from '../common/other/CustomAccordionItem';
+=======
+import CustomAccordionItem from '../common/CustomAccordionItem';
+import { IconZoomIn } from '@tabler/icons-react';
+import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
+>>>>>>> dev
 const marks = [
 	{ value: 0, label: '0 TRY' },
 	{ value: 10000, label: '10000 TRY' },
@@ -47,6 +53,13 @@ const CarFilter = () => {
 					/>
 				</CustomAccordionItem>
 			</Accordion>
+<<<<<<< HEAD
+=======
+			<CustomElevatedButton
+				text={'Filter'}
+				leftIcon={<IconZoomIn></IconZoomIn>}
+			></CustomElevatedButton>
+>>>>>>> dev
 		</Box>
 	);
 };

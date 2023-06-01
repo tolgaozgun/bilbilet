@@ -3,10 +3,10 @@ import { refresh as refreshFn } from '../../services/auth';
 import { isErrorResponse } from '../../utils/utils';
 import useAxiosSecure from './useAxiosSecure';
 import { useUser } from './useUser';
+import { axiosSecure } from '../../services/axios';
 
 export const useRefresh = () => {
 	const user = useUser();
-	const axiosSecure = useAxiosSecure();
 
 	const refresh = async () => {
 		if (!user) {

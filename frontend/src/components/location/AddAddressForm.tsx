@@ -1,55 +1,50 @@
-import { Card, Title, Flex, TextInput, Select } from '@mantine/core';
+import { Card, Title, Flex, TextInput, Select, NumberInput } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import { useState } from 'react';
 import { primaryAccordionColor } from '../../constants/colors';
+import { isErrorResponse } from '../../utils/utils';
 import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
-import { AddStation, StationType } from '../../types/LocationTypes';
+import { AddAddress } from '../../types/LocationTypes';
 import { useMutation } from '@tanstack/react-query';
-import { addStation } from '../../services/location';
+import { addAddress } from '../../services/location';
 import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
 
-interface StationFormProps {
+interface AddressFormProps {
 	form: UseFormReturnType<
 		{
-			title: string;
-			abbreviation: string;
-			stationType: StationType;
 			city: string;
 			country: string;
+			longitude: number;
+			latitude: number;
 		},
 		(values: {
-			title: string;
-			abbreviation: string;
-			stationType: StationType;
 			city: string;
 			country: string;
+			longitude: number;
+			latitude: number;
 		}) => {
-			title: string;
-			abbreviation: string;
-			stationType: StationType;
 			city: string;
 			country: string;
+			longitude: number;
+			latitude: number;
 		}
 	>;
 }
-const AddStationForm = ({ form }: StationFormProps) => {
+const AddAddressForm = ({ form }: AddressFormProps) => {
 	const axiosSecure = useAxiosSecure();
-	//TODO: from enum
-	const stationTypes = ['AIRPORT', 'BUS_TERMINAL', 'TRAIN_STATION', 'PORT', 'OTHER'];
-
-	const stationDetails: AddStation = {
+	const addressDetails: AddAddress = {
 		...form.values,
 	};
-	// const { addStation } = useAddStation();
 	const { mutate: submitMutation, isLoading: isSubmitLoading } = useMutation({
-		mutationKey: ['addStation'],
-		mutationFn: () => addStation(axiosSecure, stationDetails),
+		mutationKey: ['submitAddress'],
+		mutationFn: () => addAddress(axiosSecure, addressDetails),
 		onSuccess: () => {
-			//queryClient.invalidateQueries(['wishlist']);
+			//queryClient.invalidateQueries(['address']);
 			notifications.show({
 				id: 'add-success',
-				title: 'Station Add Successful!',
-				message: 'You have successfully added a new station!',
+				title: 'Address Add Successful!',
+				message: 'You have successfully added a new address!',
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'green' },
@@ -59,44 +54,27 @@ const AddStationForm = ({ form }: StationFormProps) => {
 		onError: () =>
 			notifications.show({
 				id: 'add-fail',
-				title: 'Station Add failed!',
-				message: 'Hmmmmmmmm',
+				title: 'Address Add failed!',
+				message: 'Hmmmmmm...',
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },
 			}),
 	});
-	const handleAddStation = async () => {
+	const handleAddAddress = async () => {
 		const validation = form.validate();
 		if (validation.hasErrors) {
 			return;
 		}
-
-		// Send add station request
+		// Send add address request
 		submitMutation();
 	};
 	return (
 		<Card padding={36} bg={primaryAccordionColor} withBorder radius="xl" shadow="xl">
-			<Title>Add A New Station</Title>
+			<Title>Add A New Address</Title>
 			<Flex direction={'column'} gap={'xs'}>
 				<form>
 					<Flex direction={'column'} gap={'xs'}>
-						<TextInput
-							withAsterisk
-							label="Title"
-							{...form.getInputProps('title')}
-						/>
-						<TextInput
-							withAsterisk
-							label="Abbreviation"
-							{...form.getInputProps('abbreviation')}
-						/>
-						<Select
-							withAsterisk
-							data={stationTypes}
-							label="Station Type"
-							{...form.getInputProps('stationType')}
-						/>
 						<TextInput
 							withAsterisk
 							label="City"
@@ -107,11 +85,24 @@ const AddStationForm = ({ form }: StationFormProps) => {
 							label="Country"
 							{...form.getInputProps('country')}
 						/>
+						<NumberInput
+							withAsterisk
+							label="Longitude"
+							min={0}
+							{...form.getInputProps('longitude')}
+						/>
+						<NumberInput
+							withAsterisk
+							label="Latitude"
+							type="number"
+							min={0}
+							{...form.getInputProps('latitude')}
+						/>
 					</Flex>
 				</form>
 				<CustomElevatedButton
-					text={'Add Station'}
-					onClick={handleAddStation}
+					text={'Add Address'}
+					onClick={handleAddAddress}
 					isLoading={isSubmitLoading}
 				></CustomElevatedButton>
 			</Flex>
@@ -119,4 +110,4 @@ const AddStationForm = ({ form }: StationFormProps) => {
 	);
 };
 
-export default AddStationForm;
+export default AddAddressForm;

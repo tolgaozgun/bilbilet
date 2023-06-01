@@ -5,10 +5,21 @@ interface CustomElevatedButtonProps {
 	text: string;
 	leftIcon?: React.ReactNode | undefined;
 	onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+	isLoading?: boolean | undefined;
 }
-const CustomElevatedButton = ({ text, leftIcon, onClick }: CustomElevatedButtonProps) => {
+const CustomElevatedButton = ({
+	text,
+	leftIcon,
+	onClick,
+	isLoading,
+}: CustomElevatedButtonProps) => {
 	return (
-		<Button leftIcon={leftIcon} onClick={onClick} bg={primaryButtonColor}>
+		<Button
+			loading={isLoading}
+			leftIcon={leftIcon}
+			onClick={onClick}
+			bg={primaryButtonColor}
+		>
 			{text}
 		</Button>
 	);

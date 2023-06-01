@@ -9,4 +9,15 @@ export type AddStation = {
 	abbreviation: string;
 	stationType: StationType;
 	city: string;
+	country: string;
+};
+
+export type AddAddress = {
+	city: string;
+	country: string;
+	longitude: number;
+	latitude: number;
+};
+export type Address = AddAddress & {
+	addressId: number;
 };
