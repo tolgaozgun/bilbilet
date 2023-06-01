@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +40,7 @@ public class JourneyController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(path = "{id}")
+    @DeleteMapping(path = "{id}")
     public ResponseEntity<Object> deleteJourney(@Valid @PathVariable("id") String id) {
         try {
             Journey journey = journeyService.deleteJourney(Integer.parseInt(id));
@@ -54,6 +55,19 @@ public class JourneyController {
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping(path = "{id}")
     public ResponseEntity<Object> getJourneyDetailsByJourneyId(@Valid @PathVariable("id") String id) {
+        try {
+            Journey journey = journeyService.getJourney(Integer.parseInt(id));
+            return Response.create("Accessed journey successfully", HttpStatus.OK, journey);
+        } catch (EmptyResultDataAccessException e) {
+            return Response.create("Journey could not be found.", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.error(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "/journeyPlan/{id}")
+    public ResponseEntity<Object> getJourneysOfJourneyPlan(@Valid @PathVariable("id") String id) {
         try {
             Journey journey = journeyService.getJourney(Integer.parseInt(id));
             return Response.create("Accessed journey successfully", HttpStatus.OK, journey);

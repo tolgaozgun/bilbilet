@@ -2,10 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import ProviderWrapper from './components/common/ProviderWrapper';
+import ProviderWrapper from './components/common/other/ProviderWrapper';
 import './index.css';
 import Layout from './layout';
 import SearchFarePage from './pages/fare/SearchFarePage';
+import AddHotelPage from './pages/hotel/AddHotelPage';
+import AddStationPage from './pages/location/AddStationPage';
 import LoginPage from './pages/login/LoginPage';
 import RegisterPage from './pages/login/RegisterPage';
 import PurchaseFailed from './pages/purchase-ticket/PurchaseFailed';
@@ -13,10 +15,8 @@ import PurchaseSucceeded from './pages/purchase-ticket/PurchaseSucceeded';
 import PurchaseTicketPage from './pages/purchase-ticket/PurchaseTicketPage';
 import AddCarPage from './pages/rent-car/AddCarPage';
 import SearchRentCarPage from './pages/rent-car/SearchRentCarPage';
-import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
-import AddHotelPage from './pages/hotel/AddHotelPage';
 import ReviewPage from './pages/review/ReviewPage';
-import AddStationPage from './pages/location/AddStationPage';
+import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
 
 const router = createBrowserRouter([
 	{

@@ -16,6 +16,9 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import edu.bilkent.bilbilet.model.Journey;
+import edu.bilkent.bilbilet.repository.journey.dto.JourneyWithDetails;
+import edu.bilkent.bilbilet.repository.journey.dto.NewJourneyDepArrRM;
+
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
 @Qualifier("journey_repo")
@@ -42,7 +45,6 @@ public class JourneyRepository {
         depArr.setNewDepTime(rs.getTimestamp("new_dep_time"));
         return depArr;
     };
-
     public Optional<Journey> createJourney(Journey newJourney) throws DataAccessException {
         String sql = "INSERT INTO Journey (journey_title, journey_plan_id, ticket_id) VALUES (?, ?, ?)";
 

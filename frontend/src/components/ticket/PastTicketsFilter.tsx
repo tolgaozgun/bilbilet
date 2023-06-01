@@ -1,7 +1,7 @@
 import { Accordion, Box, Checkbox, Flex, MultiSelect } from '@mantine/core';
-import CustomAccordionItem from '../common/CustomAccordionItem';
-import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
 import { IconZoomCheck, IconZoomFilled, IconZoomIn } from '@tabler/icons-react';
+import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
+import CustomAccordionItem from '../common/other/CustomAccordionItem';
 
 const PastTicketsFilter = () => {
 	return (

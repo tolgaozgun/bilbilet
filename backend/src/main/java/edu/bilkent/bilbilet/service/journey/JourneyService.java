@@ -68,6 +68,23 @@ public class JourneyService {
         }
     }
 
+    // public List<Journey> getJourneys(int journeyPlanId) {
+    //     try {
+    //         Optional<Journey> journey = journeyRepository.getJourneys(journeyPlanId);
+    //         if (!journey.isPresent()) {
+    //             throw new ItemNotFoundException("Journey details cannot be found.");
+    //         }
+    
+    //         return journey.get();
+    //     } catch (EmptyResultDataAccessException e) {
+    //         e.printStackTrace();
+    //         throw e;
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         throw e;
+    //     }
+    // }
+
     public Journey deleteJourney(int journeyId) {
         // TODO:
         return new Journey();

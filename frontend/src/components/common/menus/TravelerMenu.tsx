@@ -2,6 +2,7 @@ import { Group, Menu } from '@mantine/core';
 import {
 	IconBackpack,
 	IconListDetails,
+	IconLogout,
 	IconSearch,
 	IconTicket,
 	IconUserCircle,
@@ -67,6 +68,16 @@ const TravelerMenu = () => {
 							leftIcon={<IconBackpack />}
 						>
 							Journey Planner
+						</SubtleLinkButton>
+					</Menu.Item>
+					<Menu.Item>
+						<SubtleLinkButton
+							to="/traveler/journey-planner"
+							size="sm"
+							leftIcon={<IconLogout />}
+							color="red"
+						>
+							Log out
 						</SubtleLinkButton>
 					</Menu.Item>
 				</Menu.Dropdown>

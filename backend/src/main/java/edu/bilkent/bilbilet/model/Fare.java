@@ -36,5 +36,4 @@ public class Fare {
 
 	@NotNull
 	private int arriveStatId;
-
 }

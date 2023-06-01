@@ -1,4 +1,4 @@
-package edu.bilkent.bilbilet.repository.journey;
+package edu.bilkent.bilbilet.repository.journey.dto;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
