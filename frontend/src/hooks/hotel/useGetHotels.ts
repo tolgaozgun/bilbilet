@@ -1,10 +1,11 @@
+import { AxiosInstance } from 'axios';
 import { getHotels } from '../../services/hotel';
 import { useQuery } from '@tanstack/react-query';
 
-const useGetHotels = (location: string) => {
+const useGetHotels = (axiosSecure: AxiosInstance, city: string, country: string) => {
 	return useQuery({
 		queryKey: ['getHotels'],
-		queryFn: () => getHotels(location),
+		queryFn: () => getHotels(axiosSecure, city, country),
 	});
 };
 
