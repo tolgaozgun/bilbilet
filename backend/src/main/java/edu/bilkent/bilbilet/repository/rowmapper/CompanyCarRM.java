@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 
 import edu.bilkent.bilbilet.model.Address;
 import edu.bilkent.bilbilet.model.Car;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

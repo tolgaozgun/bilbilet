@@ -1,16 +1,10 @@
 package edu.bilkent.bilbilet.service;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import edu.bilkent.bilbilet.enums.UserType;
 import edu.bilkent.bilbilet.model.Traveler;
 import edu.bilkent.bilbilet.model.User;
 import edu.bilkent.bilbilet.repository.AccountRepository;

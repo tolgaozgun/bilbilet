@@ -1,41 +1,20 @@
 package edu.bilkent.bilbilet.service;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import edu.bilkent.bilbilet.enums.FuelType;
-import edu.bilkent.bilbilet.enums.UserType;
 import edu.bilkent.bilbilet.exception.CarException;
 import edu.bilkent.bilbilet.model.Address;
 import edu.bilkent.bilbilet.model.Car;
 import edu.bilkent.bilbilet.model.CarBrand;
-import edu.bilkent.bilbilet.model.CompanyCar;
-import edu.bilkent.bilbilet.model.Traveler;
-import edu.bilkent.bilbilet.model.User;
-import edu.bilkent.bilbilet.repository.AccountRepository;
 import edu.bilkent.bilbilet.repository.AddressRepository;
 import edu.bilkent.bilbilet.repository.CarBrandRepository;
 import edu.bilkent.bilbilet.repository.CarRepository;
 import edu.bilkent.bilbilet.repository.CompanyCarRepository;
 import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
 import edu.bilkent.bilbilet.request.AddCompanyCar;
-import edu.bilkent.bilbilet.request.TravelerRegister;
-import edu.bilkent.bilbilet.request.UserLogin;
-import edu.bilkent.bilbilet.response.RRefreshToken;
-import edu.bilkent.bilbilet.response.RUserToken;
-import edu.bilkent.bilbilet.security.JWTFilter;
-import edu.bilkent.bilbilet.security.JWTUserService;
-import edu.bilkent.bilbilet.security.JWTUtils;
 import edu.bilkent.bilbilet.utils.Utils;
 import lombok.RequiredArgsConstructor;
 
@@ -115,6 +94,16 @@ public class CarService {
             }
 
             return companyCarRepository.findByCompanyId(companyId);  
+        } catch (Exception e) {
+            System.out.println("Car cannot be fetched");
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public List<CompanyCarRM> findCompanyCarById(int companyCarId) throws Exception {
+        try {
+            return companyCarRepository.findByCompanyCarId(companyCarId);  
         } catch (Exception e) {
             System.out.println("Car cannot be fetched");
             e.printStackTrace();

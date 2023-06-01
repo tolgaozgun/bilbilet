@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 @Component
@@ -23,7 +22,6 @@ public class DatabaseInitializer {
         ClassPathResource resource = new ClassPathResource("sql/init.sql");
         ClassPathResource data = new ClassPathResource("sql/data.sql");
         ClassPathResource trigger = new ClassPathResource("sql/triggers.sql");
-        String sqlScript = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
 
         try {
             ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), resource);

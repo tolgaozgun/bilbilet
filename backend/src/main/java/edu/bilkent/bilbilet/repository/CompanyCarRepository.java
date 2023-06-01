@@ -3,27 +3,14 @@ package edu.bilkent.bilbilet.repository;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import edu.bilkent.bilbilet.enums.FuelType;
-import edu.bilkent.bilbilet.enums.GearType;
-import edu.bilkent.bilbilet.model.Address;
-import edu.bilkent.bilbilet.model.Car;
-import edu.bilkent.bilbilet.model.CarCategoryType;
 import edu.bilkent.bilbilet.model.CompanyCar;
 import edu.bilkent.bilbilet.repository.rowmapper.BilBiletRowMapper;
 import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
@@ -105,6 +92,11 @@ public class CompanyCarRepository {
     public List<CompanyCarRM> findByCompanyId(int companyId) {
         String sql = "SELECT * FROM CompanyCar cc INNER JOIN Car c ON c.car_id = cc.car_id INNER JOIN Address a ON a.address_id = cc.address_id WHERE cc.company_id = ?";
         return jdbcTemplate.query(sql, BilBiletRowMapper.COMPANY_CAR_MAPPED_RM, companyId);
+    }
+
+    public List<CompanyCarRM> findByCompanyCarId(int companyCarId) {
+        String sql = "SELECT * FROM CompanyCar cc INNER JOIN Car c ON c.car_id = cc.car_id INNER JOIN Address a ON a.address_id = cc.address_id WHERE cc.company_car_id = ?";
+        return jdbcTemplate.query(sql, BilBiletRowMapper.COMPANY_CAR_MAPPED_RM, companyCarId);
     }
 
     public boolean existByCompanyCarId(int companyCarId) {
