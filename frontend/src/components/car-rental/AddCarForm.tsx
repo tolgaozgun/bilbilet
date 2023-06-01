@@ -58,18 +58,6 @@ const AddCarForm = ({ form }: AddCarFormProps) => {
 		isLoading: isCarBrandsLoading,
 		isError: isCarBrandsError,
 	} = useGetBrands(axiosSecure);
-
-	if (isCarBrandsLoading || isCarBrandsError || !allCarBrands) {
-		return <Flex></Flex>;
-	}
-
-	const carBrandList = allCarBrands.data!.map((brand) => {
-		return brand.brand;
-	});
-	const carDetails: Car = {
-		...form.values,
-		carId: 0,
-	};
 	const { mutate: submitMutation, isLoading: isSubmitLoading } = useMutation({
 		mutationKey: ['addCar'],
 		mutationFn: () => addCar(axiosSecure, carDetails),
@@ -95,6 +83,18 @@ const AddCarForm = ({ form }: AddCarFormProps) => {
 				style: { backgroundColor: 'red' },
 			}),
 	});
+	if (isCarBrandsLoading || isCarBrandsError || !allCarBrands) {
+		return <Flex></Flex>;
+	}
+
+	const carBrandList = allCarBrands.data!.map((brand) => {
+		return brand.brand;
+	});
+	const carDetails: Car = {
+		...form.values,
+		carId: 0,
+	};
+
 	const handleAddCar = async () => {
 		const validation = form.validate();
 		if (validation.hasErrors) {
