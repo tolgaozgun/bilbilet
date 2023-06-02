@@ -1,4 +1,4 @@
-import { Card, Center, Flex, Tabs, Title } from '@mantine/core';
+import { Card, Center, Flex, SelectItem, Tabs, Title } from '@mantine/core';
 import { IconBus, IconPlane, IconBuilding } from '@tabler/icons-react';
 import PlaneSearchBar from '../../components/fare/PlaneSearchbar';
 import FareInfoCard from '../../components/fare/FareInfoCard';
@@ -10,19 +10,47 @@ import HotelFilter from '../../components/hotel/HotelFilter';
 import HotelInfoCard from '../../components/hotel/HotelInfoCard';
 import useGetHotels from '../../hooks/hotel/useGetHotels';
 import { Hotel } from '../../types/HotelTypes';
+import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
+import useGetStations from '../../hooks/location/useGetStations';
+import { Station } from '../../types/LocationTypes';
 
 const SearchFarePage = () => {
-	// const {
-	// 	data: allHotels,
-	// 	isLoading: isHotelsLoading,
-	// 	isError: isHotelsError,
-	// } = useGetHotels('location');
+	const axiosSecure = useAxiosSecure();
+	//TODO: search
+	const {
+		data: allHotels,
+		isLoading: isHotelsLoading,
+		isError: isHotelsError,
+	} = useGetHotels(axiosSecure, 'Ankara', 'Turkey');
 
-	// if (isHotelsLoading || isHotelsError || !allHotels) {
-	// 	return <Flex></Flex>;
-	// }
-	// const hotelList: Array<Hotel> = allHotels.data!;
-	// const hotelListCards = hotelList.map((hotel) => <HotelInfoCard hotel={hotel} />);
+	const {
+		data: allStations,
+		isLoading: isStationsLoading,
+		isError: isStationsError,
+	} = useGetStations(axiosSecure);
+
+	if (
+		isHotelsLoading ||
+		isHotelsError ||
+		!allHotels ||
+		isStationsLoading ||
+		isStationsError ||
+		!allStations
+	) {
+		return <Flex></Flex>;
+	}
+	const hotelList: Array<Hotel> = allHotels.data!;
+	const hotelListCards = hotelList.map((hotel) => <HotelInfoCard hotel={hotel} />);
+
+	const stationList: Array<Station> = allStations.data!;
+	const stationData: Array<SelectItem> = stationList!.map((station) => {
+		return {
+			stationType: station.stationType,
+			label: station.title,
+			value: station.title,
+			description: station.city,
+		};
+	});
 	return (
 		<Center>
 			<Tabs defaultValue="flight">
@@ -49,7 +77,7 @@ const SearchFarePage = () => {
 					>
 						<Flex direction={'column'} align={'start'} gap={'xl'}>
 							<Title>Buy Ticket</Title>
-							<PlaneSearchBar></PlaneSearchBar>
+							<PlaneSearchBar stationList={stationData}></PlaneSearchBar>
 							<Flex direction={'row'} gap={'xl'}>
 								<PlaneFilter></PlaneFilter>
 								<Flex direction={'column'} gap={'xl'}>
@@ -81,7 +109,7 @@ const SearchFarePage = () => {
 					>
 						<Flex direction={'column'} align={'start'} gap={'xl'}>
 							<Title>Buy Ticket</Title>
-							<BusSearchBar></BusSearchBar>
+							<BusSearchBar stationList={stationData}></BusSearchBar>
 							<Flex direction={'row'} gap={'xl'}>
 								<BusFilter></BusFilter>
 								<Flex direction={'column'} gap={'xl'}>
@@ -119,7 +147,7 @@ const SearchFarePage = () => {
 							<Flex direction={'row'} gap={'xl'}>
 								<HotelFilter></HotelFilter>
 								<Flex direction={'column'} gap={'xl'}>
-									{/* {hotelListCards} */}
+									{hotelListCards}
 								</Flex>
 							</Flex>
 						</Flex>

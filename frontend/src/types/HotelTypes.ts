@@ -1,15 +1,17 @@
-export type AddHotel = {
+export type Hotel = {
 	name: string;
 	avgPrice: number;
 	telephone: string;
 	websiteUrl: string;
 	coverPhotoUrl: string;
 	photoUrl: string;
-	country: string;
-	city: string;
 	rating: number;
+	hotelId: number;
+	addressId: number;
 };
 
-export type Hotel = AddHotel & {
-	hotel_id: number;
+export type AddHotel = {
+	hotel: Hotel;
+	city: string;
+	country: string;
 };
