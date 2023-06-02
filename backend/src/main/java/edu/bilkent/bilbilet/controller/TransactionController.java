@@ -89,6 +89,17 @@ public class TransactionController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path ="transfer")
+    public ResponseEntity<Object> transferFunds(@Valid @RequestBody TransferFunds transfer) {
+        try {
+            Transaction createdTransaction = transactionService.transferFunds(transfer);
+            return Response.create("Withdrew funds successfully", HttpStatus.OK, createdTransaction);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping("sender/{senderId}")
     public ResponseEntity<Object> getTransactionsBySenderId(@PathVariable int senderId) {
         try {

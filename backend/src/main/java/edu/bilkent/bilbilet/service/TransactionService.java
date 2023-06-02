@@ -135,6 +135,51 @@ public class TransactionService {
 
     }
 
+    public Transaction transferFunds(TransferFunds transferFunds) throws Exception{
+        try {
+            int senderId = transferFunds.getSenderId();
+            int receiverId = transferFunds.getReceiverId();
+
+            Optional<Traveler> optionalSender = accountRepository.findTravelerByUserId(senderId);
+            Optional<Traveler> optionalReceiver = accountRepository.findTravelerByUserId(receiverId);
+
+            if (optionalSender.isEmpty()) {
+                throw new IllegalArgumentException("Invalid traveler id for sender");
+            }
+
+            if (optionalReceiver.isEmpty()) {
+                throw new IllegalArgumentException("Invalid traveler id for receiver");
+            }
+
+            Traveler sender = optionalSender.get();
+            Traveler receiver = optionalReceiver.get();
+
+            BigDecimal amount = transferFunds.getAmount();
+
+            if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+                throw new IllegalArgumentException("Amount cannot be lower than 0!");
+            }
+
+            if (sender.getBalance().compareTo(amount) < 0) {
+                throw new IllegalArgumentException("Insufficient funds!");
+            }
+
+            accountRepository.decrementTravelerBalance(senderId, amount);
+            accountRepository.incrementTravelerBalance(receiverId, amount);
+
+            Transaction transaction = new Transaction();
+            transaction.setTransaction_type(TransactionType.TRANSFER);
+            transaction.setTransaction_amount(amount);
+            transaction.setSender_id(senderId);
+            transaction.setReceiver_id(receiverId);
+            return transactionRepository.save(transaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
     public Transaction cardPayment(CardPayment cardPayment) throws Exception {
         try {
             CreditCard creditCard = cardPayment.getCreditCard();
