@@ -1,5 +1,16 @@
-import { Button, Card, Stack, Text, TextInput } from '@mantine/core';
+import {
+	Button,
+	Card,
+	Center,
+	Divider,
+	Modal,
+	Stack,
+	Text,
+	TextInput,
+	Title,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import UploadToBalanceWithCCForm from '../../components/payment/transaction/UploadToBalanceWithCCForm';
 import { useUser } from '../../hooks/auth';
@@ -10,6 +21,7 @@ import { isErrorResponse } from '../../utils/utils';
 import LoadingPage from '../LoadingPage';
 
 const TravelerProfilePage = () => {
+	const [opened, { open, close }] = useDisclosure(false);
 	const axiosSecure = useAxiosSecure();
 	const user = useUser();
 	const {
@@ -17,6 +29,7 @@ const TravelerProfilePage = () => {
 		isError,
 		data: travelerResponse,
 	} = useTraveler(axiosSecure, user?.id!);
+	const traveler = travelerResponse?.data;
 
 	if (isLoading) {
 		return <LoadingPage />;
@@ -31,42 +44,44 @@ const TravelerProfilePage = () => {
 		return <div></div>; // TODO: error page
 	}
 
-	const traveler = travelerResponse.data;
-	const form = useForm({
-		initialValues: {
-			fullName: `${traveler?.user.name} + ${traveler?.user.surname}`,
-			email: traveler?.user.email,
-			telephone: traveler?.user.telephone,
-			userType: traveler?.userType,
-		},
-		validate: {
-			fullName: (value) =>
-				value === '' ? 'This field cannot be left empty' : null,
-			email: (value) => (value === '' ? 'This field cannot be left empty' : null),
-			telephone: (value) =>
-				value === '' ? 'This field cannot be left empty' : null,
-			userType: (value) =>
-				value === undefined ? 'This field cannot be left empty' : null,
-		},
-	});
-
 	return (
-		<Card>
-			<Stack spacing={10}>
-				<TextInput label="Full Name" {...form.getInputProps('fullName')} />
-				<TextInput label="Email" {...form.getInputProps('email')} />
-				<TextInput label="Phone" {...form.getInputProps('telephone')} />
-				<TextInput label="User Type" {...form.getInputProps('userTypes')} />
-				<Button>Update</Button>
+		<>
+			<Center>
 				<Card>
-					<Text>
-						<Text fw={700}> Balance: </Text>
-						{traveler?.traveler.balance}
-					</Text>
-					<UploadToBalanceWithCCForm />
+					<Title order={3}>Profile details</Title>
+					<Stack spacing="lg">
+						<Text>
+							<Text fw={700}> Full Name: </Text>
+							{`${traveler?.user.name} ${traveler?.user.surname}`}
+						</Text>
+						<Text>
+							<Text fw={700}> Email: </Text>
+							{traveler?.user.email}
+						</Text>
+						<Text>
+							<Text fw={700}> Phone: </Text>
+							{traveler?.user.telephone}
+						</Text>
+						<Divider />
+						<Title order={3}>Balance Details</Title>
+						<Card>
+							<Stack>
+								<Text>
+									<Text fw={700}> Balance: </Text>
+									{traveler?.traveler.balance}
+								</Text>
+								<Button onClick={open}>
+									Upload money to your balance
+								</Button>
+							</Stack>
+						</Card>
+					</Stack>
 				</Card>
-			</Stack>
-		</Card>
+			</Center>
+			<Modal opened={opened} onClose={close}>
+				<UploadToBalanceWithCCForm />
+			</Modal>
+		</>
 	);
 };
 
