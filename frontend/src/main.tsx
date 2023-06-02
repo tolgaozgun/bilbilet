@@ -1,10 +1,17 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import ProviderWrapper from './components/common/ProviderWrapper';
+import ProviderWrapper from './components/common/other/ProviderWrapper';
+import JourneyList from './components/journey/JourneyList';
 import './index.css';
 import Layout from './layout';
 import SearchFarePage from './pages/fare/SearchFarePage';
+
+import AddHotelPage from './pages/hotel/AddHotelPage';
+import JourneyPlansPage from './pages/journey/JourneyPlansPage';
+import AddAddressPage from './pages/location/AddAddressPage';
+import AddStationPage from './pages/location/AddStationPage';
 import LoginPage from './pages/login/LoginPage';
 import RegisterPage from './pages/login/RegisterPage';
 import PurchaseFailed from './pages/purchase-ticket/PurchaseFailed';
@@ -12,12 +19,8 @@ import PurchaseSucceeded from './pages/purchase-ticket/PurchaseSucceeded';
 import PurchaseTicketPage from './pages/purchase-ticket/PurchaseTicketPage';
 import AddCarPage from './pages/rent-car/AddCarPage';
 import SearchRentCarPage from './pages/rent-car/SearchRentCarPage';
-import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
-import AddHotelPage from './pages/hotel/AddHotelPage';
 import ReviewPage from './pages/review/ReviewPage';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import AddStationPage from './pages/location/AddStationPage';
-import AddAddressPage from './pages/location/AddAddressPage';
+import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
 
 const router = createBrowserRouter([
 	{
@@ -81,6 +84,14 @@ const router = createBrowserRouter([
 					{
 						path: '/add-address',
 						element: <AddAddressPage />,
+					},
+					{
+						path: '/traveler/journey-plans',
+						element: <JourneyPlansPage />,
+					},
+					{
+						path: '/traveler/journey-plans/:journeyPlanId',
+						element: <JourneyList />,
 					},
 				],
 			},

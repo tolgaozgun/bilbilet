@@ -9,11 +9,11 @@ import lombok.Data;
 @AllArgsConstructor
 public class CreateJourney {
     @NotBlank
-	private String journey_title;
+	private String journeyTitle;
 
 	@NotNull
-	private int journey_plan_id;
+	private int journeyPlanId;
 
 	@NotNull
-	private int fare_id;
+	private int ticketId;
 }
