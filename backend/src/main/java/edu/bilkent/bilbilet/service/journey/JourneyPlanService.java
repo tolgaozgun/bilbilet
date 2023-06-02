@@ -21,7 +21,7 @@ public class JourneyPlanService {
             JourneyPlan jp = new JourneyPlan(journeyPlanDto);
             Optional<JourneyPlan> newJp = journeyPlanRepository.createJourneyPlan(jp);
             if (!newJp.isPresent()) {
-                throw new Exception("Couldn't create the journey plan. make sure to have each of the journey plans with a different title.");
+                throw new Exception("Couldn't create the journey plan. Make sure to have each of the journey plans with a different title.");
             }
     
             return newJp.get();
@@ -35,7 +35,7 @@ public class JourneyPlanService {
         try {
             Optional<JourneyPlan> deletedJp = journeyPlanRepository.deleteJourneyPlan(jpId);
             if (!deletedJp.isPresent()) {
-                throw new Exception("Couldn't create the journey plan. make sure to have each of the journey plans with a different title.");
+                throw new Exception("Couldn't delete the journey plan. Make sure to have each of the journey plans with a different title.");
             }
     
             return deletedJp.get();
@@ -49,7 +49,7 @@ public class JourneyPlanService {
         try {
             Optional<List<JourneyPlan>> newJp = journeyPlanRepository.getJourneyPlans(userId);
             if (!newJp.isPresent()) {
-                throw new Exception("Couldn't create the journey plan. make sure to have each of the journey plans with a different title.");
+                throw new Exception("Couldn't get the journey plans.");
             }
     
             return newJp.get();

@@ -1,3 +1,5 @@
+import { CompanyType } from '.';
+
 export enum UserType {
 	Admin = 'ADMIN',
 	Company = 'COMPANY',
@@ -5,6 +7,7 @@ export enum UserType {
 }
 
 export type User = {
+	id: number;
 	name: string;
 	surname: string;
 	email: string;
@@ -13,4 +16,20 @@ export type User = {
 	userType: UserType;
 	accessToken: string;
 	refreshToken: string;
+};
+
+export type Traveler = {
+	name: string;
+	surname: string;
+	email: string;
+	phone: string;
+	balance: number;
+};
+
+export type Company = Traveler & {
+	companyTitle: string;
+	address: string;
+	type: CompanyType;
+	contactInformation: string;
+	businessRegistration: string;
 };

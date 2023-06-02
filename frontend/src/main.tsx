@@ -3,10 +3,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ProviderWrapper from './components/common/other/ProviderWrapper';
+import JourneyList from './components/journey/JourneyList';
 import './index.css';
 import Layout from './layout';
 import SearchFarePage from './pages/fare/SearchFarePage';
 import AddHotelPage from './pages/hotel/AddHotelPage';
+import JourneyPlansPage from './pages/journey/JourneyPlansPage';
 import AddAddressPage from './pages/location/AddAddressPage';
 import AddStationPage from './pages/location/AddStationPage';
 import LoginPage from './pages/login/LoginPage';
@@ -81,6 +83,14 @@ const router = createBrowserRouter([
 					{
 						path: '/add-address',
 						element: <AddAddressPage />,
+					},
+					{
+						path: '/traveler/journey-plans',
+						element: <JourneyPlansPage />,
+					},
+					{
+						path: '/traveler/journey-plans/:journeyPlanId',
+						element: <JourneyList />,
 					},
 				],
 			},

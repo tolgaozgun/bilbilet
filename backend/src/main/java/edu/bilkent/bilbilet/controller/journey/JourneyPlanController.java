@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import edu.bilkent.bilbilet.request.journey.CreateJourneyPlan;
 import edu.bilkent.bilbilet.response.Response;
 import edu.bilkent.bilbilet.service.journey.JourneyPlanService;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -41,7 +43,7 @@ public class JourneyPlanController {
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @DeleteMapping(path = "{journeyPlanId}")
-    public ResponseEntity<Object> deleteJourneyPlan(@RequestParam("journeyPlanId") String id) {
+    public ResponseEntity<Object> deleteJourneyPlan(@Valid @PathVariable("journeyPlanId") String id) {
         try {
             JourneyPlan deletedJourneyPlan = journeyPlanService.deleteJourneyPlan(Integer.parseInt(id));
             return Response.create("Created journey plan.", HttpStatus.OK, deletedJourneyPlan);
@@ -51,12 +53,13 @@ public class JourneyPlanController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(path = "user/{id}")
-    public ResponseEntity<Object> getJourneyPlansForUser(@RequestParam("id") String id) {
+    @GetMapping(path = "/user/{id}")
+    public ResponseEntity<Object> getJourneyPlansForUser(@Valid @PathVariable("id") String id) {
         try {
             List<JourneyPlan> journeyPlans = journeyPlanService.getJourneyPlans(Integer.parseInt(id));
             return Response.create("Fetched journey plans.", HttpStatus.OK, journeyPlans);
         } catch (Exception e) {
+            e.printStackTrace();
             return Response.create(ExceptionLogger.error(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

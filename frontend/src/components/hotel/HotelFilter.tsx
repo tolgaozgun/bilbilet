@@ -1,11 +1,8 @@
 import { Accordion, Box, MultiSelect, RangeSlider, TextInput } from '@mantine/core';
-<<<<<<< HEAD
-import CustomAccordionItem from '../common/other/CustomAccordionItem';
-=======
-import CustomAccordionItem from '../common/CustomAccordionItem';
 import { IconZoomIn } from '@tabler/icons-react';
 import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
->>>>>>> dev
+import CustomAccordionItem from '../common/other/CustomAccordionItem';
+
 const marks = [
 	{ value: 0, label: '0 TRY' },
 	{ value: 10000, label: '10000 TRY' },
@@ -30,13 +27,10 @@ const HotelFilter = () => {
           <RangeSlider min={1} max={5} step={0.5}></RangeSlider>
         </CustomAccordionItem> */}
 			</Accordion>
-<<<<<<< HEAD
-=======
 			<CustomElevatedButton
 				text={'Filter'}
 				leftIcon={<IconZoomIn></IconZoomIn>}
 			></CustomElevatedButton>
->>>>>>> dev
 		</Box>
 	);
 };

@@ -1,7 +1,5 @@
 const JourneyList = () => {
-    return (
-        
-    );
-}
- 
+	return <></>;
+};
+
 export default JourneyList;

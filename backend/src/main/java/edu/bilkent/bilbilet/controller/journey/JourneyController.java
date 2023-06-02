@@ -1,5 +1,7 @@
 package edu.bilkent.bilbilet.controller.journey;
 
+import java.util.List;
+
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.bilkent.bilbilet.exception.ExceptionLogger;
 import edu.bilkent.bilbilet.model.Journey;
+import edu.bilkent.bilbilet.repository.journey.dto.JourneyDetailsRM;
 import edu.bilkent.bilbilet.request.journey.CreateJourney;
 import edu.bilkent.bilbilet.response.Response;
 import edu.bilkent.bilbilet.service.journey.JourneyService;
@@ -69,7 +72,7 @@ public class JourneyController {
     @GetMapping(path = "/journeyPlan/{id}")
     public ResponseEntity<Object> getJourneysOfJourneyPlan(@Valid @PathVariable("id") String id) {
         try {
-            Journey journey = journeyService.getJourney(Integer.parseInt(id));
+            List<JourneyDetailsRM> journey = journeyService.getJourneys(Integer.parseInt(id));
             return Response.create("Accessed journey successfully", HttpStatus.OK, journey);
         } catch (EmptyResultDataAccessException e) {
             return Response.create("Journey could not be found.", HttpStatus.NOT_FOUND);

@@ -13,6 +13,7 @@ import edu.bilkent.bilbilet.exception.TicketConflictException;
 import edu.bilkent.bilbilet.model.Journey;
 import edu.bilkent.bilbilet.model.Ticket;
 import edu.bilkent.bilbilet.repository.journey.JourneyRepository;
+import edu.bilkent.bilbilet.repository.journey.dto.JourneyDetailsRM;
 import edu.bilkent.bilbilet.request.journey.CreateJourney;
 import edu.bilkent.bilbilet.service.TicketService;
 import lombok.RequiredArgsConstructor;
@@ -68,22 +69,22 @@ public class JourneyService {
         }
     }
 
-    // public List<Journey> getJourneys(int journeyPlanId) {
-    //     try {
-    //         Optional<Journey> journey = journeyRepository.getJourneys(journeyPlanId);
-    //         if (!journey.isPresent()) {
-    //             throw new ItemNotFoundException("Journey details cannot be found.");
-    //         }
+    public List<JourneyDetailsRM> getJourneys(int journeyPlanId) throws ItemNotFoundException {
+        try {
+            Optional<List<JourneyDetailsRM>> journey = journeyRepository.findJourneysInJourneyPlan(journeyPlanId);
+            if (!journey.isPresent()) {
+                throw new ItemNotFoundException("Journey details cannot be found.");
+            }
     
-    //         return journey.get();
-    //     } catch (EmptyResultDataAccessException e) {
-    //         e.printStackTrace();
-    //         throw e;
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //         throw e;
-    //     }
-    // }
+            return journey.get();
+        } catch (EmptyResultDataAccessException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 
     public Journey deleteJourney(int journeyId) {
         // TODO:

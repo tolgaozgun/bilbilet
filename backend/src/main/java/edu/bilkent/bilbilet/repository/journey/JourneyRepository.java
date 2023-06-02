@@ -15,8 +15,12 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
+
+import edu.bilkent.bilbilet.enums.CompanyType;
+import edu.bilkent.bilbilet.enums.StationType;
+import edu.bilkent.bilbilet.enums.TicketStatus;
 import edu.bilkent.bilbilet.model.Journey;
-import edu.bilkent.bilbilet.repository.journey.dto.JourneyWithDetails;
+import edu.bilkent.bilbilet.repository.journey.dto.JourneyDetailsRM;
 import edu.bilkent.bilbilet.repository.journey.dto.NewJourneyDepArrRM;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -32,7 +36,7 @@ public class JourneyRepository {
 
     private RowMapper<Journey> journeyRowMapper = (rs, rowNum) -> {
         Journey journey = new Journey();
-        journey.setJourneyId(0); // FIXME: Is this field important? It is generated automatically no?
+        journey.setJourneyId(rs.getInt("journey_id")); // FIXME: Is this field important? It is generated automatically no?
         journey.setTicketId(rs.getInt("ticket_id"));
         journey.setJourneyPlanId(rs.getInt("journey_plan_id"));
         journey.setJourneyTitle(rs.getString("journey_title"));
@@ -45,6 +49,31 @@ public class JourneyRepository {
         depArr.setNewDepTime(rs.getTimestamp("new_dep_time"));
         return depArr;
     };
+
+    private RowMapper<JourneyDetailsRM> journeyDetailsRM = (rs, rowNum) -> {
+        JourneyDetailsRM journey = new JourneyDetailsRM();
+        journey.setJourneyId(rs.getInt("journey_id"));
+        journey.setJourneyTitle(rs.getString("journey_title"));
+        
+        journey.setTicketStatus(TicketStatus.valueOf(rs.getString("ticket_status")));
+        journey.setSeatId(rs.getInt("seat_id"));
+        
+        journey.setDepartureTime(rs.getTimestamp("departure_time"));
+        journey.setEstimatedArrivalTime(rs.getTimestamp("estimated_arrival_time"));
+        journey.setPrice(rs.getBigDecimal("price"));
+        
+        journey.setCompanyTitle(rs.getString("company_title"));
+        journey.setAddress(rs.getString("company_address"));
+        journey.setCompanyType(CompanyType.valueOf(rs.getString("company_type")));
+        journey.setContactInformation(rs.getString("contact_information"));
+        
+        journey.setStationTitle(rs.getString("station_title"));
+        journey.setAbbreviation(rs.getString("station_abbreviation"));
+        journey.setStationType(StationType.valueOf(rs.getString("station_type")));
+
+        return journey;
+    };
+
     public Optional<Journey> createJourney(Journey newJourney) throws DataAccessException {
         String sql = "INSERT INTO Journey (journey_title, journey_plan_id, ticket_id) VALUES (?, ?, ?)";
 
@@ -80,7 +109,7 @@ public class JourneyRepository {
         }
     }
 
-    public Optional<Journey> getJourney(int journeyId) throws Exception, EmptyResultDataAccessException {
+    public Optional<Journey> getJourney(int journeyId) {
         String sql = "SELECT * FROM Journey WHERE journey_id = ?";
 
         try {
@@ -91,6 +120,42 @@ public class JourneyRepository {
             e.printStackTrace();
             throw e;
         }
+    }
+
+    public Optional<List<JourneyDetailsRM>> findJourneysInJourneyPlan(int journeyPlanId) {
+        String FIND_JOURNEYS_IN_JOURNEY_PLAN_QUERY = "SELECT" +
+                                                        " Journey.journey_id AS journey_id," +
+                                                        "Journey.journey_title AS journey_title," +
+                                                        "Ticket.ticket_status AS ticket_status," +
+                                                        "Ticket.seat_id AS seat_id," +
+                                                        "Fare.departure_time AS departure_time," +
+                                                        "Fare.estimated_arrival_time AS estimated_arrival_time," +
+                                                        "Fare.price AS price," +
+                                                        "Company.company_title AS company_title," +
+                                                        "Company.address AS company_address," +
+                                                        "Company.type AS company_type," +
+                                                        "Company.contact_information AS contact_information," +
+                                                        "Station.title AS station_title," +
+                                                        "Station.abbreviation AS station_abbreviation," +
+                                                        "Station.station_type AS station_type" +
+                                                    " FROM" +
+                                                        "Journey" +
+                                                        "JOIN JourneyPlan ON Journey.journey_plan_id = JourneyPlan.journey_plan_id" +
+                                                        "JOIN Ticket ON Journey.ticket_id = Ticket.ticket_id" +
+                                                        "JOIN Fare ON Ticket.fare_id = Fare.fare_id" +
+                                                        "JOIN Company ON Fare.company_id = Company.company_id" +
+                                                        "JOIN Station ON Fare.dep_stat_id = Station.station_id" +
+                                                        "JOIN Station ON Fare.arr_stat_id = Station.station_id" +
+                                                    " WHERE" +
+                                                        "Journey.journey_plan_id = ?;";
+        try {
+            List<JourneyDetailsRM> journeys = jdbcTemplate.query(FIND_JOURNEYS_IN_JOURNEY_PLAN_QUERY, journeyDetailsRM, journeyPlanId);
+            return Optional.of(journeys);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+        
     }
 
     public Optional<NewJourneyDepArrRM> getJourneyAffiliatedTicketDepArr(Journey j) {
