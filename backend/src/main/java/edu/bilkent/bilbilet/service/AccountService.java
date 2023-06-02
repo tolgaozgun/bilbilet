@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
+
+import edu.bilkent.bilbilet.model.*;
+import edu.bilkent.bilbilet.request.CompanyRegister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import edu.bilkent.bilbilet.enums.UserType;
-import edu.bilkent.bilbilet.model.Traveler;
-import edu.bilkent.bilbilet.model.User;
 import edu.bilkent.bilbilet.repository.AccountRepository;
 import edu.bilkent.bilbilet.request.TravelerRegister;
 import edu.bilkent.bilbilet.request.UserLogin;
@@ -87,6 +88,66 @@ public class AccountService {
         }
     }
 
+    public CompanyInfo getCompanyInfo(int userId) throws Exception {
+        try {
+            Optional<User> optionalUser = accountRepository.findUserById(userId);
+
+            if (optionalUser.isEmpty()) {
+                throw new Exception("user is not found");
+            }
+
+            User user = optionalUser.get();
+
+            Optional<Company> company = accountRepository.findCompanyByUserId(userId);
+
+            if (company.isEmpty()) {
+                throw new Exception("No company found");
+            }
+
+            CompanyInfo companyInfo = new CompanyInfo();
+            companyInfo.setUserId(userId);
+            companyInfo.setUser(user);
+            companyInfo.setUserType(UserType.COMPANY);
+            companyInfo.setCompany(company.get());
+
+            return companyInfo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
+    public TravelerInfo getTravelerInfo(int userId) throws Exception {
+        try {
+            Optional<User> optionalUser = accountRepository.findUserById(userId);
+
+            if (optionalUser.isEmpty()) {
+                throw new Exception("user is not found");
+            }
+
+            User user = optionalUser.get();
+
+            Optional<Traveler> traveler = accountRepository.findTravelerByUserId(userId);
+
+            if (traveler.isEmpty() ) {
+                throw new Exception("No traveler found");
+            }
+
+            TravelerInfo travelerInfo = new TravelerInfo();
+            travelerInfo.setUserId(userId);
+            travelerInfo.setUser(user);
+            travelerInfo.setUserType(UserType.TRAVELER);
+            travelerInfo.setTraveler(traveler.get());
+
+            return travelerInfo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
     // public boolean changePassword(String auth, ChangePassword passwords) throws Exception {
     //     try {
     //         String username = jwtUtils.extractAccessUsername(JWTFilter.getTokenWithoutBearer(auth));
@@ -144,6 +205,34 @@ public class AccountService {
                 // System.out.println("user_id after register: " + accountRepository.findUserByEmail(user.getEmail()).get().getId());
                 return newUser;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public CompanyRegister addCompany(CompanyRegister companyRegister) throws Exception {
+        try {
+            // Check if user already exists by email
+            if (accountRepository.existsByEmail(companyRegister.getUser().getEmail())) {
+                throw new Exception("User already exists");
+            }
+
+            // Check if traveler already exists by user_id
+            if (accountRepository.findCompanyByUserId(companyRegister.getUser().getUserId()).isPresent()) {
+                throw new Exception("Company already exists");
+            }
+
+            // Add user
+            User newUser = addUser(companyRegister.getUser());
+
+            // Add Company
+            Optional<Company> optionalCompany = accountRepository.save(companyRegister.getCompany());
+            Company newCompany = optionalCompany.isPresent() ? optionalCompany.get() : null;
+
+            // Return both added user data and added traveler data
+            CompanyRegister result = new CompanyRegister(newUser, newCompany);
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
