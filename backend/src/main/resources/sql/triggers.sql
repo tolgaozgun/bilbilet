@@ -1,23 +1,21 @@
--- CREATE TRIGGER check_and_insert_address_before_company_car_insert
--- BEFORE INSERT ON CompanyCar
--- FOR EACH ROW
--- BEGIN
---     DECLARE address_id INT;
+DROP TRIGGER IF EXISTS check_date_range_overlap_before_rent_car ;
+//
 
---     -- Check if the address exists
---     SELECT address_id INTO address_id
---     FROM address
---     WHERE city = NEW.city AND country = NEW.country
---     LIMIT 1;
+CREATE TRIGGER check_date_range_overlap_before_rent_car
+BEFORE INSERT ON RentDetail
+FOR EACH ROW
+BEGIN
+    DECLARE overlapping_count INT;
 
---     -- If address does not exist, insert a new row
---     IF address_id IS NULL THEN
---         INSERT INTO address (country, city, latitude, longitude)
---         VALUES (NEW.country, NEW.city, 0, 0);
+    SELECT COUNT(*) INTO overlapping_count
+    FROM RentDetail
+    WHERE start_date <= NEW.end_date
+        AND end_date >= NEW.start_date
+        AND company_car_id = NEW.company_car_id;
 
---         SET address_id = LAST_INSERT_ID();
---     END IF;
-
---     -- Set the address_id for the new company_car row
---     SET NEW.addressId = address_id;
--- END;
+    IF overlapping_count > 0 THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Error: Date range overlaps with existing data';
+    END IF;
+END ;
+//
