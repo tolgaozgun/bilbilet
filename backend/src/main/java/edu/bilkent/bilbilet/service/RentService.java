@@ -15,7 +15,7 @@ import edu.bilkent.bilbilet.repository.CompanyCarRepository;
 import edu.bilkent.bilbilet.repository.RentDetailRepository;
 import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
 import edu.bilkent.bilbilet.repository.rowmapper.RentDetailRM;
-import edu.bilkent.bilbilet.utils.Utils;
+import edu.bilkent.bilbilet.utils.ParamUtils;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -56,7 +56,7 @@ public class RentService {
 
     public List<CompanyCarRM> findAvaliableCars(Map<String, Object> requestParams) throws Exception {
         try {
-            Map<String, Object> snakeParams = Utils.camelToSnake(requestParams);
+            Map<String, Object> snakeParams = ParamUtils.camelToSnake(requestParams);
 
             boolean startExist = snakeParams.get("start_date") != null;
             boolean endExist = snakeParams.get("end_date") != null;

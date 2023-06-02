@@ -20,9 +20,5 @@ public class CompanyCarRM {
 
     private Address address;
 
-    private String photoUrl;
-    
-    private String websiteUrl;
-
     private BigDecimal pricePerDay;
 }

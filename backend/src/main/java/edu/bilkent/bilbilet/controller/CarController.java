@@ -80,7 +80,7 @@ public class CarController {
     @GetMapping("{companyCarId}")
     public ResponseEntity<Object> getCompanyCarById(@Valid @PathVariable("companyCarId") int companyCarId) {
         try {
-            List<CompanyCarRM> companyCarList = carService.findAllCompanyCar(companyCarId);
+            List<CompanyCarRM> companyCarList = carService.findCompanyCarById(companyCarId);
             return Response.create("ok", HttpStatus.OK, companyCarList);
         } catch (Exception e) {
             return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

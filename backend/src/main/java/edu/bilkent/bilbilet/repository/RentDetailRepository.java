@@ -54,8 +54,6 @@ public class RentDetailRepository {
         cc.setCompanyId(rs.getInt("cc.company_id"));
         cc.setCompanyCarId(rs.getInt("cc.company_car_id"));
         cc.setPricePerDay(rs.getBigDecimal("cc.price_per_day"));
-        cc.setPhotoUrl(rs.getString("cc.photo_url"));
-        cc.setWebsiteUrl(rs.getString("cc.website_url"));
 
         Car c = new Car();
         c.setCarId(rs.getInt("c.car_id"));
@@ -167,8 +165,9 @@ public class RentDetailRepository {
     }
 
     public List<RentDetailRM> findRentDetailByTraveler(int userId) {
-        String sql = "SELECT * FROM RentDetails rd WHERE rd.user_id = ? "
-                   + "INNER JOIN CompanyCar cc ON rd.company_car_id = cc.company_car_id INNER JOIN Car c ON cc.car_id = c.car_id";
+        String sql = "SELECT * FROM RentDetail rd "
+                   + "INNER JOIN CompanyCar cc ON rd.company_car_id = cc.company_car_id INNER JOIN Car c ON cc.car_id = c.car_id "
+                   + "INNER JOIN Address a ON a.address_id = cc.address_id WHERE rd.user_id = ?";
 
         List<RentDetailRM> rents = jdbcTemplate.query(sql, rentDetailDetailedRM, userId);
 

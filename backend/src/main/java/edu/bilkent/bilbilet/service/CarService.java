@@ -16,7 +16,7 @@ import edu.bilkent.bilbilet.repository.CompanyCarRepository;
 import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
 import edu.bilkent.bilbilet.request.AddCompanyCar;
 import edu.bilkent.bilbilet.response.RCompanyCar;
-import edu.bilkent.bilbilet.utils.Utils;
+import edu.bilkent.bilbilet.utils.ParamUtils;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -124,7 +124,7 @@ public class CarService {
 
     public List<Car> getCarByProperties(Map<String, Object> requestParams) throws Exception {
         try {
-            Map<String, Object> snakeParams = Utils.camelToSnake(requestParams);
+            Map<String, Object> snakeParams = ParamUtils.camelToSnake(requestParams);
             return carRepository.findCarByProperties(snakeParams); //TO DO test           
         } catch (Exception e) {
             e.printStackTrace();
