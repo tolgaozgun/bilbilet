@@ -14,6 +14,7 @@ import AddAddressPage from './pages/location/AddAddressPage';
 import AddStationPage from './pages/location/AddStationPage';
 import LoginPage from './pages/login/LoginPage';
 import RegisterPage from './pages/login/RegisterPage';
+import TravelerProfilePage from './pages/profile/TravelerProfilePage';
 import PurchaseFailed from './pages/purchase-ticket/PurchaseFailed';
 import PurchaseSucceeded from './pages/purchase-ticket/PurchaseSucceeded';
 import PurchaseTicketPage from './pages/purchase-ticket/PurchaseTicketPage';
@@ -92,6 +93,10 @@ const router = createBrowserRouter([
 					{
 						path: '/traveler/journey-plans/:journeyPlanId',
 						element: <JourneyList />,
+					},
+					{
+						path: '/traveler/profile',
+						element: <TravelerProfilePage />,
 					},
 				],
 			},

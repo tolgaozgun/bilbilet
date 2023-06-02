@@ -1,4 +1,4 @@
-import { Button, Flex, Group, NumberInput, Stack, TextInput, Title } from '@mantine/core';
+import { Button, Group, NumberInput, Stack, TextInput, Title } from '@mantine/core';
 import { MonthPickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
