@@ -1,13 +1,23 @@
-export type GearType = 'AUTOMATIC' | 'MANUAL';
+export enum GearType {
+	'AUTOMATIC',
+	'MANUAL',
+}
 
-export type CarCategoryType =
-	| 'SEDAN'
-	| 'SUV'
-	| 'SPORT'
-	| 'LUXURY'
-	| 'HATCHBACK'
-	| 'TRUCK';
-export type FuelType = 'PETROL' | 'DIESEL' | 'ELECTRIC' | 'HYBRID' | 'OTHER';
+export enum CarCategoryType {
+	'SEDAN',
+	'SUV',
+	'SPORT',
+	'LUXURY',
+	'HATCHBACK',
+	'TRUCK',
+}
+export enum FuelType {
+	'PETROL',
+	'DIESEL',
+	'ELECTRIC',
+	'HYBRID',
+	'OTHER',
+}
 
 export type Car = {
 	carId: number;
