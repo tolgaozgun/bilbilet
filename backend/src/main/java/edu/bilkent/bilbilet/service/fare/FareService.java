@@ -4,6 +4,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import edu.bilkent.bilbilet.exception.CompanyNotFoundException;
 import edu.bilkent.bilbilet.exception.InsertionFailedException;
+import edu.bilkent.bilbilet.exception.UpdateFailedException;
 import edu.bilkent.bilbilet.model.Company;
 import edu.bilkent.bilbilet.model.Fare;
 import edu.bilkent.bilbilet.repository.CompanyRepository;
@@ -23,7 +24,7 @@ public class FareService {
             Optional<Company> optionalCompany = companyRepository.getCompanyByName(fareInfo.getCompanyName());
             
             if (!optionalCompany.isPresent()) {
-                throw new CompanyNotFoundException("Could not found company with the name \"" + fareInfo.getCompanyName() + "\".");
+                throw new CompanyNotFoundException("Could not find company with the name \"" + fareInfo.getCompanyName() + "\".");
             }
 
             // If the company name exists, continue
@@ -50,6 +51,76 @@ public class FareService {
         }
         catch (CompanyNotFoundException cnfe) {
             throw cnfe;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public Fare updateFare(Fare fareDataToUpdate) throws Exception {     
+        try {
+            // Check if the given company exists
+            Optional<Company> optionalCompany = companyRepository.getCompanyById(fareDataToUpdate.getCompanyId());
+            
+            if (!optionalCompany.isPresent()) {
+                throw new CompanyNotFoundException("Could not find company with the ID \"" + fareDataToUpdate.getCompanyId() + "\".");
+            }
+
+            // If the company name exists, continue
+            Optional<Fare> updatedFare = fareRepository.updateFare(fareDataToUpdate);
+
+            if (!updatedFare.isPresent()) {
+                throw new UpdateFailedException("Fare could not be updated.");
+            }
+    
+            return updatedFare.get();
+        }
+        catch (UpdateFailedException ufe) {
+            throw ufe;
+        }
+        catch (CompanyNotFoundException cnfe) {
+            throw cnfe;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public Fare updateFareById(Fare fareDataToUpdate, int fareToUpdateId) throws Exception {     
+        try {
+            // Check if the given company exists
+            Optional<Company> optionalCompany = companyRepository.getCompanyById(fareDataToUpdate.getCompanyId());
+            
+            if (!optionalCompany.isPresent()) {
+                throw new CompanyNotFoundException("Could not find company with the ID \"" + fareDataToUpdate.getCompanyId() + "\".");
+            }
+
+            // If the company name exists, continue
+            Optional<Fare> updatedFare = fareRepository.updateFareById(fareDataToUpdate, fareToUpdateId);
+
+            if (!updatedFare.isPresent()) {
+                throw new UpdateFailedException("Fare could not be updated.");
+            }
+    
+            return updatedFare.get();
+        }
+        catch (UpdateFailedException ufe) {
+            throw ufe;
+        }
+        catch (CompanyNotFoundException cnfe) {
+            throw cnfe;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public boolean deleteFareById(int fareToDeleteId) throws Exception {
+        try {
+            return fareRepository.deleteFareById(fareToDeleteId);
         }
         catch (Exception e) {
             e.printStackTrace();

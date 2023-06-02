@@ -93,10 +93,48 @@ public class FareRepository {
             }
                 
             int fareId = keyHolder.getKey().intValue();
-            Fare addedFare = newFare;
-            addedFare.setFareId(fareId);
+            Fare updatedFare = newFare;
+            updatedFare.setFareId(fareId);
 
-            return Optional.of(addedFare);
+            return Optional.of(updatedFare);
+        }
+        catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    
+        return Optional.empty();
+    }
+
+    public Optional<Fare> updateFareById(Fare newFare, int fareToUpdateId) throws Exception {
+        String sql = "UPDATE Fare SET departure_time = ?, estimated_arrival_time = ?, price = ?, company_id = ?, vehicle_id = ?, dep_stat_id = ?, arrive_stat_id = ? " +
+                     "WHERE fare_id = ?";
+    
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("departure_time", newFare.getEstimatedDepTime());
+        parameters.addValue("estimated_arrival_time", newFare.getEstimatedArrTime());
+        parameters.addValue("price", newFare.getPrice());
+        parameters.addValue("company_id", newFare.getCompanyId());
+        parameters.addValue("vehicle_id", newFare.getVehicleId());
+        parameters.addValue("dep_stat_id", newFare.getDepStationId());
+        parameters.addValue("arrive_stat_id", newFare.getArrStationId());
+        parameters.addValue("fare_id", fareToUpdateId);
+    
+        try {
+            int affectedRows = jdbcTemplate.update(sql, parameters, keyHolder);
+            
+            if (affectedRows < 1) {
+                return Optional.empty();
+            }
+                
+            int fareId = keyHolder.getKey().intValue();
+            Fare updatedFare = newFare;
+            updatedFare.setFareId(fareId);
+
+            return Optional.of(updatedFare);
         }
         catch (EmptyResultDataAccessException e) {
             return Optional.empty();
