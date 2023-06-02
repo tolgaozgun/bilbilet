@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/auth")
 public class AccountController {
-    
+
     private final AccountService accountService;
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -34,7 +34,7 @@ public class AccountController {
             return Response.create("login is successful", HttpStatus.OK, token);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }        
+        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -45,9 +45,9 @@ public class AccountController {
             return Response.create("account is created", HttpStatus.OK, user);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }        
+        }
     }
-    
+
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register/traveler")
     public ResponseEntity<Object> registerTraveler(@Valid @RequestBody TravelerRegister travelerInfo) {
@@ -56,10 +56,8 @@ public class AccountController {
             return Response.create("Traveler account registered", HttpStatus.OK, savedInfo.getUser());
         } catch (Exception e) {
             return Response.create(ExceptionLogger.error(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }        
+        }
     }
-
-
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping("company/{userId}")
@@ -84,7 +82,7 @@ public class AccountController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register/company")
     public ResponseEntity<Object> registerCompany(@Valid @RequestBody CompanyRegister companyRegister) {
         try {
             CompanyRegister savedInfo = accountService.addCompany(companyRegister);
@@ -101,7 +99,7 @@ public class AccountController {
             return Response.create("ok", HttpStatus.OK, "hello world");
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }        
+        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
@@ -111,6 +109,6 @@ public class AccountController {
             return Response.create("ok", HttpStatus.OK, "hello world login good");
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
-        }        
+        }
     }
 }

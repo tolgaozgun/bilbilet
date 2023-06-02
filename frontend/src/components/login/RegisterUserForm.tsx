@@ -95,7 +95,7 @@ const RegisterUserForm = () => {
 			withCloseButton: true,
 			style: { backgroundColor: 'green', color: 'white' },
 		});
-		navigate('/search-fare');
+		navigate('/login');
 	};
 
 	return (

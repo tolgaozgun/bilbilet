@@ -12,9 +12,16 @@ import { useForm } from '@mantine/form';
 import { useNavigate } from 'react-router-dom';
 import { primaryButtonColor } from '../../constants/colors';
 import { useRegisterCompany } from '../../hooks/auth';
-import { CompanyType, RegisterCompany } from '../../types';
+import {
+	CompanyModel,
+	CompanyType,
+	RegisterCompany,
+	UserModel,
+	UserType,
+} from '../../types';
 import { isErrorResponse } from '../../utils/utils';
 import SubtleLinkButton from '../common/buttons/SubtleLinkButton';
+import { notifications } from '@mantine/notifications';
 
 const RegisterCompanyForm = () => {
 	const form = useForm({
@@ -32,8 +39,7 @@ const RegisterCompanyForm = () => {
 		validate: {
 			companyName: (value) =>
 				value === '' ? 'Company name cannot be left empty.' : null,
-			companyType: (value) =>
-				value === '' ? 'Company type cannot be left empty.' : null,
+
 			companyEmail: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email.'),
 			password: (value) => (value === '' ? 'Password cannot be left empty.' : null),
 			confirmPassword: (value, values) =>
@@ -58,7 +64,30 @@ const RegisterCompanyForm = () => {
 			return;
 		}
 
-		const res = await register(form.values as RegisterCompany);
+		const user: UserModel = {
+			userId: 0,
+			name: form.values.companyName,
+			surname: '',
+			email: form.values.companyEmail,
+			password: form.values.password,
+			telephone: form.values.telephone,
+			userType: UserType.Company,
+		};
+		const company: CompanyModel = {
+			company_id: 0,
+			company_title: form.values.companyName,
+			address: form.values.address,
+			contact_information: form.values.contactInformation,
+			business_registration: form.values.businessRegistration,
+			type: form.values.companyType,
+			balance: 0,
+			user_id: 0,
+		};
+		const registerInfo: RegisterCompany = {
+			user,
+			company,
+		};
+		const res = await register(registerInfo);
 		if (isErrorResponse(res)) {
 			notifications.show({
 				id: 'registration-fail',
@@ -80,7 +109,7 @@ const RegisterCompanyForm = () => {
 			withCloseButton: true,
 			style: { backgroundColor: 'green' },
 		});
-		navigate('/search-fare');
+		navigate('/login');
 	};
 
 	return (
