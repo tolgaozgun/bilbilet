@@ -34,7 +34,7 @@ public class CompanyController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path= "{companyId}")
+    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "{companyId}")
     public ResponseEntity<Object> getCompanyById(@PathVariable int companyId) {
         try {
             Company company = companyService.getCompanyById(companyId);
