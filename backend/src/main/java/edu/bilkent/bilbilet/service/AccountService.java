@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import edu.bilkent.bilbilet.model.Company;
+import edu.bilkent.bilbilet.model.UserInfo;
 import edu.bilkent.bilbilet.request.CompanyRegister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -88,6 +89,42 @@ public class AccountService {
             e.printStackTrace();
             throw e;
         }
+    }
+
+    public UserInfo getUserInfo(int userId) throws Exception {
+        try {
+            Optional<User> optionalUser = accountRepository.findUserById(userId);
+
+            if (optionalUser.isEmpty()) {
+                throw new Exception("user is not found");
+            }
+
+            User user = optionalUser.get();
+
+            Optional<Traveler> traveler = accountRepository.findTravelerByUserId(userId);
+            Optional<Company> company = accountRepository.findCompanyByUserId(userId);
+
+            if (traveler.isEmpty() && company.isEmpty()) {
+                throw new Exception("No traveler or company found");
+            }
+
+            UserInfo userInfo = new UserInfo();
+            userInfo.setUserId(userId);
+            userInfo.setUser(user);
+            if (traveler.isPresent()) {
+                userInfo.setUserType(UserType.TRAVELER);
+                userInfo.setInformation(traveler.get());
+            } else {
+                userInfo.setUserType(UserType.COMPANY);
+                userInfo.setInformation(company.get());
+            }
+
+            return userInfo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
     }
 
     // public boolean changePassword(String auth, ChangePassword passwords) throws Exception {
