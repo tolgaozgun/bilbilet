@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfo {
+public class CompanyInfo {
 
     @NotNull
     int userId;
@@ -20,8 +20,7 @@ public class UserInfo {
     @NotNull
     UserType userType;
 
-    // This information is either Admin, Company or Traveler
     @NotNull
-    Object information;
+    Company company;
 
 }

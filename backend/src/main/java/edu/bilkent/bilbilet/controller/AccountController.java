@@ -1,6 +1,6 @@
 package edu.bilkent.bilbilet.controller;
 
-import edu.bilkent.bilbilet.model.UserInfo;
+import edu.bilkent.bilbilet.model.*;
 import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
 import edu.bilkent.bilbilet.request.CompanyRegister;
 import org.springframework.http.HttpStatus;
@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import edu.bilkent.bilbilet.exception.ExceptionLogger;
-import edu.bilkent.bilbilet.model.User;
 import edu.bilkent.bilbilet.request.TravelerRegister;
 import edu.bilkent.bilbilet.request.UserLogin;
 import edu.bilkent.bilbilet.response.RUserToken;
@@ -60,12 +59,25 @@ public class AccountController {
         }        
     }
 
+
+
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping("{userId}")
-    public ResponseEntity<Object> getUserInfo(@Valid @PathVariable("userId") int userId) {
+    @GetMapping("company/{userId}")
+    public ResponseEntity<Object> getCompany(@Valid @PathVariable("userId") int userId) {
         try {
-            UserInfo userInfo = accountService.getUserInfo(userId);
-            return Response.create("User info gathered", HttpStatus.OK, userInfo);
+            CompanyInfo companyInfo = accountService.getCompanyInfo(userId);
+            return Response.create("User info gathered", HttpStatus.OK, companyInfo);
+        } catch (Exception e) {
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("traveler/{userId}")
+    public ResponseEntity<Object> getTraveler(@Valid @PathVariable("userId") int userId) {
+        try {
+            TravelerInfo travelerInfo = accountService.getTravelerInfo(userId);
+            return Response.create("User info gathered", HttpStatus.OK, travelerInfo);
         } catch (Exception e) {
             return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
