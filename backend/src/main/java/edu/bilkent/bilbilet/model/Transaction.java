@@ -24,8 +24,7 @@ public class Transaction {
     @NotNull
     private BigDecimal transaction_amount;
 
-    @NotNull
-    private int receiver_id;
+    private Integer receiver_id;
 
-    private int sender_id;
+    private Integer sender_id;
 }

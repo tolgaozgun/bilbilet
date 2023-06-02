@@ -100,8 +100,18 @@ public class TransactionRepository {
             ps.setInt(1, transaction.getTransaction_id());
             ps.setString(2, transaction.getTransaction_type().toString());
             ps.setBigDecimal(3, transaction.getTransaction_amount());
-            ps.setInt(4, transaction.getReceiver_id());
-            ps.setInt(5, transaction.getSender_id());
+            // Check if receiver_id or sender_id is null
+            if (transaction.getReceiver_id() == null) {
+                ps.setNull(4, java.sql.Types.INTEGER);
+            } else {
+                ps.setInt(4, transaction.getReceiver_id());
+            }
+
+            if (transaction.getSender_id() == null) {
+                ps.setNull(5, java.sql.Types.INTEGER);
+            } else {
+                ps.setInt(5, transaction.getSender_id());
+            }
 
             return ps;
         }, keyHolder);

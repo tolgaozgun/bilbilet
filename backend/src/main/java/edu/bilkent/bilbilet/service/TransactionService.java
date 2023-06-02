@@ -93,7 +93,7 @@ public class TransactionService {
             Transaction transaction = new Transaction();
             transaction.setTransaction_type(TransactionType.ADD_FUNDS);
             transaction.setTransaction_amount(amount);
-            transaction.setSender_id(-1);
+            transaction.setSender_id(null);
             transaction.setReceiver_id(travelerId);
             return transactionRepository.save(transaction);
         } catch (Exception e) {
@@ -123,10 +123,10 @@ public class TransactionService {
             // TODO: Ticket purchase
 
             Transaction transaction = new Transaction();
-            transaction.setTransaction_type(TransactionType.ADD_FUNDS);
+            transaction.setTransaction_type(TransactionType.BUY_TICKET_WITH_BALANCE);
             transaction.setTransaction_amount(amount);
             transaction.setSender_id(travelerId);
-            transaction.setReceiver_id(-1);
+            transaction.setReceiver_id(null);
             return transactionRepository.save(transaction);
         } catch (Exception e) {
             e.printStackTrace();
@@ -187,10 +187,10 @@ public class TransactionService {
 
 
             Transaction transaction = new Transaction();
-            transaction.setTransaction_type(TransactionType.ADD_FUNDS);
+            transaction.setTransaction_type(TransactionType.BUY_TICKET_WITH_CARD);
             transaction.setTransaction_amount(amount);
             transaction.setSender_id(travelerId);
-            transaction.setReceiver_id(-1);
+            transaction.setReceiver_id(null);
             return transactionRepository.save(transaction);
         } catch (Exception e) {
             e.printStackTrace();
@@ -217,10 +217,10 @@ public class TransactionService {
             accountRepository.incrementTravelerBalance(travelerId, amount);
 
             Transaction transaction = new Transaction();
-            transaction.setTransaction_type(TransactionType.ADD_FUNDS);
+            transaction.setTransaction_type(TransactionType.REFUND);
             transaction.setTransaction_amount(amount);
             transaction.setSender_id(travelerId);
-            transaction.setReceiver_id(-1);
+            transaction.setReceiver_id(null);
             return transactionRepository.save(transaction);
         } catch (Exception e) {
             e.printStackTrace();
@@ -257,9 +257,9 @@ public class TransactionService {
             accountRepository.incrementTravelerBalance(travelerId, amount);
 
             Transaction transaction = new Transaction();
-            transaction.setTransaction_type(TransactionType.ADD_FUNDS);
+            transaction.setTransaction_type(TransactionType.WITHDRAW);
             transaction.setTransaction_amount(amount);
-            transaction.setSender_id(-1);
+            transaction.setSender_id(null);
             transaction.setReceiver_id(travelerId);
             return transactionRepository.save(transaction);
         } catch (Exception e) {
