@@ -1,7 +1,13 @@
 import { baseUrl } from '../../constants/api';
 import { Response } from '../../types/ResponseTypes';
 import { AxiosInstance } from 'axios';
-import { Car, CardBrand, CompanyCar, CompanyCarRM } from '../../types/CarTypes';
+import {
+	AddCompanyCar,
+	Car,
+	CarBrand,
+	CompanyCar,
+	CompanyCarRM,
+} from '../../types/CarTypes';
 
 export async function addCar(
 	axiosSecure: AxiosInstance,
@@ -13,9 +19,9 @@ export async function addCar(
 
 export async function addCompanyCar(
 	axiosSecure: AxiosInstance,
-	carDetails: CompanyCar,
-): Promise<Response<CompanyCar>> {
-	const res = await axiosSecure.post<Response<CompanyCar>>(
+	carDetails: AddCompanyCar,
+): Promise<Response<AddCompanyCar>> {
+	const res = await axiosSecure.post<Response<AddCompanyCar>>(
 		`${baseUrl}/car/company`,
 		carDetails,
 	);
@@ -24,8 +30,8 @@ export async function addCompanyCar(
 
 export async function getBrands(
 	axiosSecure: AxiosInstance,
-): Promise<Response<Array<CardBrand>>> {
-	const res = await axiosSecure.get<Response<Array<CardBrand>>>(`${baseUrl}/car/brand`);
+): Promise<Response<Array<CarBrand>>> {
+	const res = await axiosSecure.get<Response<Array<CarBrand>>>(`${baseUrl}/car/brand`);
 	return res.data;
 }
 
@@ -34,7 +40,12 @@ export async function getCompanyCars(
 	companyId: number,
 ): Promise<Response<Array<CompanyCarRM>>> {
 	const res = await axiosSecure.get<Response<Array<CompanyCarRM>>>(
-		`${baseUrl}/car/${companyId}`,
+		`${baseUrl}/car/company/${companyId}`,
 	);
+	return res.data;
+}
+
+export async function getCars(axiosSecure: AxiosInstance): Promise<Response<Array<Car>>> {
+	const res = await axiosSecure.get<Response<Array<Car>>>(`${baseUrl}/car`);
 	return res.data;
 }

@@ -31,7 +31,7 @@ export type Car = {
 	websiteUrl: string;
 };
 
-export type CardBrand = {
+export type CarBrand = {
 	brand: string;
 };
 
@@ -53,4 +53,12 @@ export type CompanyCarRM = {
 	photoUrl: string;
 	websiteUrl: string;
 	pricePerDay: number;
+};
+
+export type AddCompanyCar = {
+	carId: string;
+	companyId: number;
+	pricePerDay: number;
+	city: string;
+	country: string;
 };

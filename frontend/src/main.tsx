@@ -18,6 +18,7 @@ import ReviewPage from './pages/review/ReviewPage';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AddStationPage from './pages/location/AddStationPage';
 import AddAddressPage from './pages/location/AddAddressPage';
+import AddCompanyCarPage from './pages/rent-car/AddCompanyCarPage';
 
 const router = createBrowserRouter([
 	{
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
 					{
 						path: '/add-address',
 						element: <AddAddressPage />,
+					},
+					{
+						path: '/add-company-car',
+						element: <AddCompanyCarPage />,
 					},
 				],
 			},
