@@ -1,9 +1,12 @@
 package edu.bilkent.bilbilet.service.fare;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import edu.bilkent.bilbilet.exception.CompanyNotFoundException;
 import edu.bilkent.bilbilet.exception.InsertionFailedException;
+import edu.bilkent.bilbilet.exception.NothingDeletedException;
 import edu.bilkent.bilbilet.exception.UpdateFailedException;
 import edu.bilkent.bilbilet.model.Company;
 import edu.bilkent.bilbilet.model.Fare;
@@ -120,7 +123,38 @@ public class FareService {
 
     public boolean deleteFareById(int fareToDeleteId) throws Exception {
         try {
-            return fareRepository.deleteFareById(fareToDeleteId);
+            boolean deletedFare = fareRepository.deleteFareById(fareToDeleteId);
+            
+            if (!deletedFare) {
+                throw new NothingDeletedException("A delete request for fare with the ID \"" + fareToDeleteId + "\" was sent, but nothing was deleted.");
+            }
+
+            return true;
+        }
+        catch (NothingDeletedException nde) {
+            throw nde;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public List<Fare> getFaresByCompanyId(int companyId) throws Exception {
+        try {
+            // Check if the given company exists
+            Optional<Company> optionalCompany = companyRepository.getCompanyById(companyId);
+            
+            if (!optionalCompany.isPresent()) {
+                throw new CompanyNotFoundException("Could not find company with the ID \"" + companyId + "\".");
+            }
+    
+            List<Fare> faresOfCompany = fareRepository.getFaresByCompanyId(companyId);
+
+            return faresOfCompany == null ? new ArrayList<Fare>() : faresOfCompany;
+        }
+        catch (CompanyNotFoundException cnfe) {
+            throw cnfe;
         }
         catch (Exception e) {
             e.printStackTrace();
