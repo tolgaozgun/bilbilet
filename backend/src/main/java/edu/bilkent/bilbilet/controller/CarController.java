@@ -19,6 +19,7 @@ import edu.bilkent.bilbilet.model.Car;
 import edu.bilkent.bilbilet.model.CarBrand;
 import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
 import edu.bilkent.bilbilet.request.AddCompanyCar;
+import edu.bilkent.bilbilet.response.RCompanyCar;
 import edu.bilkent.bilbilet.response.Response;
 import edu.bilkent.bilbilet.service.CarService;
 import jakarta.validation.Valid;
@@ -46,7 +47,7 @@ public class CarController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "company")
     public ResponseEntity<Object> addCompanyCar(@Valid @RequestBody AddCompanyCar companyCar) {
         try {
-            int addCompanyCarId = carService.addCompanyCar(companyCar);
+            RCompanyCar addCompanyCarId = carService.addCompanyCar(companyCar);
             return Response.create("New car is added sucessfuly", HttpStatus.OK, addCompanyCarId);
         } catch (Exception e) {
             return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

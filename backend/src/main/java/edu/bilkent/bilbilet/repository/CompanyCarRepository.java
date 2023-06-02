@@ -15,6 +15,7 @@ import edu.bilkent.bilbilet.model.CompanyCar;
 import edu.bilkent.bilbilet.repository.rowmapper.BilBiletRowMapper;
 import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
 import edu.bilkent.bilbilet.request.AddCompanyCar;
+import edu.bilkent.bilbilet.response.RCompanyCar;
 
 @Qualifier("company_car_repo")
 @Repository
@@ -59,10 +60,10 @@ public class CompanyCarRepository {
         }        
     }
     
-    public int save(AddCompanyCar car) throws Exception {
+    public RCompanyCar save(AddCompanyCar car) throws Exception {
         try {
             String sql = "INSERT INTO CompanyCar (car_id, company_id, address_id, price_per_day) " +
-                     "VALUES (?, ?, SELECT address_id FROM Address WHERE country = ? AND city = ?, ?)";
+                     "VALUES (?, ?, (SELECT address_id FROM Address WHERE country = ? AND city = ?), ?)";
         
             KeyHolder keyHolder = new GeneratedKeyHolder();
             
@@ -77,9 +78,11 @@ public class CompanyCarRepository {
             }, keyHolder);
             
             int generatedId = keyHolder.getKey().intValue();
+            RCompanyCar companyCar = new RCompanyCar(generatedId, car);
 
-            return generatedId;
+            return companyCar;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new Exception("New car cannot be added due to " + e);
         }        
     }

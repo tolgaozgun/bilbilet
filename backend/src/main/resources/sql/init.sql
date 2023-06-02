@@ -86,8 +86,6 @@ CREATE TABLE IF NOT EXISTS CompanyCar (
     car_id INT NOT NULL,
     company_id INT NOT NULL,
     address_id INT NOT NULL,
-    photo_url VARCHAR(255),
-    website_url VARCHAR(255),
     price_per_day DECIMAL(10, 2) NOT NULL,
     PRIMARY KEY (company_car_id),
     FOREIGN KEY (company_id) REFERENCES Company(company_id),

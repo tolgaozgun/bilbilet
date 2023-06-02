@@ -15,6 +15,7 @@ import edu.bilkent.bilbilet.repository.CarRepository;
 import edu.bilkent.bilbilet.repository.CompanyCarRepository;
 import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
 import edu.bilkent.bilbilet.request.AddCompanyCar;
+import edu.bilkent.bilbilet.response.RCompanyCar;
 import edu.bilkent.bilbilet.utils.Utils;
 import lombok.RequiredArgsConstructor;
 
@@ -54,7 +55,7 @@ public class CarService {
         }
     }
 
-    public int addCompanyCar(AddCompanyCar companyCar) throws Exception {
+    public RCompanyCar addCompanyCar(AddCompanyCar companyCar) throws Exception {
         try {
             boolean carExist = carRepository.carExistById(companyCar.getCarId());
 
@@ -75,7 +76,7 @@ public class CarService {
                 addressRepository.save(new Address(0, companyCar.getCity(), companyCar.getCountry(), BigDecimal.valueOf(0), BigDecimal.valueOf(0)));
             }
 
-            int companyCarId = companyCarRepository.save(companyCar);
+            RCompanyCar companyCarId = companyCarRepository.save(companyCar);
             return companyCarId;
         } catch (Exception e) {
             System.out.println("Car cannot be added");

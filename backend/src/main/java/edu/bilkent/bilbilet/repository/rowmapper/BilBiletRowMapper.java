@@ -15,8 +15,6 @@ public class BilBiletRowMapper {
         cc.setCompanyId(rs.getInt("cc.company_id"));
         cc.setCompanyCarId(rs.getInt("cc.company_car_id"));
         cc.setPricePerDay(rs.getBigDecimal("cc.price_per_day"));
-        cc.setPhotoUrl(rs.getString("cc.photo_url"));
-        cc.setWebsiteUrl(rs.getString("cc.website_url"));
 
         Car c = new Car();
         c.setCarId(rs.getInt("c.car_id"));

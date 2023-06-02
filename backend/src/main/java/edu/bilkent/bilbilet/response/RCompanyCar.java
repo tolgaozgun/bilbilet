@@ -1,7 +1,8 @@
-package edu.bilkent.bilbilet.model;
+package edu.bilkent.bilbilet.response;
 
 import java.math.BigDecimal;
 
+import edu.bilkent.bilbilet.request.AddCompanyCar;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -11,19 +12,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyCar {
-    @Id
+public class RCompanyCar {
     private int companyCarId;
-
-    @NotNull
     private int carId;
-
-    @NotNull
     private int companyId;
-
-    @NotNull    
-    private int addressId;
-
-    @NotNull
+    private String country;
+    private String city;
     private BigDecimal pricePerDay;
+
+    public RCompanyCar(int ccId, AddCompanyCar cc) {
+        this(ccId, cc.getCarId(), cc.getCompanyId(), cc.getCountry(), cc.getCity(), cc.getPricePerDay());
+    }
 }
+
