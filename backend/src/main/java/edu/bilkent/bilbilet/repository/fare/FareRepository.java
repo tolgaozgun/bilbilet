@@ -1,5 +1,6 @@
 package edu.bilkent.bilbilet.repository.fare;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,10 @@ public class FareRepository {
     };
 
     public Optional<Fare> createFare(Fare newFare) throws Exception {
+        if (existsById(newFare.getFareId())) {
+            return updateFare(newFare);
+        }
+        
         String sql = "INSERT INTO Fare (departure_time, estimated_arrival_time, price, company_id, vehicle_id, dep_stat_id, arrive_stat_id)" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -65,11 +70,108 @@ public class FareRepository {
         return Optional.empty();
     }
 
+    public Optional<Fare> updateFare(Fare newFare) throws Exception {
+        String sql = "UPDATE Fare SET departure_time = ?, estimated_arrival_time = ?, price = ?, company_id = ?, vehicle_id = ?, dep_stat_id = ?, arrive_stat_id = ? " +
+                     "WHERE fare_id = ?";
+    
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("departure_time", newFare.getEstimatedDepTime());
+        parameters.addValue("estimated_arrival_time", newFare.getEstimatedArrTime());
+        parameters.addValue("price", newFare.getPrice());
+        parameters.addValue("company_id", newFare.getCompanyId());
+        parameters.addValue("vehicle_id", newFare.getVehicleId());
+        parameters.addValue("dep_stat_id", newFare.getDepStationId());
+        parameters.addValue("arrive_stat_id", newFare.getArrStationId());
+        parameters.addValue("fare_id", newFare.getFareId());
+    
+        try {
+            int affectedRows = jdbcTemplate.update(sql, parameters, keyHolder);
+            
+            if (affectedRows < 1) {
+                return Optional.empty();
+            }
+                
+            int fareId = keyHolder.getKey().intValue();
+            Fare addedFare = newFare;
+            addedFare.setFareId(fareId);
+
+            return Optional.of(addedFare);
+        }
+        catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    
+        return Optional.empty();
+    }
+
+    public boolean deleteFareById(int fareId) throws Exception {
+        String sql = "DELETE FROM Fare WHERE fare_id = ?";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("fare_id", fareId);
+
+        try {
+            int affectedRows = jdbcTemplate.update(sql, parameters);
+            return affectedRows > 0;
+        }
+        catch (EmptyResultDataAccessException e) {
+            return false;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    
+        return false;
+    }
+
     public List<Fare> getFaresByCompanyId(int companyId) throws Exception {
         String sql = "SELECT * FROM Fare WHERE company_id = ?";
     
-        List<Fare> fares = jdbcTemplate.query(sql, fareRowMapper, companyId);
+        try {
+            return jdbcTemplate.query(sql, fareRowMapper, companyId);
+        }
+        catch (EmptyResultDataAccessException erda) {
+            return Collections.emptyList();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        return fares;
+        return Collections.emptyList();
+    }
+
+    public List<Fare> getFaresByFareId(int fareId) throws Exception {
+        String sql = "SELECT * FROM Fare WHERE fare_id = ?";
+    
+        try {
+            return jdbcTemplate.query(sql, fareRowMapper, fareId);
+        }
+        catch (EmptyResultDataAccessException erda) {
+            return Collections.emptyList();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
+    }
+
+    public boolean existsById(int fareId) throws Exception {
+        try {
+            List<Fare> fareList = getFaresByFareId(fareId);
+            return fareList.size() > 0;
+        }
+        catch (EmptyResultDataAccessException erda) {
+            return false;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }
