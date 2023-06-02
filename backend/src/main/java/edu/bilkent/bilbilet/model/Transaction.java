@@ -27,6 +27,5 @@ public class Transaction {
     @NotNull
     private int receiver_id;
 
-    @NotNull
     private int sender_id;
 }
