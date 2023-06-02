@@ -58,4 +58,5 @@ export type CompanyInfo = {
 	user: UserModel;
 	userType: UserType;
 	company: CompanyModel;
+
 };

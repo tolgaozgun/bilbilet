@@ -78,6 +78,7 @@ const TravelerMenu = () => {
 					<Menu.Item>
 						<SubtleLinkButton
 							onClick={onLogout}
+
 							size="sm"
 							leftIcon={<IconLogout />}
 							color="red"
