@@ -41,7 +41,6 @@ CREATE TABLE IF NOT EXISTS SeatConfiguration (
     PRIMARY KEY (seat_configuration_id)
 );
 
-
 CREATE TABLE IF NOT EXISTS Seat (
     seat_id INT NOT NULL AUTO_INCREMENT,
     seat_class VARCHAR(50) NOT NULL,
@@ -116,6 +115,20 @@ CREATE TABLE IF NOT EXISTS Station (
     FOREIGN KEY (address_id) REFERENCES Address(address_id)
 );
 
+CREATE TABLE IF NOT EXISTS Hotel (
+    hotel_id INT NOT NULL AUTO_INCREMENT,
+    `name` TEXT NOT NULL,
+    avg_price NUMERIC NOT NULL,
+    telephone VARCHAR(255) NOT NULL,
+    rating NUMERIC NOT NULL,
+    website_url VARCHAR(255) NOT NULL,
+    cover_photo_url VARCHAR(255) NOT NULL,
+    photo_url VARCHAR(255) NOT NULL,
+    address_id INT NOT NULL,
+    PRIMARY KEY (hotel_id),
+    FOREIGN KEY (address_id) REFERENCES Address(address_id)
+);
+
 CREATE TABLE IF NOT EXISTS Fare (
     fare_id INT NOT NULL AUTO_INCREMENT,
     departure_time TIMESTAMP NOT NULL,
@@ -155,7 +168,6 @@ CREATE TABLE IF NOT EXISTS Reservation (
     FOREIGN KEY (ticket_id) REFERENCES Ticket(ticket_id)
 );
 
-
 CREATE TABLE IF NOT EXISTS JourneyPlan (
     journey_plan_id INT NOT NULL AUTO_INCREMENT,
     plan_title VARCHAR(255) NOT NULL,
@@ -172,4 +184,21 @@ CREATE TABLE IF NOT EXISTS Journey (
     PRIMARY KEY (journey_id),
     FOREIGN KEY (journey_plan_id) REFERENCES JourneyPlan(journey_plan_id),
     FOREIGN KEY (fare_id) REFERENCES Fare(fare_id)
+);
+
+CREATE TABLE IF NOT EXISTS Transactions (
+    transaction_id INT NOT NULL AUTO_INCREMENT,
+    transaction_type VARCHAR(255) NOT NULL,
+    transaction_amount NUMERIC NOT NULL,
+    receiver_id INT NOT NULL,
+    sender_id INT,
+    PRIMARY KEY (transaction_id),
+    FOREIGN KEY (receiver_id) REFERENCES User(user_id),
+    FOREIGN KEY (sender_id) REFERENCES User(user_id),
+CONSTRAINT transaction_type_constraint
+    CHECK (transaction_type IN ('REFUND', 'BUY_TICKET_WITH_BALANCE', 'WITHDRAW', 'ADD_FUNDS', 'OTHER'))
+CONSTRAINT transaction_amount_check
+    CHECK (transaction_amount BETWEEN 0 AND 50000)
+CONSTRAINT receiver_id_exists
+    CHECK (EXISTS (SELECT 1 FROM User WHERE user_id = receiver_id))
 );
