@@ -17,10 +17,10 @@ public class Fare {
 	private int fareId;
 
 	@NotNull
-	private Timestamp departureTime;
+	private Timestamp estimatedDepTime;
 
 	@NotNull
-	private Timestamp estimatedArrivalTime;
+	private Timestamp estimatedArrTime;
 
 	@NotNull
 	private BigDecimal price;
@@ -32,8 +32,8 @@ public class Fare {
 	private int vehicleId;
 
 	@NotNull
-	private int depStatId;
+	private int depStationId;
 
 	@NotNull
-	private int arriveStatId;
+	private int arrStationId;
 }
