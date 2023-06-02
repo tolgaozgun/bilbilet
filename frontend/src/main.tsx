@@ -7,6 +7,7 @@ import JourneyList from './components/journey/JourneyList';
 import './index.css';
 import Layout from './layout';
 import SearchFarePage from './pages/fare/SearchFarePage';
+
 import AddHotelPage from './pages/hotel/AddHotelPage';
 import JourneyPlansPage from './pages/journey/JourneyPlansPage';
 import AddAddressPage from './pages/location/AddAddressPage';

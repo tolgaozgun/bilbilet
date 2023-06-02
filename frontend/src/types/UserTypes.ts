@@ -24,6 +24,7 @@ export type Traveler = {
 	email: string;
 	phone: string;
 	balance: number;
+	userType: UserType;
 };
 
 export type Company = Traveler & {
