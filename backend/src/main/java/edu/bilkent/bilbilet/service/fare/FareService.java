@@ -33,15 +33,10 @@ public class FareService {
             Fare fareToAdd = fareInfo.getFare();
             fareToAdd.setCompanyId(company.getCompany_id());
 
-            // TODO Set vehicleId of fareToAdd
+            // ASSUMED: vehicleId is already SET by the frontend request
+            // ASSUMED: depStationId is already SET by the frontend request
+            // ASSUMED: arrStationId is already SET by the frontend request
 
-
-            // TODO Set depStationId of fareToAdd
-
-
-            // TODO Set arrStationId of fareToAdd
-
-            
             Optional<Fare> newFare = fareRepository.createFare(fareToAdd);
 
             if (!newFare.isPresent()) {
