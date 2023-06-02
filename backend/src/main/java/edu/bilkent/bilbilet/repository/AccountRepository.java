@@ -50,9 +50,67 @@ public class AccountRepository {
             return null;
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         }
 
-        return null;
+//        return null;
+    }
+
+    public void incrementTravelerBalance(int userId, BigDecimal amount) throws Exception {
+        String sql = "UPDATE Traveler SET balance = balance + ? WHERE user_id = ?";
+
+        try {
+            jdbcTemplate.update(sql, userId, amount);
+        } catch (EmptyResultDataAccessException e) {
+            throw new Exception("Traveler not found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
+    public void decrementTravelerBalance(int userId, BigDecimal amount) throws Exception {
+        String sql = "UPDATE Traveler SET balance = balance - ? WHERE user_id = ?";
+
+        try {
+            jdbcTemplate.update(sql, userId, amount);
+        } catch (EmptyResultDataAccessException e) {
+            throw new Exception("Traveler not found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
+
+    public void incrementCompanyBalance(int userId, BigDecimal amount) throws Exception {
+        String sql = "UPDATE Company SET balance = balance + ? WHERE user_id = ?";
+
+        try {
+            jdbcTemplate.update(sql, userId, amount);
+        } catch (EmptyResultDataAccessException e) {
+            throw new Exception("Company not found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
+    public void decrementCompanyBalance(int userId, BigDecimal amount) throws Exception {
+        String sql = "UPDATE Company SET balance = balance - ? WHERE user_id = ?";
+
+        try {
+            jdbcTemplate.update(sql, userId, amount);
+        } catch (EmptyResultDataAccessException e) {
+            throw new Exception("Company not found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
     }
 
     public Optional<Traveler> findTravelerByUserId(int id) {
