@@ -9,7 +9,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CompanyRegister {
-
     @NotNull
     private User user;
 
