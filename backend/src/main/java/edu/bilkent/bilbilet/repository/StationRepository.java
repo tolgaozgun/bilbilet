@@ -59,12 +59,12 @@ public class StationRepository {
         try {
             return jdbcTemplate.query(sql, rStationAddressRowMapper);
         } catch (EmptyResultDataAccessException e) {
-            List<Address> emptyList = Collections.<Address>emptyList();
+            List<RStationAddress> emptyList = Collections.emptyList();
             return emptyList;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        List<Address> emptyList = Collections.<Address>emptyList();
+        List<RStationAddress> emptyList = Collections.emptyList();
         return emptyList;
     }
 

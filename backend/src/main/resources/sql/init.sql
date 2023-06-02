@@ -195,10 +195,8 @@ CREATE TABLE IF NOT EXISTS Transactions (
     PRIMARY KEY (transaction_id),
     FOREIGN KEY (receiver_id) REFERENCES User(user_id),
     FOREIGN KEY (sender_id) REFERENCES User(user_id),
-CONSTRAINT transaction_type_constraint
-    CHECK (transaction_type IN ('REFUND', 'BUY_TICKET_WITH_BALANCE', 'WITHDRAW', 'ADD_FUNDS', 'OTHER'))
-CONSTRAINT transaction_amount_check
-    CHECK (transaction_amount BETWEEN 0 AND 50000)
-CONSTRAINT receiver_id_exists
-    CHECK (EXISTS (SELECT 1 FROM User WHERE user_id = receiver_id))
+    CONSTRAINT transaction_type_constraint
+        CHECK (transaction_type IN ('REFUND', 'BUY_TICKET_WITH_BALANCE', 'WITHDRAW', 'ADD_FUNDS', 'OTHER')),
+    CONSTRAINT transaction_amount_check
+        CHECK (transaction_amount BETWEEN 0 AND 50000)
 );
