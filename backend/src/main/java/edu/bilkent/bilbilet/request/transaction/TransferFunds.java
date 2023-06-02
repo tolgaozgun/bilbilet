@@ -2,6 +2,8 @@ package edu.bilkent.bilbilet.request.transaction;
 
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
+
 public class TransferFunds {
 
     @NotNull
@@ -11,5 +13,5 @@ public class TransferFunds {
     int receiverId;
 
     @NotNull
-    int amount;
+    BigDecimal amount;
 }

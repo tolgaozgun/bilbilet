@@ -8,6 +8,7 @@ import edu.bilkent.bilbilet.repository.AccountRepository;
 import edu.bilkent.bilbilet.repository.TransactionRepository;
 import edu.bilkent.bilbilet.request.transaction.*;
 import edu.bilkent.bilbilet.utils.CreditCardChecker;
+import edu.bilkent.bilbilet.utils.IbanChecker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -39,96 +40,232 @@ public class TransactionService {
         }
     }
 
-    public Transaction addFunds(AddFunds addFunds) {
-        Transaction transaction = new Transaction();
-        transaction.setTransaction_type(TransactionType.ADD_FUNDS);
-        transaction.setTransaction_amount(BigDecimal.valueOf(addFunds.getBalance()));
+    public Transaction addFunds(AddFunds addFunds) throws Exception {
+        try {
+            CreditCard creditCard = addFunds.getCreditCard();
 
-        CreditCard creditCard = addFunds.getCreditCard();
+            if (creditCard == null) {
+                throw new IllegalArgumentException("Credit card cannot be null");
+            }
 
-        if (creditCard == null) {
-            throw new IllegalArgumentException("Credit card cannot be null");
+            String creditCardNumber = creditCard.getCardNumber();
+
+            if (creditCardNumber == null) {
+                throw new IllegalArgumentException("Credit card number cannot be null");
+            }
+
+            int creditCardMonth = creditCard.getExpirationMonth();
+
+            int creditCardYear = creditCard.getExpirationYear();
+
+            if (creditCardMonth <= 0 || creditCardMonth > 12) {
+                throw new IllegalArgumentException("Invalid month");
+            }
+
+            if (creditCardYear <= 0) {
+                throw new IllegalArgumentException("Invalid year");
+            }
+
+            if (!CreditCardChecker.isValidExpiration(creditCardMonth, creditCardYear)) {
+                throw new IllegalArgumentException("Invalid expiration date");
+            }
+
+            if (!CreditCardChecker.isValidCreditCardNumber(creditCardNumber)) {
+                throw new IllegalArgumentException("Invalid credit card number");
+            }
+
+            int travelerId = addFunds.getTravelerId();
+
+            Optional<Traveler> traveler = accountRepository.findTravelerByUserId(travelerId);
+
+            if (traveler.isEmpty()) {
+                throw new IllegalArgumentException("Invalid traveler id");
+            }
+
+            BigDecimal amount = addFunds.getAmount();
+
+            if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+                throw new IllegalArgumentException("Invalid amount");
+            }
+
+            accountRepository.incrementTravelerBalance(travelerId, amount);
+
+            Transaction transaction = new Transaction();
+            transaction.setTransaction_type(TransactionType.ADD_FUNDS);
+            transaction.setTransaction_amount(amount);
+            transaction.setSender_id(-1);
+            transaction.setReceiver_id(travelerId);
+            return transactionRepository.save(transaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
         }
 
-        String creditCardNumber = creditCard.getCardNumber();
-
-        if (creditCardNumber == null) {
-            throw new IllegalArgumentException("Credit card number cannot be null");
-        }
-
-        int creditCardMonth = creditCard.getExpirationMonth();
-
-        int creditCardYear = creditCard.getExpirationYear();
-
-        if (creditCardMonth <= 0 || creditCardMonth > 12) {
-            throw new IllegalArgumentException("Invalid month");
-        }
-
-        if (creditCardYear <= 0) {
-            throw new IllegalArgumentException("Invalid year");
-        }
-
-        if (!CreditCardChecker.isValidExpiration(creditCardMonth, creditCardYear)) {
-            throw new IllegalArgumentException("Invalid expiration date");
-        }
-
-        if (!CreditCardChecker.isValidCreditCardNumber(creditCardNumber)) {
-            throw new IllegalArgumentException("Invalid credit card number");
-        }
-
-        int travelerId = addFunds.getTravelerId();
-
-        Optional<Traveler> traveler = accountRepository.findTravelerByUserId(travelerId);
-
-        if (traveler.isEmpty()) {
-            throw new IllegalArgumentException("Invalid traveler id");
-        }
-
-        int balance = addFunds.getBalance();
-
-        if (balance <= 0) {
-            throw new IllegalArgumentException("Invalid balance");
-        }
-
-        // TODO: Add balance to the traveler.
-
-        return transactionRepository.save(transaction);
     }
 
-    public Transaction balancePayment(BalancePayment balancePayment) {
-        Transaction transaction = new Transaction();
-        transaction.setTransaction_type(TransactionType.BUY_TICKET_WITH_BALANCE);
-        transaction.setTransaction_amount(BigDecimal.valueOf(balancePayment.getAmount()));
-        // Set other necessary fields for balance payment transaction
+    public Transaction balancePayment(BalancePayment balancePayment) throws Exception{
+        try {
+            int travelerId = balancePayment.getTravelerId();
 
-        return transactionRepository.save(transaction);
+            Optional<Traveler> traveler = accountRepository.findTravelerByUserId(travelerId);
+
+            if (traveler.isEmpty()) {
+                throw new IllegalArgumentException("Invalid traveler id");
+            }
+
+            BigDecimal amount = balancePayment.getAmount();
+
+            if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+                throw new IllegalArgumentException("Invalid amount");
+            }
+
+            accountRepository.decrementTravelerBalance(travelerId, amount);
+            // TODO: Ticket purchase
+
+            Transaction transaction = new Transaction();
+            transaction.setTransaction_type(TransactionType.ADD_FUNDS);
+            transaction.setTransaction_amount(amount);
+            transaction.setSender_id(travelerId);
+            transaction.setReceiver_id(-1);
+            return transactionRepository.save(transaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
     }
 
-    public Transaction cardPayment(CardPayment cardPayment) {
-        Transaction transaction = new Transaction();
-        transaction.setTransaction_type(TransactionType.BUY_TICKET_WITH_CARD);
-        transaction.setTransaction_amount(BigDecimal.valueOf(cardPayment.getAmount()));
-        // Set other necessary fields for card payment transaction
+    public Transaction cardPayment(CardPayment cardPayment) throws Exception {
+        try {
+            CreditCard creditCard = cardPayment.getCreditCard();
 
-        return transactionRepository.save(transaction);
+            if (creditCard == null) {
+                throw new IllegalArgumentException("Credit card cannot be null");
+            }
+
+            String creditCardNumber = creditCard.getCardNumber();
+
+            if (creditCardNumber == null) {
+                throw new IllegalArgumentException("Credit card number cannot be null");
+            }
+
+            int creditCardMonth = creditCard.getExpirationMonth();
+
+            int creditCardYear = creditCard.getExpirationYear();
+
+            if (creditCardMonth <= 0 || creditCardMonth > 12) {
+                throw new IllegalArgumentException("Invalid month");
+            }
+
+            if (creditCardYear <= 0) {
+                throw new IllegalArgumentException("Invalid year");
+            }
+
+            if (!CreditCardChecker.isValidExpiration(creditCardMonth, creditCardYear)) {
+                throw new IllegalArgumentException("Invalid expiration date");
+            }
+
+            if (!CreditCardChecker.isValidCreditCardNumber(creditCardNumber)) {
+                throw new IllegalArgumentException("Invalid credit card number");
+            }
+
+            int travelerId = cardPayment.getTravelerId();
+
+            Optional<Traveler> traveler = accountRepository.findTravelerByUserId(travelerId);
+
+            if (traveler.isEmpty()) {
+                throw new IllegalArgumentException("Invalid traveler id");
+            }
+
+            BigDecimal amount = cardPayment.getAmount();
+
+            if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+                throw new IllegalArgumentException("Invalid amount");
+            }
+
+            // TODO: Trip purchase
+
+
+            Transaction transaction = new Transaction();
+            transaction.setTransaction_type(TransactionType.ADD_FUNDS);
+            transaction.setTransaction_amount(amount);
+            transaction.setSender_id(travelerId);
+            transaction.setReceiver_id(-1);
+            return transactionRepository.save(transaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
-    public Transaction refund(Refund refund) {
-        Transaction transaction = new Transaction();
-        transaction.setTransaction_type(TransactionType.REFUND);
-        transaction.setTransaction_amount(BigDecimal.valueOf(refund.getAmount()));
-        // Set other necessary fields for refund transaction
+    public Transaction refund(Refund refund) throws Exception {
+        try {
+            int travelerId = refund.getTravelerId();
 
-        return transactionRepository.save(transaction);
+            Optional<Traveler> traveler = accountRepository.findTravelerByUserId(travelerId);
+
+            if (traveler.isEmpty()) {
+                throw new IllegalArgumentException("Invalid traveler id");
+            }
+
+            BigDecimal amount = refund.getAmount();
+
+            if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+                throw new IllegalArgumentException("Invalid amount");
+            }
+
+            accountRepository.incrementTravelerBalance(travelerId, amount);
+
+            Transaction transaction = new Transaction();
+            transaction.setTransaction_type(TransactionType.ADD_FUNDS);
+            transaction.setTransaction_amount(amount);
+            transaction.setSender_id(travelerId);
+            transaction.setReceiver_id(-1);
+            return transactionRepository.save(transaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
-    public Transaction withdraw(Withdraw withdraw) {
-        Transaction transaction = new Transaction();
-        transaction.setTransaction_type(TransactionType.WITHDRAW);
-        transaction.setTransaction_amount(BigDecimal.valueOf(withdraw.getAmount()));
-        // Set other necessary fields for withdraw transaction
+    public Transaction withdraw(Withdraw withdraw) throws Exception {
+        try {
+            String ibanNumber = withdraw.getIbanNumber();
 
-        return transactionRepository.save(transaction);
+            if (ibanNumber == null) {
+                throw new IllegalArgumentException("IBAN number cannot be null");
+            }
+
+            if (!IbanChecker.isValidIBAN(ibanNumber)) {
+                throw new IllegalArgumentException("Invalid IBAN number");
+            }
+
+            int travelerId = withdraw.getTravelerId();
+
+            Optional<Traveler> traveler = accountRepository.findTravelerByUserId(travelerId);
+
+            if (traveler.isEmpty()) {
+                throw new IllegalArgumentException("Invalid traveler id");
+            }
+
+            BigDecimal amount = withdraw.getAmount();
+
+            if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+                throw new IllegalArgumentException("Invalid amount");
+            }
+
+            accountRepository.incrementTravelerBalance(travelerId, amount);
+
+            Transaction transaction = new Transaction();
+            transaction.setTransaction_type(TransactionType.ADD_FUNDS);
+            transaction.setTransaction_amount(amount);
+            transaction.setSender_id(-1);
+            transaction.setReceiver_id(travelerId);
+            return transactionRepository.save(transaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public List<Transaction> getTransactionsBySenderId(int senderId) {

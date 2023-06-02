@@ -88,9 +88,6 @@ public class TransactionController {
         }
     }
 
-
-
-
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping("sender/{senderId}")
     public ResponseEntity<Object> getTransactionsBySenderId(@PathVariable int senderId) {

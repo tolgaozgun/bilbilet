@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 public class BalancePayment {
@@ -13,7 +15,7 @@ public class BalancePayment {
     int travelerId;
 
     @NotNull
-    int amount;
+    BigDecimal amount;
 
 
 }
