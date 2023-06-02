@@ -70,6 +70,20 @@ public class AccountRepository {
         return null;
     }
 
+    public Optional<User> findUserById(int userId) {
+        String sql = "SELECT * FROM User WHERE user_id = ?";
+
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, userRowMapper, userId));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
+
     public Optional<Traveler> findTravelerByUserId(int id) {
         String sql = "SELECT * FROM Traveler WHERE user_id = ?";
 
