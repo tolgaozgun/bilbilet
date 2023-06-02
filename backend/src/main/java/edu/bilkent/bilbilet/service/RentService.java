@@ -1,5 +1,8 @@
 package edu.bilkent.bilbilet.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
@@ -65,8 +68,25 @@ public class RentService {
                 throw new RentException("Please provide start date and and date together");
             }
 
+            // if start date is after end date throw error
+            if (startExist && endExist) {
+                String startString = (String) snakeParams.get("start_date");
+                String endString = (String) snakeParams.get("end_date");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                
+                Date dateStart = dateFormat.parse(startString);
+                Date dateEnd = dateFormat.parse(endString);
+
+                if (dateStart.compareTo(dateEnd) > 0) {
+                    throw new RentException("Start date cannot be after end date");
+                }
+            }
+
             return rentDetailRepository.findAvailableCarsByProperties(snakeParams); // TODO test // TODO check when start and end date is the same maybe change data type to date ????  
         } catch (RentException e) {
+            throw e;
+        } catch (ParseException e) {
+            e.printStackTrace();
             throw e;
         } catch (Exception e) {
             e.printStackTrace();

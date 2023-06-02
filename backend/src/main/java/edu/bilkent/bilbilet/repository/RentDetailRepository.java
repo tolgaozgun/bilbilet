@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 
 import edu.bilkent.bilbilet.enums.FuelType;
 import edu.bilkent.bilbilet.enums.GearType;
+import edu.bilkent.bilbilet.exception.RentException;
 import edu.bilkent.bilbilet.model.Address;
 import edu.bilkent.bilbilet.model.Car;
 import edu.bilkent.bilbilet.model.CarCategoryType;
@@ -32,6 +33,8 @@ public class RentDetailRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    private final String OVERLAPPING_DATE_ERROR = "PreparedStatementCallback; uncategorized SQLException; SQL state [45000]; error code [1644]; Error: Date range overlaps with existing data";
 
     private RowMapper<RentDetail> rentDetailRM = (rs, rowNum) -> {
         RentDetail rd = new RentDetail();
@@ -160,6 +163,10 @@ public class RentDetailRepository {
             
             return rentDetail;
         } catch (Exception e) {
+            if (e.getMessage().equals(OVERLAPPING_DATE_ERROR)) {
+                throw new RentException(String.format("Selected car is not available between %s and %s", rentDetail.getStartDate(), rentDetail.getEndDate()));
+            }
+
             throw new Exception("Rent detail cannot be added " + e);
         }        
     }
