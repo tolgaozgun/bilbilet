@@ -28,7 +28,6 @@ interface AddCarFormProps {
 			category: CarCategoryType;
 			fuelType: FuelType;
 			photoUrl: string;
-			websiteUrl: string;
 		},
 		(values: {
 			capacity: number;
@@ -38,7 +37,6 @@ interface AddCarFormProps {
 			category: CarCategoryType;
 			fuelType: FuelType;
 			photoUrl: string;
-			websiteUrl: string;
 		}) => {
 			capacity: number;
 			gear: GearType;
@@ -47,7 +45,6 @@ interface AddCarFormProps {
 			category: CarCategoryType;
 			fuelType: FuelType;
 			photoUrl: string;
-			websiteUrl: string;
 		}
 	>;
 }
@@ -162,11 +159,6 @@ const AddCarForm = ({ form }: AddCarFormProps) => {
 							withAsterisk
 							label="Image URL"
 							{...form.getInputProps('photoUrl')}
-						></TextInput>
-						<TextInput
-							withAsterisk
-							label="Website URL"
-							{...form.getInputProps('websiteUrl')}
 						></TextInput>
 					</Flex>
 				</form>

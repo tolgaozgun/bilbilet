@@ -13,14 +13,11 @@ const AddCarPage = () => {
 			category: CarCategoryType.HATCHBACK,
 			fuelType: FuelType.DIESEL,
 			photoUrl: '',
-			websiteUrl: '',
 		},
 		validate: {
 			model: (value) => (value === '' ? 'This field cannot be left empty' : null),
 			brand: (value) => (value === '' ? 'This field cannot be left empty' : null),
 			photoUrl: (value) =>
-				value === '' ? 'This field cannot be left empty' : null,
-			websiteUrl: (value) =>
 				value === '' ? 'This field cannot be left empty' : null,
 		},
 	});

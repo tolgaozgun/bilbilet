@@ -28,7 +28,6 @@ export type Car = {
 	category: CarCategoryType;
 	fuelType: FuelType;
 	photoUrl: string;
-	websiteUrl: string;
 };
 
 export type CarBrand = {
@@ -41,17 +40,15 @@ export type CompanyCar = {
 	companyId: number;
 	addressId: number;
 	photoUrl: string;
-	websiteUrl: string;
 	pricePerDay: number;
 };
 
 export type CompanyCarRM = {
 	companyCarId: number;
-	car: Car;
+	carId: number;
 	companyId: number;
-	addressId: number;
-	photoUrl: string;
-	websiteUrl: string;
+	country: string;
+	city: string;
 	pricePerDay: number;
 };
 
