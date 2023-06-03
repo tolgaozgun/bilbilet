@@ -1,68 +1,47 @@
-import {
-  Card,
-  Center,
-  Flex,
-  Image,
-  SimpleGrid,
-  Text,
-  Title,
-} from "@mantine/core";
-import {
-  IconGasStation,
-  IconManualGearbox,
-  IconUser,
-} from "@tabler/icons-react";
-import CustomElevatedButton from "../common/buttons/CustomElevatedButton";
+import { Card, Center, Flex, Image, SimpleGrid, Text, Title } from '@mantine/core';
+import { IconGasStation, IconManualGearbox, IconUser } from '@tabler/icons-react';
+import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
+import { CompanyCarRM } from '../../types/CarTypes';
 interface CarInfoCardProps {
-  carName: string;
-  seat: number;
-  fuel: string;
-  gear: string;
-  dailyPrice: number;
-  totalPrice: number;
+	car: CompanyCarRM;
+	onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }
-const CarInfoCard = ({
-  carName,
-  seat,
-  fuel,
-  gear,
-  dailyPrice,
-  totalPrice,
-}: CarInfoCardProps) => {
-  return (
-    <Card shadow="xl" withBorder radius={"lg"}>
-      <Flex direction={"column"} gap={"sm"}>
-        <Center>
-          <Title>{carName}</Title>
-        </Center>
-        <SimpleGrid cols={3} spacing={"lg"}>
-          <Image
-            height={160}
-            src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
-            alt="Norway"
-          />
-          <SimpleGrid cols={2} spacing="lg" verticalSpacing={"xs"}>
-            <Flex direction={"row"} gap={"xs"}>
-              <IconUser></IconUser>
-              <Text> {seat} seats</Text>
-            </Flex>
-            <Flex direction={"row"} gap={"xs"}>
-              <IconGasStation></IconGasStation>
-              <Text>{fuel}</Text>
-            </Flex>
-            <Flex direction={"row"} gap={"xs"}>
-              <IconManualGearbox></IconManualGearbox>
-              <Text>{gear}</Text>
-            </Flex>
-          </SimpleGrid>
-          <Flex direction={"column"} gap={"sm"}>
-            <Text color="red">TRY {dailyPrice} per day</Text>
-            <Text color="red">TRY {totalPrice} total</Text>
-            <CustomElevatedButton text={"Get Deal"}></CustomElevatedButton>
-          </Flex>
-        </SimpleGrid>
-      </Flex>
-    </Card>
-  );
+const CarInfoCard = ({ car, onClick }: CarInfoCardProps) => {
+	return (
+		<Card shadow="xl" withBorder radius={'lg'}>
+			<Flex direction={'column'} gap={'sm'}>
+				<Center>
+					<Title>{car.car.brand + ' ' + car.car.model}</Title>
+				</Center>
+				<SimpleGrid cols={3} spacing={'lg'}>
+					<Image
+						src={car.car.photoUrl}
+						alt={car.car.brand + ' ' + car.car.model}
+					/>
+					<SimpleGrid cols={2} spacing="lg" verticalSpacing={'xs'}>
+						<Flex direction={'row'} gap={'xs'}>
+							<IconUser></IconUser>
+							<Text> {car.car.capacity} seats</Text>
+						</Flex>
+						<Flex direction={'row'} gap={'xs'}>
+							<IconGasStation></IconGasStation>
+							<Text>{car.car.fuelType}</Text>
+						</Flex>
+						<Flex direction={'row'} gap={'xs'}>
+							<IconManualGearbox></IconManualGearbox>
+							<Text>{car.car.gear}</Text>
+						</Flex>
+					</SimpleGrid>
+					<Flex direction={'column'} gap={'sm'}>
+						<Text color="red">TRY {car.pricePerDay} per day</Text>
+						<CustomElevatedButton
+							text={'Get Deal'}
+							onClick={onClick}
+						></CustomElevatedButton>
+					</Flex>
+				</SimpleGrid>
+			</Flex>
+		</Card>
+	);
 };
 export default CarInfoCard;

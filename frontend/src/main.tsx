@@ -23,6 +23,7 @@ import SearchRentCarPage from './pages/rent-car/SearchRentCarPage';
 import ReviewPage from './pages/review/ReviewPage';
 import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
 import AddCompanyCarPage from './pages/rent-car/AddCompanyCarPage';
+import MyRentalsPage from './pages/rent-car/MyRentalsPage';
 
 const router = createBrowserRouter([
 	{
@@ -102,6 +103,10 @@ const router = createBrowserRouter([
 					{
 						path: '/traveler/profile',
 						element: <TravelerProfilePage />,
+					},
+					{
+						path: '/my-rentals',
+						element: <MyRentalsPage />,
 					},
 				],
 			},

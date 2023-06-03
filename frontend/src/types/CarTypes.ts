@@ -45,7 +45,7 @@ export type CompanyCar = {
 
 export type CompanyCarRM = {
 	companyCarId: number;
-	carId: number;
+	car: Car;
 	companyId: number;
 	country: string;
 	city: string;
@@ -58,4 +58,19 @@ export type AddCompanyCar = {
 	pricePerDay: number;
 	city: string;
 	country: string;
+};
+
+export type RentalDetailRM = {
+	companyCar: CompanyCarRM;
+	rentId: number;
+	startDate: Date;
+	endDate: Date;
+	userId: number;
+};
+
+export type RentDetail = {
+	companyCarId: number;
+	startDate: string;
+	endDate: string;
+	userId: number;
 };
