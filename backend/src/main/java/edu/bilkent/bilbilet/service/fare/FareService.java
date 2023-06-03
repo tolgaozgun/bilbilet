@@ -2,8 +2,11 @@ package edu.bilkent.bilbilet.service.fare;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
+
+import edu.bilkent.bilbilet.enums.VehicleType;
 import edu.bilkent.bilbilet.exception.CompanyNotFoundException;
 import edu.bilkent.bilbilet.exception.InsertionFailedException;
 import edu.bilkent.bilbilet.exception.NothingDeletedException;
@@ -155,6 +158,16 @@ public class FareService {
         }
         catch (CompanyNotFoundException cnfe) {
             throw cnfe;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public List<Fare> getPlaneFaresByProperty(Map<String, Object> properties, VehicleType vehicleType) throws Exception {
+        try {
+            return fareRepository.findFareByProperties(properties, vehicleType);
         }
         catch (Exception e) {
             e.printStackTrace();

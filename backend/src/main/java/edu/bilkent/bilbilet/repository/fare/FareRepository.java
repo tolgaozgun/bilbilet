@@ -1,16 +1,23 @@
 package edu.bilkent.bilbilet.repository.fare;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
+
+import edu.bilkent.bilbilet.enums.VehicleType;
 import edu.bilkent.bilbilet.model.Fare;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
@@ -211,5 +218,44 @@ public class FareRepository {
         }
 
         return false;
+    }
+
+    public List<Fare> findFareByProperties(Map<String, Object> properties, VehicleType vehicleType) {
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Fare f INNER JOIN TransportVehicle t ON f.vehicle_id = t.vehicle_id WHERE t.vehicle_type = ? ");
+        List<Object> parameterValues = new ArrayList<>();
+
+        parameterValues.add(vehicleType); // VehicleType.PLANE, VehicleType.BUS 
+
+        try {
+            if (properties.isEmpty()) {
+                return jdbcTemplate.query(sqlBuilder.toString(), fareRowMapper, parameterValues);
+            }
+    
+            for (String property : properties.keySet()) {
+                sqlBuilder.append(" AND ");
+
+                sqlBuilder.append(property).append(" = ?");
+                parameterValues.add(properties.get(property));
+            }
+            
+            String sql = sqlBuilder.toString();
+            
+            return jdbcTemplate.query(sql, new PreparedStatementSetter() {
+                @Override
+                public void setValues(PreparedStatement ps) throws SQLException {
+                    for (int i = 0; i < parameterValues.size(); i++) {
+                        ps.setObject(i + 1, parameterValues.get(i));
+                    }
+                }
+            }, fareRowMapper);
+        }
+        catch (EmptyResultDataAccessException erda) {
+            return Collections.emptyList();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
     }
 }

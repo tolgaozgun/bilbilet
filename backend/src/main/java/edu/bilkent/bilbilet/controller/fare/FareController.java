@@ -1,6 +1,7 @@
 package edu.bilkent.bilbilet.controller.fare;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,7 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import edu.bilkent.bilbilet.enums.VehicleType;
 import edu.bilkent.bilbilet.exception.CompanyNotFoundException;
 import edu.bilkent.bilbilet.exception.InsertionFailedException;
 import edu.bilkent.bilbilet.exception.NothingDeletedException;
@@ -114,5 +118,29 @@ public class FareController {
         catch (Exception e) {
             return Response.create("Could not delete fare.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("/plane")
+    public ResponseEntity<Object> getPlaneFares(@RequestParam Map<String, Object> requestParams) {
+        try {
+            List<Fare> fares = fareService.getPlaneFaresByProperty(requestParams, VehicleType.PLANE);
+            return Response.create("Successfully fetched plane fares.", HttpStatus.OK, fares);
+        }
+        catch (Exception e) {
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("/bus")
+    public ResponseEntity<Object> getBusFares(@RequestParam Map<String, Object> requestParams) {
+        try {
+            List<Fare> fares = fareService.getPlaneFaresByProperty(requestParams, VehicleType.BUS);
+            return Response.create("Successfully fetched bus fares.", HttpStatus.OK, fares);
+        }
+        catch (Exception e) {
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
     }
 }
