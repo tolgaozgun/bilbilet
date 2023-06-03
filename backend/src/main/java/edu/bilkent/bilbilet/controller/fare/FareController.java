@@ -1,6 +1,7 @@
 package edu.bilkent.bilbilet.controller.fare;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,7 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import edu.bilkent.bilbilet.enums.VehicleType;
 import edu.bilkent.bilbilet.exception.CompanyNotFoundException;
 import edu.bilkent.bilbilet.exception.InsertionFailedException;
 import edu.bilkent.bilbilet.exception.NothingDeletedException;
@@ -21,7 +25,7 @@ import edu.bilkent.bilbilet.model.Fare;
 import edu.bilkent.bilbilet.request.fare.CreateFare;
 import edu.bilkent.bilbilet.response.Response;
 import edu.bilkent.bilbilet.service.fare.FareService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -33,10 +37,28 @@ public class FareController {
     private final FareService fareService;
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createFare(@Valid @RequestBody CreateFare fareInfo) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "/old")
+    public ResponseEntity<Object> createFareOld(@Valid @RequestBody CreateFare fareInfo) {
         try {
             Fare fare = fareService.createFare(fareInfo);
+            return Response.create("Successfully created fare.", HttpStatus.OK, fare);
+        }
+        catch (InsertionFailedException ife) {
+            return Response.create(ife.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        catch (CompanyNotFoundException cnfe) {
+            return Response.create(cnfe.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return Response.create("Could not create fare. Perhaps an input was wrong?", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> createFare(@Valid @RequestBody Fare fareInfo) {
+        try {
+            Fare fare = fareService.createFareNew(fareInfo);
             return Response.create("Successfully created fare.", HttpStatus.OK, fare);
         }
         catch (InsertionFailedException ife) {
@@ -106,7 +128,7 @@ public class FareController {
     public ResponseEntity<Object> getFaresByCompanyId(@PathVariable("companyId") int companyId) {
         try {
             List<Fare> faresOfCompany = fareService.getFaresByCompanyId(companyId);
-            return Response.create("Successfully fetched fares of company with the ID \"" + companyId + "\".", HttpStatus.OK, faresOfCompany);
+            return Response.create("Successfully fetched fares of company with the ID " + companyId + ".", HttpStatus.OK, faresOfCompany);
         }
         catch (CompanyNotFoundException cnfe) {
             return Response.create(cnfe.getMessage(), HttpStatus.BAD_REQUEST);
@@ -114,5 +136,29 @@ public class FareController {
         catch (Exception e) {
             return Response.create("Could not delete fare.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("/plane")
+    public ResponseEntity<Object> getPlaneFares(@RequestParam Map<String, Object> requestParams) {
+        try {
+            List<Fare> fares = fareService.getPlaneFaresByProperty(requestParams, VehicleType.PLANE);
+            return Response.create("Successfully fetched plane fares.", HttpStatus.OK, fares);
+        }
+        catch (Exception e) {
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("/bus")
+    public ResponseEntity<Object> getBusFares(@RequestParam Map<String, Object> requestParams) {
+        try {
+            List<Fare> fares = fareService.getPlaneFaresByProperty(requestParams, VehicleType.BUS);
+            return Response.create("Successfully fetched bus fares.", HttpStatus.OK, fares);
+        }
+        catch (Exception e) {
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
     }
 }

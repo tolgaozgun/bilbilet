@@ -1,18 +1,23 @@
 package edu.bilkent.bilbilet.repository.fare;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
+import edu.bilkent.bilbilet.enums.VehicleType;
 import edu.bilkent.bilbilet.model.Fare;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
 @Qualifier("fare_repo")
 @Repository
@@ -39,20 +44,22 @@ public class FareRepository {
         }
         
         String sql = "INSERT INTO Fare (departure_time, estimated_arrival_time, price, company_id, vehicle_id, dep_stat_id, arrive_stat_id)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                " VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("departure_time", newFare.getEstimatedDepTime());
-        parameters.addValue("estimated_arrival_time", newFare.getEstimatedArrTime());
-        parameters.addValue("price", newFare.getPrice());
-        parameters.addValue("company_id", newFare.getCompanyId());
-        parameters.addValue("vehicle_id", newFare.getVehicleId());
-        parameters.addValue("dep_stat_id", newFare.getDepStationId());
-        parameters.addValue("arrive_stat_id", newFare.getArrStationId());
 
         try {
-            jdbcTemplate.update(sql, parameters, keyHolder);
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(sql, new String[] { "fare_id" });
+                ps.setTimestamp(1, newFare.getEstimatedDepTime());
+                ps.setTimestamp(2, newFare.getEstimatedArrTime());
+                ps.setBigDecimal(3, newFare.getPrice());
+                ps.setInt(4, newFare.getCompanyId());
+                ps.setInt(5, newFare.getVehicleId());
+                ps.setInt(6, newFare.getDepStationId());
+                ps.setInt(7, newFare.getArrStationId());
+                return ps;
+            }, keyHolder);
             
             int fareId = keyHolder.getKey().intValue();
             Fare addedFare = newFare;
@@ -72,21 +79,22 @@ public class FareRepository {
 
     public Optional<Fare> updateFare(Fare newFare) throws Exception {
         String sql = "UPDATE Fare SET departure_time = ?, estimated_arrival_time = ?, price = ?, company_id = ?, vehicle_id = ?, dep_stat_id = ?, arrive_stat_id = ? " +
-                     "WHERE fare_id = ?";
+                     "WHERE fare_id = " + newFare.getFareId();
     
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("departure_time", newFare.getEstimatedDepTime());
-        parameters.addValue("estimated_arrival_time", newFare.getEstimatedArrTime());
-        parameters.addValue("price", newFare.getPrice());
-        parameters.addValue("company_id", newFare.getCompanyId());
-        parameters.addValue("vehicle_id", newFare.getVehicleId());
-        parameters.addValue("dep_stat_id", newFare.getDepStationId());
-        parameters.addValue("arrive_stat_id", newFare.getArrStationId());
-        parameters.addValue("fare_id", newFare.getFareId());
-    
+
         try {
-            int affectedRows = jdbcTemplate.update(sql, parameters, keyHolder);
+            int affectedRows = jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(sql, new String[] { "fare_id" });
+                ps.setTimestamp(1, newFare.getEstimatedDepTime());
+                ps.setTimestamp(2, newFare.getEstimatedArrTime());
+                ps.setBigDecimal(3, newFare.getPrice());
+                ps.setInt(4, newFare.getCompanyId());
+                ps.setInt(5, newFare.getVehicleId());
+                ps.setInt(6, newFare.getDepStationId());
+                ps.setInt(7, newFare.getArrStationId());
+                return ps;
+            }, keyHolder);
             
             if (affectedRows < 1) {
                 return Optional.empty();
@@ -110,21 +118,22 @@ public class FareRepository {
 
     public Optional<Fare> updateFareById(Fare newFare, int fareToUpdateId) throws Exception {
         String sql = "UPDATE Fare SET departure_time = ?, estimated_arrival_time = ?, price = ?, company_id = ?, vehicle_id = ?, dep_stat_id = ?, arrive_stat_id = ? " +
-                     "WHERE fare_id = ?";
+                     "WHERE fare_id = " + fareToUpdateId;
     
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("departure_time", newFare.getEstimatedDepTime());
-        parameters.addValue("estimated_arrival_time", newFare.getEstimatedArrTime());
-        parameters.addValue("price", newFare.getPrice());
-        parameters.addValue("company_id", newFare.getCompanyId());
-        parameters.addValue("vehicle_id", newFare.getVehicleId());
-        parameters.addValue("dep_stat_id", newFare.getDepStationId());
-        parameters.addValue("arrive_stat_id", newFare.getArrStationId());
-        parameters.addValue("fare_id", fareToUpdateId);
     
         try {
-            int affectedRows = jdbcTemplate.update(sql, parameters, keyHolder);
+            int affectedRows = jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(sql, new String[] { "fare_id" });
+                ps.setTimestamp(1, newFare.getEstimatedDepTime());
+                ps.setTimestamp(2, newFare.getEstimatedArrTime());
+                ps.setBigDecimal(3, newFare.getPrice());
+                ps.setInt(4, newFare.getCompanyId());
+                ps.setInt(5, newFare.getVehicleId());
+                ps.setInt(6, newFare.getDepStationId());
+                ps.setInt(7, newFare.getArrStationId());
+                return ps;
+            }, keyHolder);
             
             if (affectedRows < 1) {
                 return Optional.empty();
@@ -149,11 +158,8 @@ public class FareRepository {
     public boolean deleteFareById(int fareId) throws Exception {
         String sql = "DELETE FROM Fare WHERE fare_id = ?";
 
-        MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("fare_id", fareId);
-
         try {
-            int affectedRows = jdbcTemplate.update(sql, parameters);
+            int affectedRows = jdbcTemplate.update(sql, fareId);
             return affectedRows > 0;
         }
         catch (EmptyResultDataAccessException e) {
@@ -211,5 +217,44 @@ public class FareRepository {
         }
 
         return false;
+    }
+
+    public List<Fare> findFareByProperties(Map<String, Object> properties, VehicleType vehicleType) {
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Fare f INNER JOIN TransportVehicle t ON f.vehicle_id = t.vehicle_id WHERE t.vehicle_type = ? ");
+        List<Object> parameterValues = new ArrayList<>();
+
+        parameterValues.add(vehicleType.toString()); // VehicleType.PLANE, VehicleType.BUS 
+
+        try {
+            if (properties.isEmpty()) {
+                return jdbcTemplate.query(sqlBuilder.toString(), fareRowMapper, parameterValues);
+            }
+    
+            for (String property : properties.keySet()) {
+                sqlBuilder.append(" AND ");
+
+                sqlBuilder.append(property).append(" = ?");
+                parameterValues.add(properties.get(property));
+            }
+            
+            String sql = sqlBuilder.toString();
+            
+            return jdbcTemplate.query(sql, new PreparedStatementSetter() {
+                @Override
+                public void setValues(PreparedStatement ps) throws SQLException {
+                    for (int i = 0; i < parameterValues.size(); i++) {
+                        ps.setObject(i + 1, parameterValues.get(i));
+                    }
+                }
+            }, fareRowMapper);
+        }
+        catch (EmptyResultDataAccessException erda) {
+            return Collections.emptyList();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
     }
 }
