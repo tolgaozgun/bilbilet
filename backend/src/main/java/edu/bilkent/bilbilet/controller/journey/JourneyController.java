@@ -20,7 +20,7 @@ import edu.bilkent.bilbilet.repository.journey.dto.JourneyDetailsRM;
 import edu.bilkent.bilbilet.request.journey.CreateJourney;
 import edu.bilkent.bilbilet.response.Response;
 import edu.bilkent.bilbilet.service.journey.JourneyService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 

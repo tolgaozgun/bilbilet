@@ -250,7 +250,9 @@ public class AccountService {
             // Return both added user data and added traveler data
             CompanyRegister result = new CompanyRegister(newUser, newCompany);
             return result;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
+            // accountRepository.deleteUserByEmail(companyRegister.getUser().getEmail());
             e.printStackTrace();
             throw e;
         }
@@ -281,7 +283,9 @@ public class AccountService {
             // Return both added user data and added traveler data
             TravelerRegister result = new TravelerRegister(newUser, newTraveler);
             return result;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
+            // accountRepository.deleteUserByEmail(travelerRegister.getUser().getEmail());
             e.printStackTrace();
             throw e;
         }
