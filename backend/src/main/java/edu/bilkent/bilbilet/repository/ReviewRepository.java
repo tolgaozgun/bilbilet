@@ -94,7 +94,7 @@ public class ReviewRepository {
 
     public List<RCompanyReview> findCompanyReviewByCompanyId(int companyId) {
         try {
-            String sql = "SELECT * FROM CompanyReview cr INNER JOIN Review r ON r.review_id = cr.review_id WHERE cr.company_id = ?";
+            String sql = "SELECT * FROM CompanyReviewDetailedView WHERE company_id = ?";
 
             return jdbcTemplate.query(sql, ReviewRowMapper.COMPANY_REVIEW_DETAILED_ROW_MAPPER, companyId);
         } catch (Exception e) {
@@ -104,10 +104,7 @@ public class ReviewRepository {
 
     public List<RTripReviewDetailedPublic> findTripReviewByCompanyId(int companyId) {
         try {
-            String sql = "SELECT * FROM TripReview tr INNER JOIN Review r ON r.review_id = tr.review_id INNER JOIN "
-                       + "Ticket t ON t.ticket_id = tr.ticket_id INNER JOIN Fare f ON f.fare_id = t.fare_id "
-                       + "INNER JOIN Station s ON s.station_id = f.dep_stat_id AND s.station_id = f.arrive_stat_id "
-                       + "INNER JOIN Company company ON company.compnay_id = f.company_id "
+            String sql = "SELECT * FROM TripReviewDetailedPublicView "
                        + "WHERE company_id = ?";
 
             return jdbcTemplate.query(sql, ReviewRowMapper.TRIP_REVIEW_DETAILED_PUBLIC_ROW_MAPPER, companyId);
@@ -118,10 +115,7 @@ public class ReviewRepository {
 
     public List<RTripReviewDetailedPrivate> findTripReviewByUserId(int userId) {
         try {
-            String sql = "SELECT * FROM TripReview tr INNER JOIN Review r ON r.review_id = tr.review_id INNER JOIN "
-                       + "Ticket t ON t.ticket_id = tr.ticket_id INNER JOIN Fare f ON f.fare_id = t.fare_id "
-                       + "INNER JOIN Station s ON s.station_id = f.dep_stat_id AND s.station_id = f.arrive_stat_id "
-                       + "INNER JOIN Company company ON company.compnay_id = f.company_id "
+            String sql = "SELECT * FROM TripReviewDetailedPrivateView "
                        + "WHERE user_id = ?";
 
             return jdbcTemplate.query(sql, ReviewRowMapper.TRIP_REVIEW_DETAILED_PRIVATE_ROW_MAPPER, userId);
@@ -129,10 +123,21 @@ public class ReviewRepository {
             throw e;
         }
     }
+    
+    public List<RCompanyReview> findCompanyReviewByUserId(int userId) {
+        try {
+            String sql = "SELECT * FROM CompanyReviewDetailedView "
+                       + "WHERE user_id = ?";
+
+            return jdbcTemplate.query(sql, ReviewRowMapper.COMPANY_REVIEW_DETAILED_ROW_MAPPER, userId);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 
     public List<RReviewAvg> findCompanyReviewAverage(int companyId) {
         try {
-            String sql = "SELECT AVG(punctionality) AS avgPunct, AVG(cleanliness) AS avgClean, AVG(customer_service) AS avgCustSer "
+            String sql = "SELECT ROUND(AVG(punctuality), 2) AS avgPunct, ROUND(AVG(cleanliness), 2) AS avgClean, ROUND(AVG(customer_service), 2) AS avgCustSer "
                        + "FROM CompanyReview cr INNER JOIN Review r ON r.review_id = cr.review_id WHERE cr.company_id = ?";
 
             return jdbcTemplate.query(sql, ReviewRowMapper.REVIEW_AVG_ROW_MAPPER, companyId);
@@ -143,7 +148,7 @@ public class ReviewRepository {
 
     public List<RReviewAvg> findTripReviewAverageByCompany(int companyId) {
         try {
-            String sql = "SELECT AVG(punctionality) AS avgPunct, AVG(cleanliness) AS avgClean, AVG(customer_service) AS avgCustSer "
+            String sql = "SELECT ROUND(AVG(punctuality), 2) AS avgPunct, ROUND(AVG(cleanliness), 2) AS avgClean, ROUND(AVG(customer_service), 2) AS avgCustSer "
                        + "FROM CompanyReview cr INNER JOIN Review r ON r.review_id = cr.review_id INNER JOIN "
                        + "Ticket t ON t.ticket_id = tr.ticket_id INNER JOIN Fare f ON f.fare_id = t.fare_id WHERE f.company_id = ?";
 

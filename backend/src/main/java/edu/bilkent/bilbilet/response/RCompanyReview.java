@@ -10,6 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RCompanyReview {
     private int companyId;
+    private String companyTitle;
     private Review review;
+
+    public RCompanyReview(int cId, Review r) {
+        this(cId, "", r);
+    }
 }
 

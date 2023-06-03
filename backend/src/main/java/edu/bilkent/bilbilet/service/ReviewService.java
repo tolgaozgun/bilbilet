@@ -139,6 +139,23 @@ public class ReviewService {
             throw e;
         }
     }
+    
+    public List<RCompanyReview> findCompanyReviewByUserId(int userId) throws Exception {
+        try {
+            // check if user exist
+            boolean userExist = accountRepository.travelerExistByUserId(userId);
+            if (!userExist) {
+                throw new ItemNotFoundException("User does not exist!");
+            }
+
+            return reviewRepository.findCompanyReviewByUserId(userId); // TODO test
+        } catch (ItemNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 
     public List<RReviewAvg> findCompanyReviewAverage(int companyId) throws Exception {
         try {

@@ -41,6 +41,7 @@ public class ReviewRowMapper {
     public static final RowMapper<RCompanyReview> COMPANY_REVIEW_DETAILED_ROW_MAPPER = (rs, rowNum) -> {
         RCompanyReview cr = new RCompanyReview();
         cr.setCompanyId(rs.getInt("company_id"));
+        cr.setCompanyTitle(rs.getString("company_title"));
 
         Review review = new Review();
         review.setReviewId(rs.getInt("review_id"));
@@ -89,8 +90,8 @@ public class ReviewRowMapper {
         tripReview.setDepStationAbbr(rs.getString("dep_station_abbr"));
         tripReview.setArrStationTitle(rs.getString("arr_station_title"));
         tripReview.setArrStationAbbr(rs.getString("arr_station_abbr"));
-        tripReview.setDepTime(rs.getTimestamp("dep_time"));
-        tripReview.setArrTime(rs.getTimestamp("arr_time"));
+        tripReview.setDepTime(rs.getTimestamp("departure_time"));
+        tripReview.setArrTime(rs.getTimestamp("estimated_arrival_time"));
         tripReview.setPrice(rs.getBigDecimal("price"));
         tripReview.setCompanyTitle(rs.getString("company_title"));
     
@@ -115,8 +116,8 @@ public class ReviewRowMapper {
         tripReview.setDepStationAbbr(rs.getString("dep_station_abbr"));
         tripReview.setArrStationTitle(rs.getString("arr_station_title"));
         tripReview.setArrStationAbbr(rs.getString("arr_station_abbr"));
-        tripReview.setDepTime(rs.getTimestamp("dep_time"));
-        tripReview.setArrTime(rs.getTimestamp("arr_time"));
+        tripReview.setDepTime(rs.getTimestamp("departure_time"));
+        tripReview.setArrTime(rs.getTimestamp("estimated_arrival_time"));
         tripReview.setCompanyTitle(rs.getString("company_title"));
     
         return tripReview;

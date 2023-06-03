@@ -93,6 +93,17 @@ public class ReviewController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("company/user/{userId}")
+    public ResponseEntity<Object> findCompanyReviewByUserId(@Valid @PathVariable("userId") int userId) {
+        try {
+            List<RCompanyReview> reviewList = reviewService.findCompanyReviewByUserId(userId);
+            return Response.create("ok", HttpStatus.OK, reviewList);
+        } catch (Exception e) {
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping("company/{companyId}/avg")
     public ResponseEntity<Object> findCompanyReviewAverage(@Valid @PathVariable("companyId") int companyId) {
         try {
