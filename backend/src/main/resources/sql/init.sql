@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS Ticket (
     ticket_status VARCHAR(50) NOT NULL,
     seat_type VARCHAR(50) NOT NULL,
     fare_id INT NOT NULL,
-    traveler_id INT NOT NULL,
+    traveler_id INT,
     seat_row INT NOT NULL,
     seat_column INT NOT NULL,
     PRIMARY KEY (ticket_id),

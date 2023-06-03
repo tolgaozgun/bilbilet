@@ -66,7 +66,7 @@ public class TicketRepository {
         String sql = "SELECT * FROM DisplayFareTicketsView WHERE fare_id = ?";
         try {
             List<RTicketView> tickets = jdbcTemplate.query(sql, TicketRowMapper.DISPLAY_FARE_TICKETS_VIEW_ROW_MAPPER, fareId);
-            
+            System.out.println("bu ne sacmalik amk");
             return tickets;
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,7 +75,7 @@ public class TicketRepository {
     }
     
     public List<RUserTicketView> findTicketByUserId(int userId) {
-        String sql = "SELECT * FROM DisplayUserTicketsView WHERE user_id = ?";
+        String sql = "SELECT * FROM DisplayUserTicketsView WHERE traveler_id = ?";
         try {
             List<RUserTicketView> ticket = jdbcTemplate.query(sql, TicketRowMapper.DISPLAY_USER_TICKETS_VIEW_ROW_MAPPER, userId);
             return ticket;

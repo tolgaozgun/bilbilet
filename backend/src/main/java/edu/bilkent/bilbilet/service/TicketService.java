@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import edu.bilkent.bilbilet.exception.ItemNotFoundException;
+import edu.bilkent.bilbilet.exception.TicketNotAvailableException;
 import edu.bilkent.bilbilet.model.Ticket;
 import edu.bilkent.bilbilet.repository.AccountRepository;
 import edu.bilkent.bilbilet.repository.TicketRepository;
@@ -55,7 +56,7 @@ public class TicketService {
         try {
             // check if fare exists
             boolean fareExist = fareRepository.existsById(fareId);
-            if (fareExist) {
+            if (!fareExist) {
                 throw new ItemNotFoundException("Fare not found");
             }
 
@@ -121,13 +122,19 @@ public class TicketService {
                 throw new ItemNotFoundException("User does not exist!");
             }
 
+            // check if seat is available
+            boolean seatAvailable = ticketRepository.isTicketAvailable(ticketId);
+            if (!seatAvailable) {
+                throw new TicketNotAvailableException();
+            }
+
             Optional<Ticket> tickets = ticketRepository.buyTicket(userId, ticketId);
 
             if (tickets.isEmpty()) {
                 throw new ItemNotFoundException("Ticket does not exist");
             }
 
-        } catch (ItemNotFoundException e) {
+        } catch (ItemNotFoundException | TicketNotAvailableException e) {
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
@@ -166,6 +173,12 @@ public class TicketService {
             boolean userExist = accountRepository.travelerExistByUserId(userId);
             if (!userExist) {
                 throw new ItemNotFoundException("User does not exist!");
+            }
+
+            // check if seat is available
+            boolean seatAvailable = ticketRepository.isTicketAvailable(ticketId);
+            if (!seatAvailable) {
+                throw new TicketNotAvailableException();
             }
 
             Optional<Ticket> tickets = ticketRepository.cancelTicketOrReservation(userId, ticketId);

@@ -67,7 +67,7 @@ public class TicketController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "pruchase/cc")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "purchase/cc")
     public ResponseEntity<Object> buyTicketWithCC(@RequestBody BuyTicketCC ticketBuyingInfo) {
         try {
             List<RUserTicketView> tickets = ticketService.buyTicketWithCC(ticketBuyingInfo);
@@ -78,7 +78,7 @@ public class TicketController {
     }
     
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "pruchase/balance")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "purchase/balance")
     public ResponseEntity<Object> buyTicketWithBalance(@RequestBody BuyTicketBalance ticketBuyingInfo) {
         try {
             List<RUserTicketView> tickets = ticketService.buyTicketWithBalance(ticketBuyingInfo);
