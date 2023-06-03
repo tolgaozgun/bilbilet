@@ -1,7 +1,8 @@
 package edu.bilkent.bilbilet.model;
 
 import lombok.AllArgsConstructor;
-import java.sql.Timestamp;
+import java.util.Date;
+
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -13,18 +14,17 @@ import lombok.NoArgsConstructor;
 public class RentDetail {
 	@Id
 	@NotNull
-	private int rent_id;
+	private int rentId;
 
 	@NotNull
-	private Timestamp start_date;
+	private Date startDate;
 
 	@NotNull
-	private Timestamp end_date;
+	private Date endDate;
 
 	@NotNull
-	private int user_id;
+	private int userId;
 
 	@NotNull
-	private int car_id;
-
+	private int companyCarId;
 }

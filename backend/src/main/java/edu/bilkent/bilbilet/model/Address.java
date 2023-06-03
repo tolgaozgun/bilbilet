@@ -19,10 +19,10 @@ public class Address {
     private int addressId;
 
     @NotBlank
-    private String country;
+    private String city;
 
     @NotBlank
-    private String city;
+    private String country;
 
     @NotNull
     private BigDecimal latitude;

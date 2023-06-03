@@ -6,18 +6,28 @@ interface SubtleLinkButtonProps {
 	to: string;
 	size?: string;
 	leftIcon?: React.ReactNode;
+	color?: string;
 	children: React.ReactNode;
+	onClick?: () => void;
 }
 
-const SubtleLinkButton = ({ to, size, children, leftIcon }: SubtleLinkButtonProps) => {
+const SubtleLinkButton = ({
+	to,
+	size,
+	children,
+	leftIcon,
+	color,
+	onClick,
+}: SubtleLinkButtonProps) => {
 	return (
 		<Link to={to}>
 			<Button
 				size={size || 'lg'}
 				variant="subtle"
-				color={primaryButtonColor}
+				color={color || primaryButtonColor}
 				radius="xs"
 				leftIcon={leftIcon || null}
+				onClick={onClick}
 			>
 				{children}
 			</Button>

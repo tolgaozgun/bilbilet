@@ -23,10 +23,6 @@ public class CompanyCar {
 
     @NotNull    
     private int addressId;
-    
-    private String photoUrl;
-    
-    private String websiteUrl;
 
     @NotNull
     private BigDecimal pricePerDay;
