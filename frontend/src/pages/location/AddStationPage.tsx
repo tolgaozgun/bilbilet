@@ -9,6 +9,7 @@ const AddStationPage = () => {
 			abbreviation: '',
 			stationType: '',
 			city: '',
+			country: '',
 		},
 		validate: {
 			title: (value) => (value === '' ? 'This field cannot be left empty' : null),

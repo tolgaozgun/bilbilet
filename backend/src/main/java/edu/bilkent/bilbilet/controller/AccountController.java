@@ -1,5 +1,6 @@
 package edu.bilkent.bilbilet.controller;
 
+import edu.bilkent.bilbilet.request.CompanyRegister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +59,17 @@ public class AccountController {
         } catch (Exception e) {
             return Response.create(ExceptionLogger.error(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }        
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register/company")
+    public ResponseEntity<Object> registerCompany(@Valid @RequestBody CompanyRegister companyRegister) {
+        try {
+            CompanyRegister savedInfo = accountService.addCompany(companyRegister);
+            return Response.create("Company account registered", HttpStatus.OK, savedInfo.getCompany());
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.error(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")

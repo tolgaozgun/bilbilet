@@ -9,7 +9,10 @@ import { useAddHotel } from '../../hooks/hotel/useAddHotel';
 import { isErrorResponse } from '../../utils/utils';
 import { notifications } from '@mantine/notifications';
 import { useNavigate } from 'react-router-dom';
-import { AddHotel } from '../../types/HotelTypes';
+import { AddHotel, Hotel } from '../../types/HotelTypes';
+import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
+import { useMutation } from '@tanstack/react-query';
+import { addHotel } from '../../services/hotel';
 
 interface HotelFormProps {
 	form: UseFormReturnType<
@@ -30,8 +33,6 @@ interface HotelFormProps {
 			websiteUrl: string;
 			coverPhotoUrl: string;
 			photoUrl: string;
-			country: string;
-			city: string;
 		}) => {
 			name: string;
 			avgPrice: number;
@@ -39,48 +40,57 @@ interface HotelFormProps {
 			websiteUrl: string;
 			coverPhotoUrl: string;
 			photoUrl: string;
-			country: string;
-			city: string;
 		}
 	>;
 }
 const AddHotelForm = ({ form }: HotelFormProps) => {
 	const [rating, setRating] = useState(0);
-	const { addHotel } = useAddHotel();
-	const navigate = useNavigate();
+	const axiosSecure = useAxiosSecure();
+	const hotel: Hotel = {
+		...form.values,
+		addressId: 0,
+		hotelId: 0,
+		rating: rating,
+	};
+	const hotelDetails: AddHotel = {
+		hotel: hotel,
+		city: form.values.city,
+		country: form.values.country,
+	};
+	const { mutate: submitMutation, isLoading: isSubmitLoading } = useMutation({
+		mutationKey: ['addHotel'],
+		mutationFn: () => addHotel(axiosSecure, hotelDetails),
+		onSuccess: () => {
+			//queryClient.invalidateQueries(['wishlist']);
+			notifications.show({
+				id: 'add-success',
+				title: 'Hotel Add Successful!',
+				message: 'You have successfully added a new hotel!',
+				autoClose: 5000,
+				withCloseButton: true,
+				style: { backgroundColor: 'green' },
+			});
+			form.reset();
+			setRating(0);
+		},
+		onError: () =>
+			notifications.show({
+				id: 'add-fail',
+				title: 'Hotel Add failed!',
+				message: 'Hmmmmmmm',
+				autoClose: 5000,
+				withCloseButton: true,
+				style: { backgroundColor: 'red' },
+			}),
+	});
+
 	const handleAddHotel = async () => {
 		const validation = form.validate();
 		if (validation.hasErrors) {
 			return;
 		}
 		// Send add hotel request
-
-		const hotelDetails: AddHotel = {
-			...form.values,
-			rating: 0,
-		};
-		const res = await addHotel(hotelDetails);
-		if (isErrorResponse(res)) {
-			notifications.show({
-				id: 'add-fail',
-				title: 'Hotel Add failed!',
-				message: res.msg,
-				autoClose: 5000,
-				withCloseButton: true,
-				style: { backgroundColor: 'red' },
-			});
-			return;
-		}
-
-		notifications.show({
-			id: 'add-success',
-			title: 'Hotel Add Successful!',
-			message: 'You have successfully added a new hotel!',
-			autoClose: 5000,
-			withCloseButton: true,
-			style: { backgroundColor: 'green' },
-		});
-		navigate('/search-fare');
+		submitMutation();
 	};
 	return (
 		<Card padding={36} bg={primaryAccordionColor} withBorder radius="xl" shadow="xl">
@@ -141,6 +151,7 @@ const AddHotelForm = ({ form }: HotelFormProps) => {
 				<CustomElevatedButton
 					text={'Add Hotel'}
 					onClick={handleAddHotel}
+					isLoading={isSubmitLoading}
 				></CustomElevatedButton>
 			</Flex>
 		</Card>

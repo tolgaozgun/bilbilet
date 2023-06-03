@@ -1,4 +1,4 @@
-import { Card, Flex, Title, Image, Text, Rating } from '@mantine/core';
+import { Card, Flex, Title, Image, Text, Rating, Anchor } from '@mantine/core';
 import { IconBuilding, IconPhone } from '@tabler/icons-react';
 import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
 import { useNavigate } from 'react-router-dom';
@@ -31,12 +31,11 @@ const HotelInfoCard = ({ hotel }: HotelInfoCardProps) => {
 							<Text>{hotel.telephone}</Text>
 						</Flex>
 					</Flex>
-					<CustomElevatedButton
-						text={'Go Hotel Website'}
-						onClick={() => {
-							navigate(hotel.websiteUrl);
-						}}
-					></CustomElevatedButton>
+					<Anchor color="white" target="_blank" href={hotel.websiteUrl} span>
+						<CustomElevatedButton
+							text={'Go Hotel Website'}
+						></CustomElevatedButton>
+					</Anchor>
 				</Flex>
 			</Flex>
 		</Card>
