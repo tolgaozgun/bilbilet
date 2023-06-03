@@ -16,17 +16,15 @@ import lombok.NoArgsConstructor;
 public class Transaction {
     @Id
     @NotNull
-    private int transaction_id;
+    private int transactionId;
 
     @NotNull
-    private TransactionType transaction_type;
+    private TransactionType transactionType;
 
     @NotNull
-    private BigDecimal transaction_amount;
+    private BigDecimal transactionAmount;
 
-    @NotNull
-    private int receiver_id;
+    private Integer receiverId;
 
-    @NotNull
-    private int sender_id;
+    private Integer senderId;
 }

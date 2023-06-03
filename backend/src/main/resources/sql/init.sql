@@ -186,6 +186,21 @@ CREATE TABLE IF NOT EXISTS Journey (
     FOREIGN KEY (ticket_id) REFERENCES Ticket(ticket_id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS Transactions (
+    transaction_id INT NOT NULL AUTO_INCREMENT,
+    transaction_type VARCHAR(255) NOT NULL,
+    transaction_amount NUMERIC NOT NULL,
+    receiver_id INT,
+    sender_id INT,
+    PRIMARY KEY (transaction_id),
+    FOREIGN KEY (receiver_id) REFERENCES User(user_id),
+    FOREIGN KEY (sender_id) REFERENCES User(user_id),
+    CONSTRAINT transaction_type_constraint
+        CHECK (transaction_type IN ('REFUND', 'BUY_TICKET_WITH_BALANCE', 'WITHDRAW', 'ADD_FUNDS', 'BUY_TICKET_WITH_CARD', 'TRANSFER')),
+    CONSTRAINT transaction_amount_check
+        CHECK (transaction_amount BETWEEN 0 AND 50000)
+);
+
 CREATE TABLE IF NOT EXISTS RentDetail (
     rent_id INT NOT NULL AUTO_INCREMENT,
     start_date DATE NOT NULL,
@@ -223,5 +238,4 @@ CREATE TABLE IF NOT EXISTS TripReview (
     FOREIGN KEY (review_id) REFERENCES Review(review_id),
     FOREIGN KEY (ticket_id) REFERENCES Ticket(ticket_id)
 );
-
 

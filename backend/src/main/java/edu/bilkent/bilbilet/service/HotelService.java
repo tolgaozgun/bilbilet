@@ -2,6 +2,7 @@ package edu.bilkent.bilbilet.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -54,17 +55,14 @@ public class HotelService {
         }
     }
 
-    public List<Hotel> getHotels(String city, String country) throws Exception {
+    public List<Hotel> findHotelBySearchQueries(Map<String, Object> requestParams) throws Exception {
+        System.out.println(requestParams);
         try {
-            // TODO: Check if location exists wheter as city or country
-            int addressId;
-            if (!addressRepository.existsByCityCountry(city, country)) {
-                throw new Exception("Location does not exists");
-            } else {
-                addressId = addressRepository.findAddressByCityCountry(city, country).get().getAddressId();
-            }
+            // if (!addressRepository.existsById(Integer.parseInt((String) requestParams.get("address_id")))) {
+            //     throw new Exception("Location does not exists");
+            // }
 
-            List<Hotel> hotelList = hotelRepository.findHotelsByAddressId(addressId);
+            List<Hotel> hotelList = hotelRepository.findHotelByProperties(requestParams);
             return hotelList;
         } catch (Exception e) {
             e.printStackTrace();
