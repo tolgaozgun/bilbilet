@@ -25,7 +25,7 @@ import edu.bilkent.bilbilet.model.Fare;
 import edu.bilkent.bilbilet.request.fare.CreateFare;
 import edu.bilkent.bilbilet.response.Response;
 import edu.bilkent.bilbilet.service.fare.FareService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 

@@ -70,7 +70,7 @@ public class FareService {
             Optional<Company> optionalCompany = companyRepository.getCompanyById(fareInfo.getCompanyId());
             
             if (!optionalCompany.isPresent()) {
-                throw new CompanyNotFoundException("Could not find company with the name " + fareInfo.getCompanyId() + ".");
+                throw new CompanyNotFoundException("Could not find company with the ID " + fareInfo.getCompanyId() + ".");
             }
 
             // If the company name exists, continue
