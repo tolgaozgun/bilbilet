@@ -93,14 +93,37 @@ CREATE TABLE IF NOT EXISTS CompanyCar (
     CONSTRAINT price_check CHECK (price_per_day > 0)
 );
 
-CREATE TABLE IF NOT EXISTS TransportVehicle (
+CREATE TABLE IF NOT EXISTS CompanyPlane {
+    plane_id INT NOT NULL,
+    tail_number VARCHAR(50) NOT NULL,
+    PRIMARY KEY (plane_id)
+};
+
+CREATE TABLE IF NOT EXISTS CompanyBus {
+    bus_id INT NOT NULL,
+    plate_number VARCHAR(50) NOT NULL,
+    PRIMARY KEY (bus_id)
+};
+
+
+CREATE TABLE IF NOT EXISTS CompanyVehicle (
     vehicle_id INT NOT NULL AUTO_INCREMENT,
+    capacity INT NOT NULL,
     vehicle_type VARCHAR(50) NOT NULL,
+    vehicle_reference_id INT,
     seat_configuration_id INT NOT NULL,
     company_id INT NOT NULL,
     PRIMARY KEY (vehicle_id),
     FOREIGN KEY (seat_configuration_id) REFERENCES SeatConfiguration(seat_configuration_id),
-    FOREIGN KEY (company_id) REFERENCES Company(company_id)
+    FOREIGN KEY (company_id) REFERENCES Company(company_id),
+    CONSTRAINT capacity_check CHECK (capacity > 0),
+    CONSTRAINT vehicle_type_check CHECK (vehicle_type IN ('BUS', 'PLANE')),
+    CONSTRAINT vehicle_reference_fk FOREIGN KEY (vehicle_reference_id)
+        REFERENCES
+        (CASE
+            WHEN vehicle_type = 'BUS' THEN CompanyBus(bus_id)
+            WHEN vehicle_type = 'PLANE' THEN CompanyPlane(plane_id)
+        END)
 );
 
 CREATE TABLE IF NOT EXISTS Station (
