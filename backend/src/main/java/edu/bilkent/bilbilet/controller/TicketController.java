@@ -69,6 +69,5 @@ public class TicketController {
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }          
-    }
-    
+    }    
 }

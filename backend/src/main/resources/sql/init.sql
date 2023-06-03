@@ -155,6 +155,10 @@ CREATE TABLE IF NOT EXISTS Fare (
     departure_time TIMESTAMP NOT NULL,
     estimated_arrival_time TIMESTAMP NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
+    premium_econ_extra_price DECIMAL(10, 2) NOT NULL,
+    business_extra_price DECIMAL(10, 2) NOT NULL,
+    first_class_extra_price DECIMAL(10, 2) NOT NULL,
+    reservation_fee DECIMAL(10, 2) NOT NULL,
     company_id INT NOT NULL,
     vehicle_id INT NOT NULL,
     dep_stat_id INT NOT NULL,
@@ -169,11 +173,12 @@ CREATE TABLE IF NOT EXISTS Fare (
 CREATE TABLE IF NOT EXISTS Ticket (
     ticket_id INT NOT NULL AUTO_INCREMENT,
     ticket_status VARCHAR(50) NOT NULL,
-    seat_id INT NOT NULL,
+    seat_type VARCHAR(50) NOT NULL,
     fare_id INT NOT NULL,
     traveler_id INT NOT NULL,
+    seat_row INT NOT NULL,
+    seat_column INT NOT NULL,
     PRIMARY KEY (ticket_id),
-    FOREIGN KEY (seat_id) REFERENCES Seat(seat_id),
     FOREIGN KEY (fare_id) REFERENCES Fare(fare_id),
     FOREIGN KEY (traveler_id) REFERENCES Traveler(user_id) ON DELETE CASCADE
 );
@@ -183,10 +188,11 @@ CREATE TABLE IF NOT EXISTS Reservation (
     reservation_status VARCHAR(50) NOT NULL,
     created_at TIMESTAMP NOT NULL,
     reserved_until TIMESTAMP NOT NULL,
-    reservation_fee DECIMAL(10, 2) NOT NULL,
     ticket_id INT NOT NULL,
+    traveler_id INT NOT NULL,
     PRIMARY KEY (reservation_id),
-    FOREIGN KEY (ticket_id) REFERENCES Ticket(ticket_id) ON DELETE CASCADE
+    FOREIGN KEY (ticket_id) REFERENCES Ticket(ticket_id) ON DELETE CASCADE,
+    FOREIGN KEY (traveler_id) REFERENCES Traveler(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS JourneyPlan (
