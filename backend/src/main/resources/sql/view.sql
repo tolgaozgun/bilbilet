@@ -71,7 +71,7 @@ SELECT
     t.seat_type AS seat_type,
     t.seat_row AS seat_row,
     t.seat_column AS seat_column,
-    t.fare_id AS fare_id
+    t.fare_id AS fare_id,
     CASE
         WHEN t.seat_type = 'PREMIUM_ECONOMY' THEN (f.price + f.premium_econ_extra_price)
         WHEN t.seat_type = 'BUSINESS' THEN (f.price + f.business_extra_price)
@@ -79,7 +79,7 @@ SELECT
         ELSE f.price
     END AS total_price
 FROM Ticket t
-INNER JOIN Fair f ON f.fare_id = t.fare_id;
+INNER JOIN Fare f ON f.fare_id = t.fare_id;
 
 CREATE OR REPLACE VIEW DisplayUserTicketsView AS
 SELECT 

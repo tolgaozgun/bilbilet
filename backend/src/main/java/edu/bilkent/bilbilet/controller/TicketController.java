@@ -111,7 +111,7 @@ public class TicketController {
     }
     
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "reserve/cc")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "reserve/balance")
     public ResponseEntity<Object> reserveTicketBalance(@RequestBody ReserveTicketBalance reserveTicket) {
         try {
             List<RUserTicketView> tickets = ticketService.reserveTicketBalance(reserveTicket);
