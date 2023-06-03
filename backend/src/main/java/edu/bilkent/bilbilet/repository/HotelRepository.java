@@ -114,27 +114,43 @@ public class HotelRepository {
         for (String property : properties.keySet()) {
             Object param = properties.get(property);
             String paramStr = (String) param;
+            // Not valid param
             if (paramStr.isEmpty() || paramStr.isBlank()) {
                 continue;
             }
+
             
-            if (andNeeded) {
+            // Check the case
+            boolean isOrderBy = property.compareTo("order_by") == 0;
+            boolean isBetweenStatement = property.compareTo("avg_price") == 0 || property.compareTo("rating") == 0;
+            
+            if (!isOrderBy && andNeeded) {
                 sqlBuilder.append(" AND ");
             }
-            sqlBuilder.append(property);
-            // Contains range
-            if (property.compareTo("avg_price") == 0 || property.compareTo("rating") == 0) {
+
+            // Append ORDER BY ASC | DESC
+            if (isOrderBy) {
+                sqlBuilder.append(" ORDER BY ? ? ");
+                String[] paramList = paramStr.split(",");
+                String orderParam = paramList[0];
+                String orderDir = paramList[1];
+
+                parameterValues.add(orderParam);
+                parameterValues.add(orderDir);
+            }
+            else if (isBetweenStatement) {
+                sqlBuilder.append(property);
                 sqlBuilder.append(" BETWEEN ? AND ? ");
                 String[] rangeList = paramStr.split(",");
                 parameterValues.add(rangeList[0]);
                 parameterValues.add(rangeList[1]);
             } 
-            // Contains single value
             else {
+                sqlBuilder.append(property);
                 sqlBuilder.append(" = ? ");
                 parameterValues.add(param);
             }
-
+            
             andNeeded = true;
         }
         

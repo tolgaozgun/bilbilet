@@ -1,9 +1,14 @@
 import {
 	Accordion,
+	ActionIcon,
 	Box,
+	Button,
+	Flex,
 	Group,
 	Loader,
+	Modal,
 	MultiSelect,
+	Radio,
 	RangeSlider,
 	Select,
 	SelectItem,
@@ -11,12 +16,26 @@ import {
 	Text,
 	TextInput,
 } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconMapPin, IconZoomIn } from '@tabler/icons-react';
+import {
+	IconAdjustments,
+	IconMapPin,
+	IconSearch,
+	IconX,
+	IconZoomIn,
+} from '@tabler/icons-react';
 import { forwardRef, useState } from 'react';
 import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
 import useAddresses from '../../hooks/location/useAddresses';
-import { HotelFilterParams } from '../../types';
+import {
+	HotelFilterParams,
+	HotelSortBy,
+	HotelSortByOptions,
+	HotelSortDirections,
+	hotelSortByOptions,
+	hotelSortByOptionsToRealValues,
+} from '../../types';
 import { isErrorResponse } from '../../utils/utils';
 import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
 import CustomAccordionItem from '../common/other/CustomAccordionItem';
@@ -55,12 +74,22 @@ interface HotelSearchBarProps {
 }
 
 const HotelFilter = ({ onFilter }: HotelSearchBarProps) => {
+	// Filters
 	const [searchValue, setSearchChange] = useState('');
 	const [selectedValue, setSelectedValue] = useState<string | null>('');
 	const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
 	const [hotelName, setHotelName] = useState('');
-	const [ratingRange, setRatingRange] = useState<[number, number]>([1, 5]);
-	console.log(ratingRange);
+
+	// Sort
+	const [hotelSortBy, setHotelSortBy] = useState<HotelSortBy | null>({
+		sortBy: '',
+		sortDirection: '',
+	});
+	const [selectedSortDirection, setSelectedSortDirection] =
+		useState<HotelSortDirections>('');
+	const [selectedSortOption, setSelectedSortOption] = useState<HotelSortByOptions>('');
+	const [opened, { open, close }] = useDisclosure(false);
+
 	const axiosSecure = useAxiosSecure();
 	const { isLoading, isError, data: addresses } = useAddresses(axiosSecure);
 	if (isLoading) {
@@ -87,56 +116,127 @@ const HotelFilter = ({ onFilter }: HotelSearchBarProps) => {
 			address_id: selectedValue ? parseInt(selectedValue) : '',
 			name: hotelName,
 			avg_price: priceRange,
-			rating: ratingRange,
+			order_by: [hotelSortBy?.sortBy || '', hotelSortBy?.sortDirection || ''],
 		};
 		onFilter(filterParams);
 	};
 
+	const handleSetSortBy = () => {
+		setHotelSortBy({
+			sortBy: selectedSortOption,
+			sortDirection: selectedSortDirection,
+		});
+		close();
+	};
+
+	const handleResetSortBy = () => {
+		setHotelSortBy({
+			sortBy: '',
+			sortDirection: '',
+		});
+		close();
+	};
+
+	console.log(hotelSortBy);
+
 	return (
-		<Box miw={'20vw'}>
-			<Stack spacing="lg">
-				<Accordion multiple variant="contained" radius="xs" bg={'#B5B4E8'}>
-					<CustomAccordionItem value="Location">
-						<Select
-							placeholder="Select Location"
-							label="Location"
-							itemComponent={CustomSelectItem}
-							onSearchChange={setSearchChange}
-							searchValue={searchValue}
-							searchable
-							value={selectedValue}
-							onChange={(value) => setSelectedValue(value)}
-							nothingFound="No location found"
-							data={addressList}
-							allowDeselect
-							clearable
+		<>
+			<Modal opened={opened} onClose={close} title="Select sort options">
+				<Stack spacing="lg">
+					<Select
+						placeholder="Select a sort option"
+						data={hotelSortByOptions}
+						value={selectedSortOption}
+						onChange={(value) =>
+							setSelectedSortOption(value as HotelSortByOptions)
+						}
+					></Select>
+					<Radio.Group
+						value={selectedSortDirection?.toString()}
+						onChange={(event) =>
+							setSelectedSortDirection(event as HotelSortDirections)
+						}
+						label="Sort Direction"
+						description="Select sort direction"
+						required
+					>
+						<Group>
+							<Radio label="Ascending" value="ASC"></Radio>
+							<Radio label="Descending" value="DESC"></Radio>
+						</Group>
+					</Radio.Group>
+					<Flex justify="space-evenly" align="center">
+						<CustomElevatedButton
+							text={'Apply'}
+							leftIcon={<IconAdjustments />}
+							onClick={handleSetSortBy}
 						/>
-					</CustomAccordionItem>
-					<CustomAccordionItem value={'Avg Price'}>
-						<RangeSlider
-							value={priceRange}
-							onChange={setPriceRange}
-							marks={marks}
-							min={0}
-							max={10000}
-						/>
-					</CustomAccordionItem>
-					<CustomAccordionItem value={'Hotel Name'}>
-						<TextInput
-							label="Hotel Name"
-							value={hotelName}
-							onChange={(e) => setHotelName(e.currentTarget.value)}
-							placeholder="Hotel Name"
-						/>
-					</CustomAccordionItem>
-				</Accordion>
-				<CustomElevatedButton
-					text={'Filter'}
-					leftIcon={<IconZoomIn />}
-					onClick={() => handleOnFilter()}
-				/>
-			</Stack>
-		</Box>
+						<Button
+							leftIcon={<IconX />}
+							onClick={handleResetSortBy}
+							color="red"
+						>
+							Reset
+						</Button>
+					</Flex>
+				</Stack>
+			</Modal>
+			<Box miw={'20vw'}>
+				<Stack spacing="lg">
+					<Button
+						leftIcon={<IconAdjustments size="1.125rem" />}
+						variant="outline"
+						onClick={open}
+					>
+						Sorting By:{' '}
+						{hotelSortBy?.sortBy === ''
+							? 'None'
+							: hotelSortByOptionsToRealValues[hotelSortBy?.sortBy!]}
+					</Button>
+					<Accordion multiple variant="contained" radius="xs" bg={'#B5B4E8'}>
+						<CustomAccordionItem value="Location">
+							<Select
+								placeholder="Select Location"
+								label="Location"
+								itemComponent={CustomSelectItem}
+								onSearchChange={setSearchChange}
+								searchValue={searchValue}
+								searchable
+								value={selectedValue}
+								onChange={(value) => setSelectedValue(value)}
+								nothingFound="No location found"
+								data={addressList}
+								allowDeselect
+								clearable
+							/>
+						</CustomAccordionItem>
+						<CustomAccordionItem value={'Average Price'}>
+							<RangeSlider
+								value={priceRange}
+								onChange={setPriceRange}
+								marks={marks}
+								min={0}
+								max={10000}
+							/>
+						</CustomAccordionItem>
+						<CustomAccordionItem value={'Hotel Name'}>
+							<TextInput
+								label="Hotel Name"
+								value={hotelName}
+								onChange={(e) => setHotelName(e.currentTarget.value)}
+								placeholder="Hotel Name"
+							/>
+						</CustomAccordionItem>
+					</Accordion>
+					<CustomElevatedButton
+						text={'Search'}
+						leftIcon={<IconSearch />}
+						isLoading={isLoading}
+						onClick={() => handleOnFilter()}
+					/>
+				</Stack>
+			</Box>
+		</>
 	);
 };
 export default HotelFilter;
