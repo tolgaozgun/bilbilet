@@ -44,6 +44,7 @@ const CustomSelectItem = forwardRef<HTMLDivElement, ItemProps>(
 );
 
 interface AddCompanyCarFormProps {
+	companyId: number;
 	form: UseFormReturnType<
 		{
 			carId: string;
@@ -64,7 +65,7 @@ interface AddCompanyCarFormProps {
 		}
 	>;
 }
-const AddCompanyCarForm = ({ form }: AddCompanyCarFormProps) => {
+const AddCompanyCarForm = ({ form, companyId }: AddCompanyCarFormProps) => {
 	const axiosSecure = useAxiosSecure();
 	const {
 		data: allCars,
@@ -111,8 +112,7 @@ const AddCompanyCarForm = ({ form }: AddCompanyCarFormProps) => {
 	});
 	const companyCarDetails: AddCompanyCar = {
 		...form.values,
-		//TODO: get current company's id
-		companyId: 1,
+		companyId: companyId,
 	};
 
 	const handleAddCompanyCar = async () => {
