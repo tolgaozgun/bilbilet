@@ -92,7 +92,7 @@ public class TicketController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "cancel")
     public ResponseEntity<Object> cancelTicketOrReservation(@RequestBody CancelTicket cancelTicket) {
         try {
-            List<RUserTicketView> tickets = ticketService.cancelTicketOrReservation(cancelTicket);
+            Optional<Ticket> tickets = ticketService.cancelTicketOrReservation(cancelTicket);
             return Response.create("Ticket is cancelled successfuly", HttpStatus.OK, tickets);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);

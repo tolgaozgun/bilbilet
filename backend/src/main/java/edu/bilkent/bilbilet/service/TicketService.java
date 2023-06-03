@@ -142,7 +142,7 @@ public class TicketService {
         }
     }
     
-    public List<RUserTicketView> cancelTicketOrReservation(CancelTicket cancelTicket) throws Exception, ItemNotFoundException {
+    public Optional<Ticket> cancelTicketOrReservation(CancelTicket cancelTicket) throws Exception, ItemNotFoundException {
         try {
             // check if user exist
             boolean userExist = accountRepository.travelerExistByUserId(cancelTicket.getTicketId());
@@ -156,9 +156,12 @@ public class TicketService {
                 throw new ItemNotFoundException("Ticket does not exist");
             }
 
+            Optional<Ticket> ticket = ticketRepository.cancelTicketOrReservation(cancelTicket.getTravelerId(), cancelTicket.getTicketId());
+            // TO DO add reservation repo
+
             // TO DO transaction
 
-            return ticketRepository.findTicketDetailsByTicketId(cancelTicket.getTicketId());
+            return ticket;
         } catch (ItemNotFoundException e) {
             throw e;
         } catch (Exception e) {

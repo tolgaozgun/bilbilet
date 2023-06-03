@@ -117,8 +117,8 @@ public class TicketRepository {
     }
 
     public Optional<Ticket> cancelTicketOrReservation(int userId, int ticketId) {
-        String sql = "UPDATE Ticket SET ticket_status = ? "
-                    + "WHERE traveler_id = ? AND ticket_id";
+        String sql = "UPDATE Ticket SET ticket_status = ?, traveler_id = null "
+                    + "WHERE traveler_id = ? AND ticket_id = ?";
         try {
             jdbcTemplate.update(sql, TicketStatus.AVAILABLE.toString(), userId, ticketId);
             Optional<Ticket> ticket = findTicketByTicketId(ticketId);
