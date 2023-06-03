@@ -27,6 +27,8 @@ import edu.bilkent.bilbilet.repository.rowmapper.rm.ReviewRowMapper;
 import edu.bilkent.bilbilet.response.RCompanyReview;
 import edu.bilkent.bilbilet.response.RReviewAvg;
 import edu.bilkent.bilbilet.response.RTripReview;
+import edu.bilkent.bilbilet.response.RTripReviewDetailedPrivate;
+import edu.bilkent.bilbilet.response.RTripReviewDetailedPublic;
 
 @Qualifier("review_repo")
 @Repository
@@ -100,23 +102,29 @@ public class ReviewRepository {
         }
     }
 
-    public List<RTripReview> findTripReviewByCompanyId(int companyId) {
+    public List<RTripReviewDetailedPublic> findTripReviewByCompanyId(int companyId) {
         try {
             String sql = "SELECT * FROM TripReview tr INNER JOIN Review r ON r.review_id = tr.review_id INNER JOIN "
-                       + "Ticket t ON t.ticket_id = tr.ticket_id INNER JOIN Fare f ON f.fare_id = t.fare_id WHERE f.company_id = ?";
+                       + "Ticket t ON t.ticket_id = tr.ticket_id INNER JOIN Fare f ON f.fare_id = t.fare_id "
+                       + "INNER JOIN Station s ON s.station_id = f.dep_stat_id AND s.station_id = f.arrive_stat_id "
+                       + "INNER JOIN Company company ON company.compnay_id = f.company_id "
+                       + "WHERE company_id = ?";
 
-            return jdbcTemplate.query(sql, ReviewRowMapper.TRIP_REVIEW_DETAILED_ROW_MAPPER, companyId);
+            return jdbcTemplate.query(sql, ReviewRowMapper.TRIP_REVIEW_DETAILED_PUBLIC_ROW_MAPPER, companyId);
         } catch (Exception e) {
             throw e;
         }
     }
 
-    public List<RTripReview> findTripReviewByUserId(int userId) {
+    public List<RTripReviewDetailedPrivate> findTripReviewByUserId(int userId) {
         try {
             String sql = "SELECT * FROM TripReview tr INNER JOIN Review r ON r.review_id = tr.review_id INNER JOIN "
+                       + "Ticket t ON t.ticket_id = tr.ticket_id INNER JOIN Fare f ON f.fare_id = t.fare_id "
+                       + "INNER JOIN Station s ON s.station_id = f.dep_stat_id AND s.station_id = f.arrive_stat_id "
+                       + "INNER JOIN Company company ON company.compnay_id = f.company_id "
                        + "WHERE user_id = ?";
 
-            return jdbcTemplate.query(sql, ReviewRowMapper.TRIP_REVIEW_DETAILED_ROW_MAPPER, userId);
+            return jdbcTemplate.query(sql, ReviewRowMapper.TRIP_REVIEW_DETAILED_PRIVATE_ROW_MAPPER, userId);
         } catch (Exception e) {
             throw e;
         }
