@@ -34,10 +34,10 @@ public class DatabaseConfig {
         return new JdbcTemplate(dataSource);
     }
 
-    @Bean
-    public DatabaseInitializer initializeDB() {
-        return new DatabaseInitializer();
-    }
+//    @Bean
+//    public DatabaseInitializer initializeDB() {
+//        return new DatabaseInitializer();
+//    }
 
     // Other configuration beans...
 }
