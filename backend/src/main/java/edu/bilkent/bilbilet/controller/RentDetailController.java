@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.bilkent.bilbilet.model.RentDetail;
-import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
-import edu.bilkent.bilbilet.repository.rowmapper.RentDetailRM;
+import edu.bilkent.bilbilet.repository.rowmapper.datamodel.CompanyCarRM;
+import edu.bilkent.bilbilet.repository.rowmapper.datamodel.RentDetailRM;
 import edu.bilkent.bilbilet.response.Response;
 import edu.bilkent.bilbilet.service.RentService;
 import jakarta.validation.Valid;

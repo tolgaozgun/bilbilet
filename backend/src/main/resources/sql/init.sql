@@ -45,13 +45,14 @@ CREATE TABLE IF NOT EXISTS Seat (
     seat_id INT NOT NULL AUTO_INCREMENT,
     seat_class VARCHAR(50) NOT NULL,
     seat_type VARCHAR(50) NOT NULL,
-    `row` INT NOT NULL,
-    `column` INT NOT NULL,
+    row_num INT NOT NULL,
+    column_num INT NOT NULL,
     extra_price DECIMAL(10, 2) NOT NULL,
     seat_configuration_id INT NOT NULL,
     PRIMARY KEY (seat_id),
-    FOREIGN KEY (seat_configuration_id) REFERENCES SeatConfiguration(seat_configuration_id)
+    FOREIGN KEY (seat_configuration_id) REFERENCES SeatConfiguration(seat_configuration_id) ON DELETE CASCADE
 );
+
 
 CREATE TABLE IF NOT EXISTS Address (
     address_id INT NOT NULL AUTO_INCREMENT,
@@ -115,7 +116,6 @@ CREATE TABLE IF NOT EXISTS CompanyVehicle (
     company_id INT NOT NULL,
     PRIMARY KEY (vehicle_id),
     FOREIGN KEY (seat_configuration_id) REFERENCES SeatConfiguration(seat_configuration_id),
-    FOREIGN KEY (company_id) REFERENCES Company(company_id),
     CONSTRAINT capacity_check CHECK (capacity > 0),
     CONSTRAINT vehicle_type_check CHECK (vehicle_type IN ('BUS', 'PLANE')),
     CONSTRAINT vehicle_reference_fk FOREIGN KEY (vehicle_reference_id)
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS Station (
     station_type VARCHAR(50) NOT NULL,
     address_id INT NOT NULL,
     PRIMARY KEY (station_id),
-    FOREIGN KEY (address_id) REFERENCES Address(address_id)
+    FOREIGN KEY (address_id) REFERENCES Address(address_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Hotel (
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS Hotel (
     photo_url VARCHAR(255) NOT NULL,
     address_id INT NOT NULL,
     PRIMARY KEY (hotel_id),
-    FOREIGN KEY (address_id) REFERENCES Address(address_id)
+    FOREIGN KEY (address_id) REFERENCES Address(address_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Fare (
@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS Fare (
     FOREIGN KEY (company_id) REFERENCES Company(company_id),
     FOREIGN KEY (vehicle_id) REFERENCES TransportVehicle(vehicle_id),
     FOREIGN KEY (dep_stat_id) REFERENCES Station(station_id),
-    FOREIGN KEY (arrive_stat_id) REFERENCES Station(station_id)
+    FOREIGN KEY (arrive_stat_id) REFERENCES Station(station_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Ticket (
@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS Ticket (
     PRIMARY KEY (ticket_id),
     FOREIGN KEY (seat_id) REFERENCES Seat(seat_id),
     FOREIGN KEY (fare_id) REFERENCES Fare(fare_id),
-    FOREIGN KEY (traveler_id) REFERENCES Traveler(user_id)
+    FOREIGN KEY (traveler_id) REFERENCES Traveler(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Reservation (
@@ -186,7 +186,7 @@ CREATE TABLE IF NOT EXISTS Reservation (
     reservation_fee DECIMAL(10, 2) NOT NULL,
     ticket_id INT NOT NULL,
     PRIMARY KEY (reservation_id),
-    FOREIGN KEY (ticket_id) REFERENCES Ticket(ticket_id)
+    FOREIGN KEY (ticket_id) REFERENCES Ticket(ticket_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS JourneyPlan (
@@ -194,7 +194,7 @@ CREATE TABLE IF NOT EXISTS JourneyPlan (
     plan_title VARCHAR(255) NOT NULL,
     user_id INT NOT NULL,
     PRIMARY KEY (journey_plan_id),
-    FOREIGN KEY (user_id) REFERENCES Traveler(user_id),
+    FOREIGN KEY (user_id) REFERENCES Traveler(user_id) ON DELETE CASCADE,
     CONSTRAINT uc_user_plan UNIQUE (user_id, plan_title) /* user can have only one plan with the same title */
 );
 
@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS Journey (
     ticket_id INT NOT NULL,
     PRIMARY KEY (journey_id),
     FOREIGN KEY (journey_plan_id) REFERENCES JourneyPlan(journey_plan_id),
-    FOREIGN KEY (ticket_id) REFERENCES Ticket(ticket_id)
+    FOREIGN KEY (ticket_id) REFERENCES Ticket(ticket_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Transactions (
@@ -231,5 +231,33 @@ CREATE TABLE IF NOT EXISTS RentDetail (
     company_car_id INT NOT NULL,
     PRIMARY KEY (rent_id),
     FOREIGN KEY (company_car_id) REFERENCES CompanyCar(company_car_id),
+    FOREIGN KEY (user_id) REFERENCES Traveler(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Review (
+    review_id INT NOT NULL AUTO_INCREMENT,
+    comment TEXT NOT NULL,
+    punctuality DOUBLE NOT NULL,
+    cleanliness DOUBLE NOT NULL,
+    customer_service DOUBLE NOT NULL,
+    user_id INT NOT NULL,
+    PRIMARY KEY (review_id),
     FOREIGN KEY (user_id) REFERENCES Traveler(user_id)
 );
+
+CREATE TABLE IF NOT EXISTS CompanyReview (
+    review_id INT NOT NULL,
+    company_id INT NOT NULL,
+    PRIMARY KEY (review_id),
+    FOREIGN KEY (review_id) REFERENCES Review(review_id), 
+    FOREIGN KEY (company_id) REFERENCES Company(company_id)
+);
+
+CREATE TABLE IF NOT EXISTS TripReview (
+    review_id INT NOT NULL,
+    ticket_id INT NOT NULL,
+    PRIMARY KEY (review_id),
+    FOREIGN KEY (review_id) REFERENCES Review(review_id),
+    FOREIGN KEY (ticket_id) REFERENCES Ticket(ticket_id)
+);
+
