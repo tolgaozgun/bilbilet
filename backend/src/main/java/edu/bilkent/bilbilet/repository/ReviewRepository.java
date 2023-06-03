@@ -68,17 +68,17 @@ public class ReviewRepository {
     public Review save(Review review) throws Exception {
         try {
             String sql = "INSERT INTO Review (comment, punctuality, cleanliness, customer_service, user_id) " +
-                     "VALUES (?, ?, ?, ? ?)";
+                     "VALUES (?, ?, ?, ?, ?)";
         
             KeyHolder keyHolder = new GeneratedKeyHolder();
             
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql, new String[]{"review_id"});
-                ps.setString(1, review.getComment());
-                ps.setInt(2, review.getUserId());
-                ps.setDouble(3, review.getPunctuality());
-                ps.setDouble(4, review.getCleanliness());
-                ps.setDouble(5, review.getCustomerService());
+                ps.setString(1, review.getComment());                
+                ps.setDouble(2, review.getPunctuality());
+                ps.setDouble(3, review.getCleanliness());
+                ps.setDouble(4, review.getCustomerService());
+                ps.setInt(5, review.getUserId());
                 return ps;
             }, keyHolder);
             

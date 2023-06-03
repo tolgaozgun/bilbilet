@@ -196,7 +196,7 @@ CREATE TABLE IF NOT EXISTS RentDetail (
     FOREIGN KEY (user_id) REFERENCES Traveler(user_id)
 );
 
-CREATE TABLE Review (
+CREATE TABLE IF NOT EXISTS Review (
     review_id INT NOT NULL AUTO_INCREMENT,
     comment TEXT NOT NULL,
     punctuality DOUBLE NOT NULL,
@@ -207,7 +207,7 @@ CREATE TABLE Review (
     FOREIGN KEY (user_id) REFERENCES Traveler(user_id)
 );
 
-CREATE TABLE CompanyReview (
+CREATE TABLE IF NOT EXISTS CompanyReview (
     review_id INT NOT NULL,
     company_id INT NOT NULL,
     PRIMARY KEY (review_id),
@@ -215,7 +215,7 @@ CREATE TABLE CompanyReview (
     FOREIGN KEY (company_id) REFERENCES Company(company_id)
 );
 
-CREATE TABLE TripReview (
+CREATE TABLE IF NOT EXISTS TripReview (
     review_id INT NOT NULL,
     ticket_id INT NOT NULL,
     PRIMARY KEY (review_id),

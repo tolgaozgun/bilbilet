@@ -132,4 +132,21 @@ public class CompanyRepository {
         return affectedRows > 0;
     }
 
+    public Optional<Company> findCompanyByCompanyId(int companyId) {
+        String sql = "SELECT * FROM Company WHERE company_id = ?";
+
+        try {
+            return Optional.of(jdbcTemplate.queryForObject(sql, companyRowMapper, companyId));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
+
+    public boolean existByCompanyId(int companyId) {
+        return findCompanyByCompanyId(companyId).isPresent();
+    }
 }

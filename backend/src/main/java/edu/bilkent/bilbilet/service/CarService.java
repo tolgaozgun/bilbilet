@@ -112,7 +112,7 @@ public class CarService {
         }
     }
 
-    public List<CarBrand> findAllBrand() throws Exception { // TODO test this ever detail or just ids??
+    public List<CarBrand> findAllBrand() throws Exception {
         try {
             return carBrandRepository.findAll();  
         } catch (Exception e) {

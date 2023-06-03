@@ -1,6 +1,8 @@
 package edu.bilkent.bilbilet.model;
 
 import lombok.AllArgsConstructor;
+import edu.bilkent.bilbilet.request.AddCompanyReview;
+import edu.bilkent.bilbilet.request.AddTripReview;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,4 +31,14 @@ public class Review {
 
 	@NotNull
 	private int userId;
+
+	public Review(AddCompanyReview addReview) {
+		this(0, addReview.getComment(), addReview.getPunctuality(),
+			addReview.getCleanliness(), addReview.getCustomerService(), addReview.getUserId());
+	}
+
+	public Review(AddTripReview addReview) {
+		this(0, addReview.getComment(), addReview.getPunctuality(),
+			addReview.getCleanliness(), addReview.getCustomerService(), addReview.getUserId());
+	}
 }
