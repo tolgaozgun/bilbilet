@@ -224,7 +224,7 @@ public class FareRepository {
         StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Fare f INNER JOIN TransportVehicle t ON f.vehicle_id = t.vehicle_id WHERE t.vehicle_type = ? ");
         List<Object> parameterValues = new ArrayList<>();
 
-        parameterValues.add(vehicleType); // VehicleType.PLANE, VehicleType.BUS 
+        parameterValues.add(vehicleType.toString()); // VehicleType.PLANE, VehicleType.BUS 
 
         try {
             if (properties.isEmpty()) {
