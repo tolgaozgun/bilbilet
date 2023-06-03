@@ -1,6 +1,5 @@
 package edu.bilkent.bilbilet.security;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,35 +26,36 @@ public class SecurityConfig {
 	// private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	private static final String[] AUTH_WHITELIST = {
-		"/v3/api-docs/**",
-		"/swagger-ui/**",
-		"/api/v1/auth/hello",
-		"/api/v1/auth/login",
-		"/api/v1/auth/register",
-		"/api/v1/auth/register/traveler"
+			"/v3/api-docs/**",
+			"/swagger-ui/**",
+			"/api/v1/auth/hello",
+			"/api/v1/auth/login",
+			"/api/v1/auth/register",
+			"/api/v1/auth/register/traveler",
+			"/api/v1/auth/register/company"
 	};
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.cors();
 		http
-			.csrf().disable()
-			.authorizeHttpRequests((request) -> {
+				.csrf().disable()
+				.authorizeHttpRequests((request) -> {
 					try {
 						request
-							.requestMatchers(AUTH_WHITELIST)							
-							.permitAll()						
-							.anyRequest().authenticated()							
-							.and()
-							.sessionManagement()
-							.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-							.and()
-							.authenticationProvider(authenticationProvider());
+								.requestMatchers(AUTH_WHITELIST)
+								.permitAll()
+								.anyRequest().authenticated()
+								.and()
+								.sessionManagement()
+								.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+								.and()
+								.authenticationProvider(authenticationProvider());
 					} catch (Exception e) {
 						e.printStackTrace();
-					}					
-				
-			});
+					}
+
+				});
 		// http.addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -83,6 +83,6 @@ public class SecurityConfig {
 
 	// @Bean
 	// public PasswordEncoder passwordEncoder(int strength) {
-	// 	return new BCryptPasswordEncoder(strength);
+	// return new BCryptPasswordEncoder(strength);
 	// }
 }

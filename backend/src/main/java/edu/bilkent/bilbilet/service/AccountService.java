@@ -43,10 +43,12 @@ public class AccountService {
             if (dbUser == null) {
                 throw new ItemNotFoundException("User is not found");
             }
-            
+
             String hashedPassword = dbUser.getPassword();
-            //String hashedPassword = accountRepository.getPasswordIfUserExist(Long.parseLong(user.getBilkentId()));
-            boolean passwordMatch = bCryptPasswordEncoder.matches(user.getPassword(), hashedPassword); /// change thisssss!!!
+            // String hashedPassword =
+            // accountRepository.getPasswordIfUserExist(Long.parseLong(user.getBilkentId()));
+            boolean passwordMatch = bCryptPasswordEncoder.matches(user.getPassword(), hashedPassword); /// change
+                                                                                                       /// thisssss!!!
             // boolean passwordMatch = hashedPassword.equals(dbUser.getPassword());
 
             if (!passwordMatch) {
@@ -55,8 +57,11 @@ public class AccountService {
 
             System.out.println("Passwords are matched");
 
-            // authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getBilkentId(), user.getPassword()));
-            // User appUser = accountRepository.findUserByBilkentId(Long.parseLong(user.getBilkentId()));
+            // authManager.authenticate(new
+            // UsernamePasswordAuthenticationToken(user.getBilkentId(),
+            // user.getPassword()));
+            // User appUser =
+            // accountRepository.findUserByBilkentId(Long.parseLong(user.getBilkentId()));
             final UserDetails userDetails = jwtUserService.loadUserByUsername(user.getEmail());
             final String accessToken = jwtUtils.createAccessToken(userDetails);
             final String refreshToken = jwtUtils.createRefreshToken(userDetails);
@@ -76,12 +81,14 @@ public class AccountService {
         try {
             String username = jwtUtils.extractRefreshUsername(JWTFilter.getTokenWithoutBearer(auth));
 
-            // authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getBilkentId(), user.getPassword()));
+            // authManager.authenticate(new
+            // UsernamePasswordAuthenticationToken(user.getBilkentId(),
+            // user.getPassword()));
 
             final UserDetails userDetails = jwtUserService.loadUserByUsername(username);
             final String accessToken = jwtUtils.createAccessToken(userDetails);
             return new RRefreshToken(accessToken);
-            
+
         } catch (Exception e) {
             System.out.println("refresh token exception");
             e.printStackTrace();
@@ -132,7 +139,7 @@ public class AccountService {
         try {
             System.out.println("user that will be saved: " + user);
             boolean userExist = accountRepository.existsByEmail(user.getEmail());
-            
+
             if (userExist) {
                 throw new AlreadyExistException("User already exists");
             } else {
@@ -143,7 +150,8 @@ public class AccountService {
                 // System.out.println("user_id: " + user.getId());
                 User newUser = accountRepository.save(user);
 
-                // System.out.println("user_id after register: " + accountRepository.findUserByEmail(user.getEmail()).get().getId());
+                // System.out.println("user_id after register: " +
+                // accountRepository.findUserByEmail(user.getEmail()).get().getId());
                 return newUser;
             }
         } catch (AlreadyExistException e) {
@@ -160,15 +168,15 @@ public class AccountService {
             if (accountRepository.existsByEmail(travelerRegister.getUser().getEmail())) {
                 throw new AlreadyExistException("User already exists");
             }
-            
+
             // Check if traveler already exists by user_id
             if (accountRepository.findTravelerByUserId(travelerRegister.getUser().getUserId()).isPresent()) {
                 throw new AlreadyExistException("Traveler already exists");
             }
-            
+
             // Add user
             User newUser = addUser(travelerRegister.getUser());
-            
+
             // Add traveler
             Traveler travelerToAdd = travelerRegister.getTraveler();
             travelerToAdd.setUser_id(newUser.getUserId());
@@ -192,6 +200,6 @@ public class AccountService {
             return bCryptPasswordEncoder.encode(plainPassword);
         } catch (Exception e) {
             throw e;
-        }       
+        }
     }
 }

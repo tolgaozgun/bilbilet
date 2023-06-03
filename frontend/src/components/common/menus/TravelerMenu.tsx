@@ -2,11 +2,12 @@ import { Group, Menu } from '@mantine/core';
 import {
 	IconBackpack,
 	IconListDetails,
+	IconLogout,
 	IconSearch,
 	IconTicket,
 	IconUserCircle,
 } from '@tabler/icons-react';
-import { useUser } from '../../../hooks/auth';
+import { useLogout, useUser } from '../../../hooks/auth';
 import SubtleLinkButton from '../buttons/SubtleLinkButton';
 import UserButton from '../buttons/UserButton';
 
@@ -16,6 +17,11 @@ const TravelerMenu = () => {
 	if (!user) {
 		return null;
 	}
+
+	const { logout } = useLogout();
+	const onLogout = () => {
+		logout();
+	};
 
 	return (
 		<Group position="center">
@@ -62,11 +68,23 @@ const TravelerMenu = () => {
 					</Menu.Item>
 					<Menu.Item>
 						<SubtleLinkButton
-							to="/traveler/journey-planner"
+							to="/traveler/journey-plans"
 							size="sm"
 							leftIcon={<IconBackpack />}
 						>
 							Journey Planner
+						</SubtleLinkButton>
+					</Menu.Item>
+					<Menu.Item>
+						<SubtleLinkButton
+							onClick={onLogout}
+
+							size="sm"
+							leftIcon={<IconLogout />}
+							color="red"
+							to="/login"
+						>
+							Log out
 						</SubtleLinkButton>
 					</Menu.Item>
 				</Menu.Dropdown>
