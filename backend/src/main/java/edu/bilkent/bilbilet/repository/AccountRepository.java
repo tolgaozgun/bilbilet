@@ -33,7 +33,7 @@ public class AccountRepository {
         user.setUserType(UserType.valueOf(rs.getString("user_type")));
         return user;
     };
-    
+
     private RowMapper<Traveler> travelerRowMapper = (rs, rowNum) -> {
         Traveler traveler = new Traveler();
         traveler.setUser_id(rs.getInt("user_id"));
@@ -55,7 +55,7 @@ public class AccountRepository {
         company.setType(CompanyType.valueOf(rs.getString("type")));
         return company;
     };
-    
+
     public User findUserByMail(String mail) {
         String sql = "SELECT * FROM User WHERE email = ?";
 
@@ -112,43 +112,40 @@ public class AccountRepository {
         return Optional.empty();
     }
 
-    public User save(User user) { //check if exist????????????
+    public User save(User user) { // check if exist????????????
         String sql = "INSERT INTO User (name, surname, email, telephone, password, user_type) " +
-                     "VALUES (?, ?, ?, ?, ?, ?)";
-        
+                "VALUES (?, ?, ?, ?, ?, ?)";
+
         jdbcTemplate.update(
-            sql,
-            user.getName(),
-            user.getSurname(),
-            user.getEmail(),
-            user.getTelephone(),
-            user.getPassword(),
-            user.getUserType().toString()
-        );
-        
+                sql,
+                user.getName(),
+                user.getSurname(),
+                user.getEmail(),
+                user.getTelephone(),
+                user.getPassword(),
+                user.getUserType().toString());
+
         User new_user = findUserByMail(user.getEmail());
         new_user.setPassword(null);
         return new_user;
     }
 
-    public Optional<Traveler> save(Traveler traveler) { //check if exist????????????
+    public Optional<Traveler> save(Traveler traveler) { // check if exist????????????
         String sql = "INSERT INTO Traveler (user_id, nationality, passport_number, balance, TCK) " +
-                     "VALUES (?, ?, ?, ?, ?)";
-        
+                "VALUES (?, ?, ?, ?, ?)";
+
         jdbcTemplate.update(
-            sql,
-            traveler.getUser_id(),
-            traveler.getNationality(),
-            traveler.getPassport_number(),
-            new BigDecimal(0),
-            traveler.getTCK()
-        );
+                sql,
+                traveler.getUser_id(),
+                traveler.getNationality(),
+                traveler.getPassport_number(),
+                new BigDecimal(0),
+                traveler.getTCK());
 
         return findTravelerByUserId(traveler.getUser_id());
     }
 
-
-    public Optional<Company> save(Company company) { //check if exist????????????
+    public Optional<Company> save(Company company) { // check if exist????????????
         String sql = "INSERT INTO Company (company_id, company_title, address, type, contact_information, " +
                 "business_registration, balance, user_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -158,19 +155,18 @@ public class AccountRepository {
                 company.getCompany_id(),
                 company.getCompany_title(),
                 company.getAddress(),
-                company.getType(),
+                company.getType().toString(),
                 company.getContact_information(),
                 company.getBusiness_registration(),
                 company.getBalance(),
-                company.getUser_id()
-        );
+                company.getUser_id());
 
         return findCompanyByUserId(company.getUser_id());
     }
 
     // public User save(User user) {
-    //     users.add(user);
-    //     return user;
+    // users.add(user);
+    // return user;
     // }
 
     public boolean existsByEmail(String mail) {

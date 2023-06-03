@@ -6,21 +6,14 @@ export type Tokens = {
 };
 
 export enum CompanyType {
-	Transportation = 'Transportation',
-	CarRental = 'Car Rental',
-	Hotel = 'Hotel',
+	AIRLINE = 'AIRLINE',
+	BUS = 'BUS',
+	TRAIN = 'TRAIN',
+	FERRY = 'FERRY',
+	SHIP = 'SHIP',
+	RENTAL = 'RENTAL',
+	OTHER = 'OTHER',
 }
-
-export type RegisterCompany = {
-	companyName: string;
-	companyType: CompanyType;
-	companyEmail: string;
-	password: string;
-	telephone: string;
-	address: string;
-	contactInformation: string;
-	businessRegistration: string;
-};
 
 export type RegisterTraveler = {
 	user: UserModel;
@@ -43,4 +36,20 @@ export type TravelerModel = {
 	balance: number;
 	passportNumber: string;
 	TCK: string;
+};
+
+export type CompanyModel = {
+	company_id: number;
+	company_title: string;
+	address: string;
+	type: string;
+	contact_information: string;
+	business_registration: string;
+	balance: number;
+	user_id: number;
+};
+
+export type RegisterCompany = {
+	user: UserModel;
+	company: CompanyModel;
 };
