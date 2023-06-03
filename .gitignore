@@ -291,3 +291,6 @@ thumb
 sketch
 
 settings.json
+
+/backend/target/
+/backend/target/classes/sql

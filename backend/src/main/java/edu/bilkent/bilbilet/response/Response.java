@@ -15,7 +15,7 @@ public class Response {
 
         response.put("timestamp", timestamp);
         response.put("msg", message);
-        response.put("status", status);
+        response.put("status", status.value());
         response.put("data", data);
 
         return new ResponseEntity<Object>(response, status);
@@ -27,7 +27,7 @@ public class Response {
 
         response.put("timestamp", timestamp);
         response.put("msg", message);
-        response.put("status", status);
+        response.put("status", status.value());
 
         return new ResponseEntity<Object>(response, status);
     }

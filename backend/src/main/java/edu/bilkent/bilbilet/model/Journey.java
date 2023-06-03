@@ -1,6 +1,7 @@
 package edu.bilkent.bilbilet.model;
 
 import lombok.AllArgsConstructor;
+import edu.bilkent.bilbilet.request.journey.CreateJourney;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,17 +12,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Journey {
+	public Journey(CreateJourney cj) {
+        this.setJourneyId(0);
+        this.setJourneyTitle(cj.getJourneyTitle());
+        this.setJourneyPlanId(cj.getJourneyPlanId());
+        this.setTicketId(cj.getTicketId());
+	}
+
 	@Id
 	@NotNull
-	private int journey_id;
+	private int journeyId;
 
 	@NotBlank
-	private String journey_title;
+	private String journeyTitle;
 
 	@NotNull
-	private int journey_plan_id;
+	private int journeyPlanId;
 
 	@NotNull
-	private int fare_id;
-
+	private int ticketId;
 }

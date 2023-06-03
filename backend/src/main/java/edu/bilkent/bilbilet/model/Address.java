@@ -16,17 +16,18 @@ import lombok.NoArgsConstructor;
 public class Address {
     @Id
     @NotNull
-    private int address_id;
-
-    @NotBlank
-    private String country;
+    private int addressId;
 
     @NotBlank
     private String city;
+
+    @NotBlank
+    private String country;
 
     @NotNull
     private BigDecimal latitude;
 
     @NotNull
     private BigDecimal longitude;
+
 }

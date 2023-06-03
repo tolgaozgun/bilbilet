@@ -1,6 +1,8 @@
 import { AxiosInstance } from 'axios';
+import { RegisterTraveler } from './../../types/AuthTypes';
+
 import { baseUrl } from '../../constants/api';
-import { RegisterCompany, RegisterUser, Tokens, User } from '../../types';
+import { RegisterCompany, Tokens, User } from '../../types';
 import { ErrorResponse, Response } from '../../types/ResponseTypes';
 import { axiosSecure as axios } from '../axios';
 
@@ -18,15 +20,20 @@ export async function logout() {
 }
 
 export async function registerCompany(companyDetails: RegisterCompany) {
-	const res = await axios.post<Response<User>>(
-		`${baseUrl}/auth/register`,
+	const res = await axios.post<Response<RegisterCompany>>(
+		`${baseUrl}/auth/register/company`,
 		companyDetails,
 	);
 	return res.data;
 }
 
-export async function registerUser(userDetails: RegisterUser): Promise<Response<User>> {
-	const res = await axios.post<Response<User>>(`${baseUrl}/auth/register`, userDetails);
+export async function registerTraveler(
+	userDetails: RegisterTraveler,
+): Promise<Response<User>> {
+	const res = await axios.post<Response<User>>(
+		`${baseUrl}/auth/register/traveler`,
+		userDetails,
+	);
 	return res.data;
 }
 
