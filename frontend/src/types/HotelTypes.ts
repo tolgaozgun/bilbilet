@@ -15,3 +15,7 @@ export type AddHotel = {
 	city: string;
 	country: string;
 };
+
+export type HotelFilterParams = {
+	addressId: number;
+};
