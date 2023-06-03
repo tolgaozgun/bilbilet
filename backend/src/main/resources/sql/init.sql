@@ -86,8 +86,6 @@ CREATE TABLE IF NOT EXISTS CompanyCar (
     car_id INT NOT NULL,
     company_id INT NOT NULL,
     address_id INT NOT NULL,
-    photo_url VARCHAR(255),
-    website_url VARCHAR(255),
     price_per_day DECIMAL(10, 2) NOT NULL,
     PRIMARY KEY (company_car_id),
     FOREIGN KEY (company_id) REFERENCES Company(company_id),
@@ -185,4 +183,15 @@ CREATE TABLE IF NOT EXISTS Journey (
     PRIMARY KEY (journey_id),
     FOREIGN KEY (journey_plan_id) REFERENCES JourneyPlan(journey_plan_id),
     FOREIGN KEY (ticket_id) REFERENCES Ticket(ticket_id)
+);
+
+CREATE TABLE IF NOT EXISTS RentDetail (
+    rent_id INT NOT NULL AUTO_INCREMENT,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    user_id INT NOT NULL,
+    company_car_id INT NOT NULL,
+    PRIMARY KEY (rent_id),
+    FOREIGN KEY (company_car_id) REFERENCES CompanyCar(company_car_id),
+    FOREIGN KEY (user_id) REFERENCES Traveler(user_id)
 );

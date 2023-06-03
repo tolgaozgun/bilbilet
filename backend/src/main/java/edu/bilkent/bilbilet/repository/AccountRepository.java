@@ -195,4 +195,8 @@ public class AccountRepository {
     
         return false;
     }
+
+    public boolean travelerExistByUserId(int userId) {
+        return findTravelerByUserId(userId).isPresent();
+    }
 }
