@@ -62,6 +62,18 @@ public class CompanyVehicleRepository {
         return Collections.emptyList();
     }
 
+    public List<CompanyVehicle> findAllCompanyVehiclesById(int companyId) {
+        String sql = "SELECT * FROM CompanyVehicle WHERE company_id = ?";
+        try {
+            return jdbcTemplate.query(sql, companyVehicleRowMapper, companyId);
+        } catch (EmptyResultDataAccessException e) {
+            return Collections.emptyList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
 
     public List<CompanyVehicle> findAllCompanyVehiclesByCompanyId(int companyId) {
         String sql = "SELECT * FROM CompanyVehicle WHERE company_id = ?";

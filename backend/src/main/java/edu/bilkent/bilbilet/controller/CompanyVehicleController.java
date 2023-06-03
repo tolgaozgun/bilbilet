@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/company-vehicles")
@@ -48,6 +50,17 @@ public class CompanyVehicleController {
         try {
             CompanyVehicle vehicle = companyVehicleService.getCompanyVehicleById(vehicleId);
             return Response.create("Found company vehicle successfully.", HttpStatus.OK, vehicle);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("company/{companyId}")
+    public ResponseEntity<Object> getAllCompanyVehiclesByCompanyId(@PathVariable int companyId) {
+        try {
+            List<CompanyVehicle> vehicles = companyVehicleService.getAllCompanyVehicles(companyId);
+            return Response.create("Found company vehicles successfully.", HttpStatus.OK, vehicles);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -11,6 +11,7 @@ import edu.bilkent.bilbilet.request.vehicle.AddCompanyPlane;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class CompanyVehicleService {
 
     private final CompanyVehicleRepository companyVehicleRepository;
+    private final CompanyService companyService;
 
     public CompanyVehicle createCompanyBus(AddCompanyBus addCompanyBus) throws Exception {
         try {
@@ -94,6 +96,25 @@ public class CompanyVehicleService {
                 throw new RuntimeException("CompanyVehicle could not be found");
             }
             return companyVehicle.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public List<CompanyVehicle> getAllCompanyVehicles(int companyId) throws Exception{
+        try {
+            Company company = companyService.getCompanyById(companyId);
+
+            if (company == null) {
+                throw new RuntimeException("Company could not be found");
+            }
+
+            List<CompanyVehicle> companyVehicles = companyVehicleRepository.findAllCompanyVehiclesByCompanyId(companyId);
+            if (companyVehicles == null) {
+                throw new RuntimeException("CompanyVehicle could not be found");
+            }
+            return companyVehicles;
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
