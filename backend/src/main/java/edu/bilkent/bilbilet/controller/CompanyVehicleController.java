@@ -23,7 +23,7 @@ public class CompanyVehicleController {
     private final CompanyVehicleService companyVehicleService;
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping("create/plane}")
+    @PostMapping("create/plane")
     public ResponseEntity<Object> createCompanyPlane(@Valid @RequestBody AddCompanyPlane addCompanyPlane) {
         try {
             CompanyVehicle createdVehicle = companyVehicleService.createCompanyPlane(addCompanyPlane);
@@ -34,7 +34,7 @@ public class CompanyVehicleController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping("create/bus}")
+    @PostMapping("create/bus")
     public ResponseEntity<Object> createCompanyBus(@Valid @RequestBody AddCompanyBus companyBus) {
         try {
             CompanyVehicle createdVehicle = companyVehicleService.createCompanyBus(companyBus);
