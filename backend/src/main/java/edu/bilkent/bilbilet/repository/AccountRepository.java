@@ -75,8 +75,9 @@ public class AccountRepository {
     public void incrementTravelerBalance(int userId, BigDecimal amount) throws Exception {
         String sql = "UPDATE Traveler SET balance = balance + ? WHERE user_id = ?";
 
+        System.out.println(amount);
         try {
-            jdbcTemplate.update(sql, userId, amount);
+            jdbcTemplate.update(sql, amount, userId);
         } catch (EmptyResultDataAccessException e) {
             throw new Exception("Traveler not found");
         } catch (Exception e) {
@@ -90,7 +91,7 @@ public class AccountRepository {
         String sql = "UPDATE Traveler SET balance = balance - ? WHERE user_id = ?";
 
         try {
-            jdbcTemplate.update(sql, userId, amount);
+            jdbcTemplate.update(sql, amount, userId);
         } catch (EmptyResultDataAccessException e) {
             throw new Exception("Traveler not found");
         } catch (Exception e) {

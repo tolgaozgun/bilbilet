@@ -20,7 +20,7 @@ export type HotelFilterParams = {
 	address_id: number | '';
 	name: string;
 	avg_price: [number, number];
-	order_by: [HotelSortByOptions, HotelSortDirections];
+	order_by?: [HotelSortByOptions, HotelSortDirections];
 	rating?: [number, number];
 };
 
