@@ -84,7 +84,7 @@ public class AccountController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "register/company")
     public ResponseEntity<Object> registerCompany(@Valid @RequestBody CompanyRegister companyRegister) {
         try {
             CompanyRegister savedInfo = accountService.addCompany(companyRegister);

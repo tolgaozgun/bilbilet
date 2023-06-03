@@ -32,7 +32,8 @@ public class SecurityConfig {
 		"/api/v1/auth/hello",
 		"/api/v1/auth/login",
 		"/api/v1/auth/register",
-		"/api/v1/auth/register/traveler"
+		"/api/v1/auth/register/traveler",
+		"/api/v1/auth/register/company"
 	};
 
 	@Bean

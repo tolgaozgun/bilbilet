@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 import edu.bilkent.bilbilet.enums.UserType;
 import edu.bilkent.bilbilet.model.Traveler;
@@ -177,5 +178,25 @@ public class AccountRepository {
         User user = findUserByMail(mail);
 
         return user != null;
+    }
+
+    public boolean deleteUserByEmail(String mail) throws Exception {
+        String sql = "DELETE FROM Fare WHERE email = ?";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("email", mail);
+
+        try {
+            int affectedRows = jdbcTemplate.update(sql, parameters);
+            return affectedRows > 0;
+        }
+        catch (EmptyResultDataAccessException e) {
+            return false;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    
+        return false;
     }
 }
