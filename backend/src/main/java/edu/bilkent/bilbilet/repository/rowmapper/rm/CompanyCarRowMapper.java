@@ -1,14 +1,15 @@
-package edu.bilkent.bilbilet.repository.rowmapper;
+package edu.bilkent.bilbilet.repository.rowmapper.rm;
 
 import org.springframework.jdbc.core.RowMapper;
 
 import edu.bilkent.bilbilet.model.Address;
 import edu.bilkent.bilbilet.model.Car;
 import edu.bilkent.bilbilet.model.CarCategoryType;
+import edu.bilkent.bilbilet.repository.rowmapper.datamodel.CompanyCarRM;
 import edu.bilkent.bilbilet.enums.FuelType;
 import edu.bilkent.bilbilet.enums.GearType;
 
-public class BilBiletRowMapper {
+public class CompanyCarRowMapper {
 
     public static final RowMapper<CompanyCarRM> COMPANY_CAR_MAPPED_RM = (rs, rowNum) -> {
         CompanyCarRM cc = new CompanyCarRM();

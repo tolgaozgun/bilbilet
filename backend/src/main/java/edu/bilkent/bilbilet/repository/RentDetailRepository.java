@@ -23,9 +23,9 @@ import edu.bilkent.bilbilet.model.Address;
 import edu.bilkent.bilbilet.model.Car;
 import edu.bilkent.bilbilet.model.CarCategoryType;
 import edu.bilkent.bilbilet.model.RentDetail;
-import edu.bilkent.bilbilet.repository.rowmapper.BilBiletRowMapper;
-import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
-import edu.bilkent.bilbilet.repository.rowmapper.RentDetailRM;
+import edu.bilkent.bilbilet.repository.rowmapper.datamodel.CompanyCarRM;
+import edu.bilkent.bilbilet.repository.rowmapper.datamodel.RentDetailRM;
+import edu.bilkent.bilbilet.repository.rowmapper.rm.CompanyCarRowMapper;
 
 @Qualifier("rent_detail_repo")
 @Repository
@@ -91,7 +91,7 @@ public class RentDetailRepository {
         boolean and2Needed = false;
 
         if (properties.isEmpty()) {
-            return jdbcTemplate.query(sqlBuilder.toString(), BilBiletRowMapper.COMPANY_CAR_MAPPED_RM);
+            return jdbcTemplate.query(sqlBuilder.toString(), CompanyCarRowMapper.COMPANY_CAR_MAPPED_RM);
         }
 
         sqlBuilder.append(" WHERE ");
@@ -137,7 +137,7 @@ public class RentDetailRepository {
                     ps.setObject(i + 1, parameterValues.get(i));
                 }
             }
-        }, BilBiletRowMapper.COMPANY_CAR_MAPPED_RM); // check if empty
+        }, CompanyCarRowMapper.COMPANY_CAR_MAPPED_RM); // check if empty
     }
 
     public RentDetail save(RentDetail rentDetail) throws Exception {

@@ -13,21 +13,20 @@ import lombok.NoArgsConstructor;
 public class Review {
 	@Id
 	@NotNull
-	private int review_id;
+	private int reviewId;
 
 	@NotBlank
 	private String comment;
 
 	@NotNull
-	private int punctuality;
+	private double punctuality;
 
 	@NotNull
-	private int cleanliness;
+	private double cleanliness;
 
 	@NotNull
-	private int customer_service;
+	private double customerService;
 
 	@NotNull
-	private int user_id;
-
+	private int userId;
 }

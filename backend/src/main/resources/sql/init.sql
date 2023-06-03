@@ -195,3 +195,32 @@ CREATE TABLE IF NOT EXISTS RentDetail (
     FOREIGN KEY (company_car_id) REFERENCES CompanyCar(company_car_id),
     FOREIGN KEY (user_id) REFERENCES Traveler(user_id)
 );
+
+CREATE TABLE Review (
+    review_id INT NOT NULL AUTO_INCREMENT,
+    comment TEXT NOT NULL,
+    punctuality DOUBLE NOT NULL,
+    cleanliness DOUBLE NOT NULL,
+    customer_service DOUBLE NOT NULL,
+    user_id INT NOT NULL,
+    PRIMARY KEY (review_id),
+    FOREIGN KEY (user_id) REFERENCES Traveler(user_id)
+);
+
+CREATE TABLE CompanyReview (
+    review_id INT NOT NULL,
+    company_id INT NOT NULL,
+    PRIMARY KEY (review_id),
+    FOREIGN KEY (review_id) REFERENCES Review(review_id), 
+    FOREIGN KEY (company_id) REFERENCES Company(company_id)
+);
+
+CREATE TABLE TripReview (
+    review_id INT NOT NULL,
+    ticket_id INT NOT NULL,
+    PRIMARY KEY (review_id),
+    FOREIGN KEY (review_id) REFERENCES Review(review_id),
+    FOREIGN KEY (ticket_id) REFERENCES Ticket(ticket_id)
+);
+
+
