@@ -130,11 +130,14 @@ public class HotelRepository {
 
             // Append ORDER BY ASC | DESC
             if (isOrderBy) {
-                sqlBuilder.append(" ORDER BY ? ? ");
                 String[] paramList = paramStr.split(",");
                 String orderParam = paramList[0];
                 String orderDir = paramList[1];
+                if (orderParam.compareTo("") == 0 && orderDir.compareTo("") == 0) {
+                    continue;
+                }
 
+                sqlBuilder.append(" ORDER BY ? ? ");
                 parameterValues.add(orderParam);
                 parameterValues.add(orderDir);
             }

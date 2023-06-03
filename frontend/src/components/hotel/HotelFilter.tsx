@@ -111,17 +111,34 @@ const HotelFilter = ({ onFilter }: HotelSearchBarProps) => {
 	}));
 
 	const handleOnFilter = () => {
-		console.log(selectedValue);
-		const filterParams: HotelFilterParams = {
-			address_id: selectedValue ? parseInt(selectedValue) : '',
-			name: hotelName,
-			avg_price: priceRange,
-			order_by: [hotelSortBy?.sortBy || '', hotelSortBy?.sortDirection || ''],
-		};
+		let filterParams: HotelFilterParams;
+		if (hotelSortBy?.sortBy && hotelSortBy?.sortDirection) {
+			filterParams = {
+				address_id: selectedValue ? parseInt(selectedValue) : '',
+				name: hotelName,
+				avg_price: priceRange,
+				order_by: [hotelSortBy.sortBy, hotelSortBy.sortDirection],
+			};
+		} else {
+			filterParams = {
+				address_id: selectedValue ? parseInt(selectedValue) : '',
+				name: hotelName,
+				avg_price: priceRange,
+			};
+		}
+
 		onFilter(filterParams);
 	};
 
 	const handleSetSortBy = () => {
+		if (!selectedSortDirection || !selectedSortOption) {
+			notifications.show({
+				message: 'Please select both sort direction and sort option',
+				color: 'red',
+			});
+			return;
+		}
+
 		setHotelSortBy({
 			sortBy: selectedSortOption,
 			sortDirection: selectedSortDirection,
@@ -144,8 +161,10 @@ const HotelFilter = ({ onFilter }: HotelSearchBarProps) => {
 			<Modal opened={opened} onClose={close} title="Select sort options">
 				<Stack spacing="lg">
 					<Select
-						placeholder="Select a sort option"
+						placeholder="Select a sort parameter"
 						data={hotelSortByOptions}
+						label="Sort Parameter"
+						required
 						value={selectedSortOption}
 						onChange={(value) =>
 							setSelectedSortOption(value as HotelSortByOptions)
