@@ -13,13 +13,13 @@ INSERT IGNORE INTO CarBrand (brand) VALUES
     ('BMW');
 
 INSERT INTO User (name, surname, email, telephone, password, user_type)
-VALUES ('John', 'Doe', 'john@doe.com', '1234567890', 'password123', 'user');
+VALUES ('John', 'Doe', 'johndoe@example.com', '1234567890', 'password123', 'user');
 
 INSERT INTO Company (user_id, company_title, address, type, contact_information, business_registration, balance)
 VALUES (1, 'ABC Company', '123 Main Street', 'Technology', 'info@abccompany.com', '123456789', 10000.00);
 
 INSERT INTO Traveler (user_id, nationality, passport_number, balance, TCK)
-VALUES (1, 'USA', 'P123456', 5000.00, NULL);
+VALUES (2, 'USA', 'P123456', 5000.00, NULL);
 
 INSERT INTO Seat (seat_class, seat_type, `row`, `column`, extra_price, seat_configuration_id)
 VALUES ('Economy', 'Window', 1, 1, 0.00, 1),

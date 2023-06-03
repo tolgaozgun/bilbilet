@@ -64,6 +64,46 @@ public class FareService {
         }
     }
 
+    public Fare createFareNew(Fare fareInfo) throws Exception {     
+        try {
+            // Check if the given company name exists
+            Optional<Company> optionalCompany = companyRepository.getCompanyById(fareInfo.getCompanyId());
+            
+            if (!optionalCompany.isPresent()) {
+                throw new CompanyNotFoundException("Could not find company with the name " + fareInfo.getCompanyId() + ".");
+            }
+
+            // If the company name exists, continue
+            Company company = optionalCompany.get();
+            
+            // Set companyId of fareToAdd to the existing company
+            Fare fareToAdd = fareInfo;
+            fareToAdd.setCompanyId(company.getCompany_id());
+
+            // ASSUMED: vehicleId is already SET by the frontend request
+            // ASSUMED: depStationId is already SET by the frontend request
+            // ASSUMED: arrStationId is already SET by the frontend request
+
+            Optional<Fare> newFare = fareRepository.createFare(fareToAdd);
+
+            if (!newFare.isPresent()) {
+                throw new InsertionFailedException("Fare could not be created.");
+            }
+    
+            return newFare.get();
+        }
+        catch (InsertionFailedException ife) {
+            throw ife;
+        }
+        catch (CompanyNotFoundException cnfe) {
+            throw cnfe;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     public Fare updateFare(Fare fareDataToUpdate) throws Exception {     
         try {
             // Check if the given company exists

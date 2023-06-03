@@ -37,10 +37,28 @@ public class FareController {
     private final FareService fareService;
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createFare(@Valid @RequestBody CreateFare fareInfo) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "/old")
+    public ResponseEntity<Object> createFareOld(@Valid @RequestBody CreateFare fareInfo) {
         try {
             Fare fare = fareService.createFare(fareInfo);
+            return Response.create("Successfully created fare.", HttpStatus.OK, fare);
+        }
+        catch (InsertionFailedException ife) {
+            return Response.create(ife.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        catch (CompanyNotFoundException cnfe) {
+            return Response.create(cnfe.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return Response.create("Could not create fare. Perhaps an input was wrong?", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> createFare(@Valid @RequestBody Fare fareInfo) {
+        try {
+            Fare fare = fareService.createFareNew(fareInfo);
             return Response.create("Successfully created fare.", HttpStatus.OK, fare);
         }
         catch (InsertionFailedException ife) {
@@ -110,7 +128,7 @@ public class FareController {
     public ResponseEntity<Object> getFaresByCompanyId(@PathVariable("companyId") int companyId) {
         try {
             List<Fare> faresOfCompany = fareService.getFaresByCompanyId(companyId);
-            return Response.create("Successfully fetched fares of company with the ID \"" + companyId + "\".", HttpStatus.OK, faresOfCompany);
+            return Response.create("Successfully fetched fares of company with the ID " + companyId + ".", HttpStatus.OK, faresOfCompany);
         }
         catch (CompanyNotFoundException cnfe) {
             return Response.create(cnfe.getMessage(), HttpStatus.BAD_REQUEST);
