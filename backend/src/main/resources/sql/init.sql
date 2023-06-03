@@ -94,17 +94,17 @@ CREATE TABLE IF NOT EXISTS CompanyCar (
     CONSTRAINT price_check CHECK (price_per_day > 0)
 );
 
-CREATE TABLE IF NOT EXISTS CompanyPlane {
-    plane_id INT NOT NULL,
+CREATE TABLE IF NOT EXISTS CompanyPlane (
+    plane_id    INT         NOT NULL,
     tail_number VARCHAR(50) NOT NULL,
     PRIMARY KEY (plane_id)
-};
+);
 
-CREATE TABLE IF NOT EXISTS CompanyBus {
-    bus_id INT NOT NULL,
+CREATE TABLE IF NOT EXISTS CompanyBus (
+    bus_id       INT         NOT NULL,
     plate_number VARCHAR(50) NOT NULL,
     PRIMARY KEY (bus_id)
-};
+);
 
 
 CREATE TABLE IF NOT EXISTS CompanyVehicle (
@@ -117,13 +117,7 @@ CREATE TABLE IF NOT EXISTS CompanyVehicle (
     PRIMARY KEY (vehicle_id),
     FOREIGN KEY (seat_configuration_id) REFERENCES SeatConfiguration(seat_configuration_id),
     CONSTRAINT capacity_check CHECK (capacity > 0),
-    CONSTRAINT vehicle_type_check CHECK (vehicle_type IN ('BUS', 'PLANE')),
-    CONSTRAINT vehicle_reference_fk FOREIGN KEY (vehicle_reference_id)
-        REFERENCES
-        (CASE
-            WHEN vehicle_type = 'BUS' THEN CompanyBus(bus_id)
-            WHEN vehicle_type = 'PLANE' THEN CompanyPlane(plane_id)
-        END)
+    CONSTRAINT vehicle_type_check CHECK (vehicle_type IN ('BUS', 'PLANE'))
 );
 
 CREATE TABLE IF NOT EXISTS Station (
@@ -165,7 +159,7 @@ CREATE TABLE IF NOT EXISTS Fare (
     arrive_stat_id INT NOT NULL,
     PRIMARY KEY (fare_id),
     FOREIGN KEY (company_id) REFERENCES Company(company_id),
-    FOREIGN KEY (vehicle_id) REFERENCES TransportVehicle(vehicle_id),
+    FOREIGN KEY (vehicle_id) REFERENCES CompanyVehicle(vehicle_id),
     FOREIGN KEY (dep_stat_id) REFERENCES Station(station_id),
     FOREIGN KEY (arrive_stat_id) REFERENCES Station(station_id) ON DELETE CASCADE
 );
@@ -255,7 +249,7 @@ CREATE TABLE IF NOT EXISTS CompanyReview (
     review_id INT NOT NULL,
     company_id INT NOT NULL,
     PRIMARY KEY (review_id),
-    FOREIGN KEY (review_id) REFERENCES Review(review_id), 
+    FOREIGN KEY (review_id) REFERENCES Review(review_id),
     FOREIGN KEY (company_id) REFERENCES Company(company_id)
 );
 
