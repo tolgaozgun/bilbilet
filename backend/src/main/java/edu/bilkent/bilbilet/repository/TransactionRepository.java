@@ -26,11 +26,11 @@ public class TransactionRepository {
 
     private RowMapper<Transaction> transactionRowMapper = (rs, rowNum) -> {
         Transaction transaction = new Transaction();
-        transaction.setTransaction_id(rs.getInt("transaction_id"));
-        transaction.setTransaction_type(TransactionType.valueOf(rs.getString("transaction_type")));
-        transaction.setTransaction_amount(rs.getBigDecimal("transaction_amount"));
-        transaction.setReceiver_id(rs.getInt("receiver_id"));
-        transaction.setSender_id(rs.getInt("sender_id"));
+        transaction.setTransactionId(rs.getInt("transaction_id"));
+        transaction.setTransactionType(TransactionType.valueOf(rs.getString("transaction_type")));
+        transaction.setTransactionAmount(rs.getBigDecimal("transaction_amount"));
+        transaction.setReceiverId(rs.getInt("receiver_id"));
+        transaction.setSenderId(rs.getInt("sender_id"));
         return transaction;
     };
 
@@ -97,20 +97,20 @@ public class TransactionRepository {
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, new String[] { "transaction_id" });
-            ps.setInt(1, transaction.getTransaction_id());
-            ps.setString(2, transaction.getTransaction_type().toString());
-            ps.setBigDecimal(3, transaction.getTransaction_amount());
+            ps.setInt(1, transaction.getTransactionId());
+            ps.setString(2, transaction.getTransactionType().toString());
+            ps.setBigDecimal(3, transaction.getTransactionAmount());
             // Check if receiver_id or sender_id is null
-            if (transaction.getReceiver_id() == null) {
+            if (transaction.getReceiverId() == null) {
                 ps.setNull(4, java.sql.Types.INTEGER);
             } else {
-                ps.setInt(4, transaction.getReceiver_id());
+                ps.setInt(4, transaction.getReceiverId());
             }
 
-            if (transaction.getSender_id() == null) {
+            if (transaction.getSenderId() == null) {
                 ps.setNull(5, java.sql.Types.INTEGER);
             } else {
-                ps.setInt(5, transaction.getSender_id());
+                ps.setInt(5, transaction.getSenderId());
             }
 
             return ps;

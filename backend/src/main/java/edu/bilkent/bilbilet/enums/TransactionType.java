@@ -6,5 +6,6 @@ public enum TransactionType {
     BUY_TICKET_WITH_BALANCE,
     BUY_TICKET_WITH_CARD,
     ADD_FUNDS,
-    TRANSFER
+    TRANSFER,
+    OTHER
 }
