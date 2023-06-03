@@ -38,7 +38,7 @@ const PurchaseTicketPage = () => {
 			passportNumber: '',
 			TCK: user?.TCK || '',
 			email: user?.email || '',
-			phone: user?.phone || '',
+			phone: user?.telephone || '',
 		},
 		validate: {
 			name: (value) => (value === '' ? 'This field cannot be left empty' : null),

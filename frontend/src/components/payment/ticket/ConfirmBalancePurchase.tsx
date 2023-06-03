@@ -17,6 +17,7 @@ const ConfirmBalancePurchase = ({
 	const [opened, { open, close }] = useDisclosure(false);
 
 	// TODO: Fetch user balance from backend, create hook useBalance
+	const onBalancePurchase = () => {};
 	return (
 		<>
 			<Center>

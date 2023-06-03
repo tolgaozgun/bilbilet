@@ -206,13 +206,13 @@ public class TransactionService {
                 throw new IllegalArgumentException("Invalid year");
             }
 
-            if (!CreditCardChecker.isValidExpiration(creditCardMonth, creditCardYear)) {
-                throw new IllegalArgumentException("Invalid expiration date");
-            }
+            // if (!CreditCardChecker.isValidExpiration(creditCardMonth, creditCardYear)) {
+            //     throw new IllegalArgumentException("Invalid expiration date");
+            // }
 
-            if (!CreditCardChecker.isValidCreditCardNumber(creditCardNumber)) {
-                throw new IllegalArgumentException("Invalid credit card number");
-            }
+            // if (!CreditCardChecker.isValidCreditCardNumber(creditCardNumber)) {
+            //     throw new IllegalArgumentException("Invalid credit card number");
+            // }
 
             int travelerId = cardPayment.getTravelerId();
 

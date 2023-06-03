@@ -17,7 +17,7 @@ export interface Transaction {
 	senderId: number;
 }
 
-export interface BalanceAddFundsRequest {
+export interface PaymentWithCCRequest {
 	travelerId: number;
 	creditCard: CreditCard;
 	amount: number;

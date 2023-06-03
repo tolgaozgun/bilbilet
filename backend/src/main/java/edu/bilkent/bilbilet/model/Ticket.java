@@ -26,5 +26,4 @@ public class Ticket {
 
 	@NotNull
 	private int travelerId;
-
 }

@@ -1,15 +1,26 @@
 import { AxiosInstance } from 'axios';
 import { baseUrl } from '../../constants/api';
-import { BalanceAddFundsRequest, Transaction } from '../../types/PaymentTypes';
+import { PaymentWithCCRequest, Transaction } from '../../types/PaymentTypes';
 import { Response } from '../../types/ResponseTypes';
 
 export async function uploadMoneyToBalance(
 	axiosSecure: AxiosInstance,
-	balanceUploadRequest: BalanceAddFundsRequest,
+	balanceUploadRequest: PaymentWithCCRequest,
 ) {
 	const res = await axiosSecure.post<Response<Transaction>>(
 		`${baseUrl}/transaction/add-funds`,
 		balanceUploadRequest,
+	);
+	return res.data;
+}
+
+export async function payTicketPriceWithCC(
+	axiosSecure: AxiosInstance,
+	paymentRequest: PaymentWithCCRequest,
+) {
+	const res = await axiosSecure.post<Response<Transaction>>(
+		`${baseUrl}/transaction/card-payment`,
+		paymentRequest,
 	);
 	return res.data;
 }
