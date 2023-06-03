@@ -1,5 +1,6 @@
 package edu.bilkent.bilbilet.repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,8 +16,6 @@ import edu.bilkent.bilbilet.enums.TicketStatus;
 import edu.bilkent.bilbilet.exception.ItemNotFoundException;
 import edu.bilkent.bilbilet.model.Ticket;
 import edu.bilkent.bilbilet.repository.rowmapper.rm.TicketRowMapper;
-import edu.bilkent.bilbilet.request.ticket.BuyTicket;
-import edu.bilkent.bilbilet.request.ticket.ReserveTicket;
 import edu.bilkent.bilbilet.response.RTicketView;
 import edu.bilkent.bilbilet.response.RUserTicketView;
 
@@ -46,6 +45,17 @@ public class TicketRepository {
             return ticket;
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public List<RUserTicketView> findTicketDetailsByTicketId(int ticketId) {
+        String sql = "SELECT * FROM DisplayUserTicketsView WHERE ticket_id = ?";
+        try {
+            List<RUserTicketView> ticket = jdbcTemplate.query(sql, TicketRowMapper.DISPLAY_USER_TICKETS_VIEW_ROW_MAPPER, ticketId);
+            return ticket;
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -93,12 +103,12 @@ public class TicketRepository {
         }
     }
 
-    public Optional<Ticket> buyTicket(BuyTicket buyTicket) {
+    public Optional<Ticket> buyTicket(int userId, int ticketId) {
         String sql = "UPDATE Ticket SET ticket_status = ?, traveler_id = ? "
                     + "WHERE ticket_id = ?";
         try {
-            jdbcTemplate.update(sql, TicketStatus.PURCHASED.toString(), buyTicket.getUserId(), buyTicket.getTicketId());
-            Optional<Ticket> ticket = findTicketByTicketId(buyTicket.getTicketId());
+            jdbcTemplate.update(sql, TicketStatus.PURCHASED.toString(), userId, ticketId);
+            Optional<Ticket> ticket = findTicketByTicketId(ticketId);
             
             return ticket;
         } catch (Exception e) {
@@ -106,12 +116,12 @@ public class TicketRepository {
         }
     }
 
-    public Optional<Ticket> cancelTicketOrReservation(BuyTicket buyTicket) {
+    public Optional<Ticket> cancelTicketOrReservation(int userId, int ticketId) {
         String sql = "UPDATE Ticket SET ticket_status = ? "
                     + "WHERE traveler_id = ? AND ticket_id";
         try {
-            jdbcTemplate.update(sql, TicketStatus.AVAILABLE.toString(), buyTicket.getUserId(), buyTicket.getTicketId());
-            Optional<Ticket> ticket = findTicketByTicketId(buyTicket.getTicketId());
+            jdbcTemplate.update(sql, TicketStatus.AVAILABLE.toString(), userId, ticketId);
+            Optional<Ticket> ticket = findTicketByTicketId(ticketId);
             
             return ticket;
         } catch (Exception e) {
@@ -119,12 +129,12 @@ public class TicketRepository {
         }
     }
 
-    public Optional<Ticket> reserveTicket(ReserveTicket reserveTicket) { // TO DO reserve repo
+    public Optional<Ticket> reserveTicket(int userId, int ticketId) { // TO DO reserve repo
         String sql = "UPDATE Ticket SET ticket_status = ?, traveler_id = ? "
                     + "WHERE ticket_id = ?";
         try {
-            jdbcTemplate.update(sql, TicketStatus.RESERVED.toString(), reserveTicket.getTravelerId(), reserveTicket.getTicketId());
-            Optional<Ticket> ticket = findTicketByTicketId(reserveTicket.getTicketId());
+            jdbcTemplate.update(sql, TicketStatus.RESERVED.toString(), userId, ticketId);
+            Optional<Ticket> ticket = findTicketByTicketId(ticketId);
             
             return ticket;
         } catch (Exception e) {
@@ -142,5 +152,16 @@ public class TicketRepository {
 
     public boolean isTicketPurchased(int ticketId) throws ItemNotFoundException {
         return findTicketAndCheckStatus(ticketId, TicketStatus.PURCHASED);
+    }
+
+    public List<BigDecimal> findReservationFee(int ticketId) {
+        String sql = "SELECT f.reservarion_fee FROM Ticket t WHERE ticket_id = ? INNER JOIN Fare f ON f.fare_id = t.fare_id";
+        try {
+            List<BigDecimal> reservationFee = jdbcTemplate.query(sql, TicketRowMapper.RESERVATION_FEE_ROW_MAPPER, ticketId);
+            return reservationFee;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 } 

@@ -1,5 +1,7 @@
 package edu.bilkent.bilbilet.repository.rowmapper.rm;
 
+import java.math.BigDecimal;
+
 import org.springframework.jdbc.core.RowMapper;
 import edu.bilkent.bilbilet.enums.SeatType;
 import edu.bilkent.bilbilet.enums.TicketStatus;
@@ -38,6 +40,10 @@ public class TicketRowMapper {
         displayFareTicket.setArrStationTitle(rs.getString("arr_title"));
         displayFareTicket.setArrStationAbbr(rs.getString("arr_abbreviation"));
         return displayFareTicket;
+    };
+
+    public static final RowMapper<BigDecimal> RESERVATION_FEE_ROW_MAPPER = (rs, rowNum) -> {
+        return rs.getBigDecimal("reservation_fee");
     };
     
 }
