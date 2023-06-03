@@ -16,8 +16,8 @@ import edu.bilkent.bilbilet.repository.CarBrandRepository;
 import edu.bilkent.bilbilet.repository.CarRepository;
 import edu.bilkent.bilbilet.repository.CompanyCarRepository;
 import edu.bilkent.bilbilet.repository.RentDetailRepository;
-import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
-import edu.bilkent.bilbilet.repository.rowmapper.RentDetailRM;
+import edu.bilkent.bilbilet.repository.rowmapper.datamodel.CompanyCarRM;
+import edu.bilkent.bilbilet.repository.rowmapper.datamodel.RentDetailRM;
 import edu.bilkent.bilbilet.utils.ParamUtils;
 import lombok.RequiredArgsConstructor;
 

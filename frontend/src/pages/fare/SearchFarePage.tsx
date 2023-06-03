@@ -1,46 +1,30 @@
 import { Card, Center, Flex, SelectItem, Tabs, Title } from '@mantine/core';
-import { IconBus, IconPlane, IconBuilding } from '@tabler/icons-react';
-import PlaneSearchBar from '../../components/fare/PlaneSearchbar';
+import { IconBuilding, IconBus, IconPlane } from '@tabler/icons-react';
 import FareInfoCard from '../../components/fare/FareInfoCard';
 import PlaneFilter from '../../components/fare/PlaneFilter';
-import BusSearchBar from '../../components/fare/BusSearchbar';
-import BusFilter from '../../components/fare/BusFilter';
-import HotelSearchBar from '../../components/hotel/HotelSearchBar';
+import PlaneSearchBar from '../../components/fare/PlaneSearchbar';
+import BusFilter from '../../components/fare/bus/BusFilter';
+import BusSearchBar from '../../components/fare/bus/BusSearchbar';
 import HotelFilter from '../../components/hotel/HotelFilter';
 import HotelInfoCard from '../../components/hotel/HotelInfoCard';
-import useGetHotels from '../../hooks/hotel/useGetHotels';
-import { Hotel } from '../../types/HotelTypes';
+import HotelTab from '../../components/hotel/HotelTab';
 import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
+import useGetHotels from '../../hooks/hotel/useGetHotels';
 import useGetStations from '../../hooks/location/useGetStations';
+import { Hotel } from '../../types/HotelTypes';
 import { Station } from '../../types/LocationTypes';
 
 const SearchFarePage = () => {
 	const axiosSecure = useAxiosSecure();
-	//TODO: search
-	const {
-		data: allHotels,
-		isLoading: isHotelsLoading,
-		isError: isHotelsError,
-	} = useGetHotels(axiosSecure, 'Ankara', 'Turkey');
-
 	const {
 		data: allStations,
 		isLoading: isStationsLoading,
 		isError: isStationsError,
 	} = useGetStations(axiosSecure);
 
-	if (
-		isHotelsLoading ||
-		isHotelsError ||
-		!allHotels ||
-		isStationsLoading ||
-		isStationsError ||
-		!allStations
-	) {
+	if (isStationsLoading || isStationsError || !allStations) {
 		return <Flex></Flex>;
 	}
-	const hotelList: Array<Hotel> = allHotels.data!;
-	const hotelListCards = hotelList.map((hotel) => <HotelInfoCard hotel={hotel} />);
 
 	const stationList: Array<Station> = allStations.data!;
 	const stationData: Array<SelectItem> = stationList!.map((station) => {
@@ -65,7 +49,6 @@ const SearchFarePage = () => {
 						Hotel
 					</Tabs.Tab>
 				</Tabs.List>
-
 				<Tabs.Panel value="flight" pt="xs">
 					<Card
 						withBorder
@@ -97,7 +80,6 @@ const SearchFarePage = () => {
 						</Flex>
 					</Card>
 				</Tabs.Panel>
-
 				<Tabs.Panel value="bus" pt="xs">
 					<Card
 						withBorder
@@ -131,27 +113,8 @@ const SearchFarePage = () => {
 						</Flex>
 					</Card>
 				</Tabs.Panel>
-
 				<Tabs.Panel value="hotel" pt="xs">
-					<Card
-						withBorder
-						radius="xl"
-						shadow="xl"
-						p={48}
-						sx={{ minWidth: 400 }}
-						mx="auto"
-					>
-						<Flex direction={'column'} align={'start'} gap={'xl'}>
-							<Title>Discover Hotels</Title>
-							<HotelSearchBar></HotelSearchBar>
-							<Flex direction={'row'} gap={'xl'}>
-								<HotelFilter></HotelFilter>
-								<Flex direction={'column'} gap={'xl'}>
-									{hotelListCards}
-								</Flex>
-							</Flex>
-						</Flex>
-					</Card>
+					<HotelTab />
 				</Tabs.Panel>
 			</Tabs>
 		</Center>

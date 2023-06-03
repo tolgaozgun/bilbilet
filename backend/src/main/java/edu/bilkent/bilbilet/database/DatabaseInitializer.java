@@ -45,12 +45,12 @@ public class DatabaseInitializer {
     public void initializeDatabase() throws IOException {
         ClassPathResource resource = new ClassPathResource("sql/init.sql");
         ClassPathResource data = new ClassPathResource("sql/data.sql");
-        // ClassPathResource trigger = new ClassPathResource("sql/triggers.sql");
+        ClassPathResource view = new ClassPathResource("sql/view.sql");
 
         try {
             ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), resource);
             ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), data);
-            // ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), trigger);
+            ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), view);
         } catch (ScriptException | SQLException e) {
             e.printStackTrace();
         }

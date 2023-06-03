@@ -1,8 +1,8 @@
-import { Card, Flex, Title, Image, Text, Rating, Anchor } from '@mantine/core';
+import { Anchor, Card, Flex, Image, Rating, Text, Title } from '@mantine/core';
 import { IconBuilding, IconPhone } from '@tabler/icons-react';
-import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
 import { useNavigate } from 'react-router-dom';
 import { Hotel } from '../../types/HotelTypes';
+import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
 interface HotelInfoCardProps {
 	hotel: Hotel;
 }
@@ -16,7 +16,12 @@ const HotelInfoCard = ({ hotel }: HotelInfoCardProps) => {
 					<Title order={3}>{hotel.name}</Title>
 				</Flex>
 				<Flex direction={'row'} gap={'md'} align={'center'}>
-					<Image height={160} src={hotel.photoUrl} alt="Hotel Image" />
+					<Image
+						withPlaceholder
+						height={100}
+						src={hotel.photoUrl || null}
+						alt="Hotel Image"
+					/>
 					<Flex direction={'column'} gap={'sm'} align={'center'}>
 						<Text>{hotel.avgPrice} TRY per night</Text>
 						<Rating
@@ -27,7 +32,7 @@ const HotelInfoCard = ({ hotel }: HotelInfoCardProps) => {
 							fullSymbol={<IconBuilding color="blue" />}
 						/>
 						<Flex direction={'row'} gap={'xs'}>
-							<IconPhone></IconPhone>
+							<IconPhone />
 							<Text>{hotel.telephone}</Text>
 						</Flex>
 					</Flex>
