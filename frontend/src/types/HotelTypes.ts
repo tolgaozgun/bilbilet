@@ -17,5 +17,8 @@ export type AddHotel = {
 };
 
 export type HotelFilterParams = {
-	addressId: number;
+	address_id: number | '';
+	name: string;
+	avg_price: [number, number];
+	rating: [number, number];
 };

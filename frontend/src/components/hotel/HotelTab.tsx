@@ -7,12 +7,12 @@ import useGetHotels from '../../hooks/hotel/useGetHotels';
 import LoadingPage from '../../pages/LoadingPage';
 import { Hotel, HotelFilterParams } from '../../types';
 import { isErrorResponse } from '../../utils/utils';
+import ItemsNotFoundPage from '../common/feedback/ItemsNotFoundPage';
 import HotelFilter from './HotelFilter';
 import HotelInfoCard from './HotelInfoCard';
 
 const HotelTab = () => {
 	const axiosSecure = useAxiosSecure();
-	const queryClient = useQueryClient();
 	const [filterParams, setFilterParams] = useState<HotelFilterParams | {}>({});
 	const {
 		data: hotelsListRes,
@@ -36,21 +36,21 @@ const HotelTab = () => {
 		setFilterParams(filterParams);
 	};
 
-	useEffect(() => {
-		queryClient.invalidateQueries(['getHotels']);
-	}, [filterParams]);
-
 	const hotelList: Array<Hotel> = hotelsListRes.data!;
 	const hotelListCards = hotelList.map((hotel) => <HotelInfoCard hotel={hotel} />);
 
 	return (
-		<Card withBorder radius="xl" shadow="xl" p={48} sx={{ minWidth: 400 }} mx="auto">
+		<Card withBorder radius="xl" shadow="xl" p={48} miw={500} mx="auto">
 			<Flex direction={'column'} align={'start'} gap={'xl'}>
 				<Title>Discover Hotels</Title>
 				<Flex direction={'row'} gap={'xl'}>
 					<HotelFilter onFilter={onFilter} />
 					<Flex direction={'column'} gap={'xl'}>
-						{hotelListCards}
+						{hotelListCards.length === 0 ? (
+							<ItemsNotFoundPage />
+						) : (
+							hotelListCards
+						)}
 					</Flex>
 				</Flex>
 			</Flex>

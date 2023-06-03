@@ -1,14 +1,18 @@
 package edu.bilkent.bilbilet.repository;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.ArrayList;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -94,5 +98,57 @@ public class HotelRepository {
         Optional<Hotel> hotel = findHotelByName(name);
 
         return hotel.isPresent();
+    }
+
+    public List<Hotel> findHotelByProperties(Map<String, Object> properties) {
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Hotel ");
+        List<Object> parameterValues = new ArrayList<>();
+        boolean andNeeded = false;
+
+        if (properties.isEmpty()) {
+            return jdbcTemplate.query(sqlBuilder.toString(), hotelRowMapper);
+        }
+
+        sqlBuilder.append(" WHERE ");
+
+        for (String property : properties.keySet()) {
+            Object param = properties.get(property);
+            String paramStr = (String) param;
+            if (paramStr.isEmpty() || paramStr.isBlank()) {
+                continue;
+            }
+            
+            if (andNeeded) {
+                sqlBuilder.append(" AND ");
+            }
+            sqlBuilder.append(property);
+            // Contains range
+            if (property.compareTo("avg_price") == 0 || property.compareTo("rating") == 0) {
+                sqlBuilder.append(" BETWEEN ? AND ? ");
+                String[] rangeList = paramStr.split(",");
+                parameterValues.add(rangeList[0]);
+                parameterValues.add(rangeList[1]);
+            } 
+            // Contains single value
+            else {
+                sqlBuilder.append(" = ? ");
+                parameterValues.add(param);
+            }
+
+            andNeeded = true;
+        }
+        
+        String sql = sqlBuilder.toString();
+        System.out.println("Get hotels query: " + sql);
+        System.out.println("Param values: " + parameterValues.toString());
+
+        return jdbcTemplate.query(sql, new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps) throws SQLException {
+                for (int i = 0; i < parameterValues.size(); i++) {
+                    ps.setObject(i + 1, parameterValues.get(i));
+                }
+            }
+        }, hotelRowMapper); // check if empty
     }
 }

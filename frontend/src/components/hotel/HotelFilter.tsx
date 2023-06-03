@@ -55,11 +55,12 @@ interface HotelSearchBarProps {
 }
 
 const HotelFilter = ({ onFilter }: HotelSearchBarProps) => {
-	const [searchValue, onSearchChange] = useState('');
+	const [searchValue, setSearchChange] = useState('');
+	const [selectedValue, setSelectedValue] = useState<string | null>('');
 	const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
 	const [hotelName, setHotelName] = useState('');
-	const [ratingRange, setRatingRange] = useState<[number, number]>([0, 5]);
-
+	const [ratingRange, setRatingRange] = useState<[number, number]>([1, 5]);
+	console.log(ratingRange);
 	const axiosSecure = useAxiosSecure();
 	const { isLoading, isError, data: addresses } = useAddresses(axiosSecure);
 	if (isLoading) {
@@ -81,29 +82,30 @@ const HotelFilter = ({ onFilter }: HotelSearchBarProps) => {
 	}));
 
 	const handleOnFilter = () => {
+		console.log(selectedValue);
 		const filterParams: HotelFilterParams = {
-			addressId: Number(searchValue),
+			address_id: selectedValue ? parseInt(selectedValue) : '',
 			name: hotelName,
-			minPrice: priceRange[0],
-			maxPrice: priceRange[1],
-			minRating: ratingRange[0],
-			maxRating: ratingRange[1],
+			avg_price: priceRange,
+			rating: ratingRange,
 		};
 		onFilter(filterParams);
 	};
 
 	return (
-		<Box miw={'10vw'}>
-			<Stack>
+		<Box miw={'20vw'}>
+			<Stack spacing="lg">
 				<Accordion multiple variant="contained" radius="xs" bg={'#B5B4E8'}>
 					<CustomAccordionItem value="Location">
 						<Select
 							placeholder="Select Location"
 							label="Location"
 							itemComponent={CustomSelectItem}
-							onSearchChange={onSearchChange}
+							onSearchChange={setSearchChange}
 							searchValue={searchValue}
 							searchable
+							value={selectedValue}
+							onChange={(value) => setSelectedValue(value)}
 							nothingFound="No location found"
 							data={addressList}
 							allowDeselect
@@ -115,24 +117,16 @@ const HotelFilter = ({ onFilter }: HotelSearchBarProps) => {
 							value={priceRange}
 							onChange={setPriceRange}
 							marks={marks}
+							min={0}
+							max={10000}
 						/>
 					</CustomAccordionItem>
-
 					<CustomAccordionItem value={'Hotel Name'}>
 						<TextInput
 							label="Hotel Name"
 							value={hotelName}
 							onChange={(e) => setHotelName(e.currentTarget.value)}
 							placeholder="Hotel Name"
-						/>
-					</CustomAccordionItem>
-					<CustomAccordionItem value={'Rating'}>
-						<RangeSlider
-							value={ratingRange}
-							onChange={setRatingRange}
-							min={0}
-							max={5}
-							step={0.5}
 						/>
 					</CustomAccordionItem>
 				</Accordion>

@@ -49,7 +49,6 @@ const SearchFarePage = () => {
 						Hotel
 					</Tabs.Tab>
 				</Tabs.List>
-
 				<Tabs.Panel value="flight" pt="xs">
 					<Card
 						withBorder
@@ -81,7 +80,6 @@ const SearchFarePage = () => {
 						</Flex>
 					</Card>
 				</Tabs.Panel>
-
 				<Tabs.Panel value="bus" pt="xs">
 					<Card
 						withBorder
@@ -115,7 +113,6 @@ const SearchFarePage = () => {
 						</Flex>
 					</Card>
 				</Tabs.Panel>
-
 				<Tabs.Panel value="hotel" pt="xs">
 					<HotelTab />
 				</Tabs.Panel>

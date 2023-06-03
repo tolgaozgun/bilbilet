@@ -8,7 +8,7 @@ const useGetHotels = (
 	filterParams: HotelFilterParams | {},
 ) => {
 	return useQuery({
-		queryKey: ['getHotels'],
+		queryKey: ['getHotels', filterParams],
 		queryFn: () => getHotels(axiosSecure, filterParams),
 	});
 };

@@ -17,7 +17,17 @@ export async function getHotels(
 ): Promise<Response<Array<Hotel>>> {
 	const finalFilterParams = filterParams || {};
 	const res = await axiosSecure.get<Response<Array<Hotel>>>(`${baseUrl}/hotel`, {
-		params: { finalFilterParams },
+		params: Object.keys(finalFilterParams).length === 0 ? {} : finalFilterParams,
+		paramsSerializer: function paramsSerializer(params) {
+			return Object.entries(Object.assign({}, params))
+				.map(([key, value]) => {
+					if (Array.isArray(value)) {
+						return `${key}=${value.join(',')}`;
+					}
+					return `${key}=${value}`;
+				})
+				.join('&');
+		},
 	});
 	return res.data;
 }
