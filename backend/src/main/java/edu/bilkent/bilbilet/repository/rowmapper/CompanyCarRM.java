@@ -2,9 +2,8 @@ package edu.bilkent.bilbilet.repository.rowmapper;
 
 import java.math.BigDecimal;
 
+import edu.bilkent.bilbilet.model.Address;
 import edu.bilkent.bilbilet.model.Car;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,11 +18,7 @@ public class CompanyCarRM {
 
     private int companyId;
 
-    private int addressId;
-    
-    private String photoUrl;
-    
-    private String websiteUrl;
+    private Address address;
 
     private BigDecimal pricePerDay;
 }

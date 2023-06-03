@@ -59,6 +59,36 @@ public class CompanyRepository {
         return Optional.empty();
     }
 
+    public Optional<Company> getCompanyByTitle(String title) {
+        String sql = "SELECT * FROM Company WHERE company_title = ?";
+        try {
+            return Optional.of(jdbcTemplate.queryForObject(sql, companyRowMapper, title));
+        }
+        catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
+
+    public Optional<Company> getCompanyByName(String name) {
+        String sql = "SELECT * FROM Company WHERE company_title = ?";
+        try {
+            return Optional.of(jdbcTemplate.queryForObject(sql, companyRowMapper, name));
+        }
+        catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
+
     public Optional<Company> createCompany(Company company) {
         String sql = "INSERT INTO Company (company_title, address, type, contact_information, business_registration, balance, user_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
