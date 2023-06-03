@@ -3,6 +3,7 @@ package edu.bilkent.bilbilet.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+import edu.bilkent.bilbilet.exception.CompanyNotFoundException;
 import edu.bilkent.bilbilet.exception.ItemNotFoundException;
 import edu.bilkent.bilbilet.exception.RentException;
 import edu.bilkent.bilbilet.model.CompanyReview;
@@ -40,7 +41,7 @@ public class ReviewService {
             boolean companyExist = companyRepository.existByCompanyId(cr.getCompanyId());
 
             if (!companyExist) {
-                throw new ItemNotFoundException("Company not found");
+                throw new CompanyNotFoundException("Company not found");
             }
 
             // save review to reviews table
@@ -48,7 +49,7 @@ public class ReviewService {
             reviewRepository.save(new CompanyReview(newReview.getReviewId(), cr.getCompanyId()));
 
             return new RCompanyReview(cr.getCompanyId(), newReview);
-        } catch (RentException ce) {
+        } catch (ItemNotFoundException | CompanyNotFoundException ce) {
             throw ce;
         } catch (Exception e) {
             System.out.println("Company review cannot be added");
@@ -93,11 +94,11 @@ public class ReviewService {
             boolean companyExist = companyRepository.existByCompanyId(companyId);
 
             if (!companyExist) {
-                throw new ItemNotFoundException("Company not found");
+                throw new CompanyNotFoundException("Company not found");
             }
 
             return reviewRepository.findCompanyReviewByCompanyId(companyId); // TODO test
-        } catch (ItemNotFoundException e) {
+        } catch (CompanyNotFoundException e) {
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,11 +112,11 @@ public class ReviewService {
             boolean companyExist = companyRepository.existByCompanyId(companyId);
 
             if (!companyExist) {
-                throw new ItemNotFoundException("Company not found");
+                throw new CompanyNotFoundException("Company not found");
             }
 
             return reviewRepository.findTripReviewByCompanyId(companyId); // TODO test
-        } catch (ItemNotFoundException e) {
+        } catch (CompanyNotFoundException e) {
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,11 +164,11 @@ public class ReviewService {
             boolean companyExist = companyRepository.existByCompanyId(companyId);
 
             if (!companyExist) {
-                throw new ItemNotFoundException("Company not found");
+                throw new CompanyNotFoundException("Company not found");
             }
 
             return reviewRepository.findCompanyReviewAverage(companyId); // TODO test
-        } catch (ItemNotFoundException e) {
+        } catch (CompanyNotFoundException e) {
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,11 +182,11 @@ public class ReviewService {
             boolean companyExist = companyRepository.existByCompanyId(companyId);
 
             if (!companyExist) {
-                throw new ItemNotFoundException("Company not found");
+                throw new CompanyNotFoundException("Company not found");
             }
 
             return reviewRepository.findTripReviewAverageByCompany(companyId); // TODO test
-        } catch (ItemNotFoundException e) {
+        } catch (CompanyNotFoundException e) {
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
