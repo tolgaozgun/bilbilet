@@ -46,12 +46,12 @@ public class HotelRepository {
         try {
             return jdbcTemplate.query(sql, hotelRowMapper, addressId);
         } catch (EmptyResultDataAccessException e) {
-            List<Hotel> emptyList = Collections.<Hotel>emptyList();
+            List<Hotel> emptyList = Collections.emptyList();
             return emptyList;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        List<Hotel> emptyList = Collections.<Hotel>emptyList();
+        List<Hotel> emptyList = Collections.emptyList();
         return emptyList;
     }
 
