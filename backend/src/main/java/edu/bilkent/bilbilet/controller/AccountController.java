@@ -1,7 +1,7 @@
 package edu.bilkent.bilbilet.controller;
 
 import edu.bilkent.bilbilet.model.*;
-import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
+import edu.bilkent.bilbilet.repository.rowmapper.datamodel.CompanyCarRM;
 import edu.bilkent.bilbilet.request.CompanyRegister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

@@ -1,4 +1,4 @@
-package edu.bilkent.bilbilet.repository.rowmapper;
+package edu.bilkent.bilbilet.repository.rowmapper.datamodel;
 
 import java.util.Date;
 

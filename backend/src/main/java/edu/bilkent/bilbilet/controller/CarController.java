@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.bilkent.bilbilet.model.Car;
 import edu.bilkent.bilbilet.model.CarBrand;
-import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
+import edu.bilkent.bilbilet.repository.rowmapper.datamodel.CompanyCarRM;
 import edu.bilkent.bilbilet.request.AddCompanyCar;
 import edu.bilkent.bilbilet.response.RCompanyCar;
 import edu.bilkent.bilbilet.response.Response;

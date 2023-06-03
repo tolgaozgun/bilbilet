@@ -13,7 +13,7 @@ import edu.bilkent.bilbilet.repository.AddressRepository;
 import edu.bilkent.bilbilet.repository.CarBrandRepository;
 import edu.bilkent.bilbilet.repository.CarRepository;
 import edu.bilkent.bilbilet.repository.CompanyCarRepository;
-import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
+import edu.bilkent.bilbilet.repository.rowmapper.datamodel.CompanyCarRM;
 import edu.bilkent.bilbilet.request.AddCompanyCar;
 import edu.bilkent.bilbilet.response.RCompanyCar;
 import edu.bilkent.bilbilet.utils.ParamUtils;
@@ -112,7 +112,7 @@ public class CarService {
         }
     }
 
-    public List<CarBrand> findAllBrand() throws Exception { // TODO test this ever detail or just ids??
+    public List<CarBrand> findAllBrand() throws Exception {
         try {
             return carBrandRepository.findAll();  
         } catch (Exception e) {
