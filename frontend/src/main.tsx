@@ -23,6 +23,10 @@ import SearchRentCarPage from './pages/rent-car/SearchRentCarPage';
 import ReviewPage from './pages/review/ReviewPage';
 import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
 import MyReviewsPage from './pages/review/MyReviewsPage';
+import CompanyProfilePage from './pages/profile/CompanyProfilePage';
+import AddFarePage from './pages/fare/AddFarePage';
+import AddVehiclePage from './pages/vehicle/AddVehiclePage';
+import SoldTicketsPage from './pages/tickets/past-tickets/SoldTicketsPage';
 
 const router = createBrowserRouter([
 	{
@@ -46,6 +50,18 @@ const router = createBrowserRouter([
 					{
 						path: '/add-car',
 						element: <AddCarPage />,
+					},
+					{
+						path: '/add-fare',
+						element: <AddFarePage />,
+					},
+					{
+						path: '/add-vehicle',
+						element: <AddVehiclePage />,
+					},
+					{
+						path: '/sold-tickets',
+						element: <SoldTicketsPage />,
 					},
 					{
 						path: '/search-fare',
@@ -102,6 +118,10 @@ const router = createBrowserRouter([
 					{
 						path: '/my-reviews',
 						element: <MyReviewsPage />,
+          },
+          {
+						path: '/company/profile',
+						element: <CompanyProfilePage />,
 					},
 				],
 			},
