@@ -2,12 +2,14 @@ package edu.bilkent.bilbilet.service;
 
 import edu.bilkent.bilbilet.enums.VehicleType;
 import edu.bilkent.bilbilet.model.Company;
+import edu.bilkent.bilbilet.model.VehicleSeatConfig;
 import edu.bilkent.bilbilet.model.vehicles.CompanyBus;
 import edu.bilkent.bilbilet.model.vehicles.CompanyPlane;
 import edu.bilkent.bilbilet.model.vehicles.CompanyVehicle;
 import edu.bilkent.bilbilet.repository.CompanyVehicleRepository;
 import edu.bilkent.bilbilet.request.vehicle.AddCompanyBus;
 import edu.bilkent.bilbilet.request.vehicle.AddCompanyPlane;
+import edu.bilkent.bilbilet.service.fare.VehicleSeatConfigService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class CompanyVehicleService {
 
     private final CompanyVehicleRepository companyVehicleRepository;
     private final CompanyService companyService;
+    private final VehicleSeatConfigService configService;
 
     public CompanyVehicle createCompanyBus(AddCompanyBus addCompanyBus) throws Exception {
         try {
@@ -34,11 +37,13 @@ public class CompanyVehicleService {
 
             int busId = savedCompanyBus.getBusId();
 
+            VehicleSeatConfig seatConfig = configService.createConfig(addCompanyBus.getSeatConfig());
+
             CompanyVehicle companyVehicle = new CompanyVehicle();
             companyVehicle.setVehicleType(VehicleType.BUS);
             companyVehicle.setCapacity(addCompanyBus.getCapacity());
             companyVehicle.setVehicleReferenceId(busId);
-            companyVehicle.setSeatConfigurationId(addCompanyBus.getSeatConfigurationId());
+            companyVehicle.setSeatConfigurationId(seatConfig.getConfigId());
             companyVehicle.setCompanyId(addCompanyBus.getCompanyId());
 
 
@@ -68,11 +73,13 @@ public class CompanyVehicleService {
 
             int planeId = savedCompanyPlane.getPlaneId();
 
+            VehicleSeatConfig seatConfig = configService.createConfig(addCompanyPlane.getSeatConfig());
+
             CompanyVehicle companyVehicle = new CompanyVehicle();
             companyVehicle.setVehicleType(VehicleType.PLANE);
             companyVehicle.setCapacity(addCompanyPlane.getCapacity());
             companyVehicle.setVehicleReferenceId(planeId);
-            companyVehicle.setSeatConfigurationId(addCompanyPlane.getSeatConfigurationId());
+            companyVehicle.setSeatConfigurationId(seatConfig.getConfigId());
             companyVehicle.setCompanyId(addCompanyPlane.getCompanyId());
 
 
