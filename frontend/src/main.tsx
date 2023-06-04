@@ -29,6 +29,7 @@ import AddFarePage from './pages/fare/AddFarePage';
 import AddVehiclePage from './pages/vehicle/AddVehiclePage';
 import SoldTicketsPage from './pages/tickets/past-tickets/SoldTicketsPage';
 import CompanyReviewsPage from './pages/review/CompanyReviewsPage';
+import SystemReportsPage from './pages/system/SystemReportsPage';
 
 const router = createBrowserRouter([
 	{
@@ -124,14 +125,18 @@ const router = createBrowserRouter([
 					{
 						path: '/fare/:fareId/select-seats',
 						element: <SeatSelectionPage />,
-          },
-          {
+          			},
+          			{
 						path: '/company/profile',
 						element: <CompanyProfilePage />,
-          },
+          			},
 					{
 						path: '/my-companys-reviews',
 						element: <CompanyReviewsPage />,
+					},
+					{
+						path: '/system-reports',
+						element: <SystemReportsPage />,
 					},
 				],
 			},

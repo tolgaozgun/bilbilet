@@ -1,4 +1,5 @@
 export type PaymentType = 'balance' | 'credit-card' | null;
+
 export enum TransactionType {
 	WITHDRAW = 'WITHDRAW',
 	REFUND = 'REFUND',
