@@ -1,7 +1,8 @@
 import { AxiosInstance } from 'axios';
 import { baseUrl } from '../../constants/api';
+import { Fare, FareDetailsView, FareSearchParams } from '../../types';
 import { Response } from '../../types/ResponseTypes';
-import { SeatTicket, SeatType, VehicleSeatConfig } from '../../types/SeatTypes';
+import { SeatTicket, VehicleSeatConfig } from '../../types/SeatTypes';
 
 export async function getFareView(axiosSecure: AxiosInstance, fareId: number) {
 	const response = await axiosSecure.get<Response<SeatTicket[]>>(
@@ -15,4 +16,32 @@ export async function getVehicleSeatConfig(axiosSecure: AxiosInstance, fareId: n
 		`${baseUrl}/fare/seat/config/${fareId}`,
 	);
 	return response.data;
+}
+
+export async function getFlightFares(
+	axiosSecure: AxiosInstance,
+	filterParams: FareSearchParams | {},
+) {
+	const finalFilterParams = filterParams || {};
+	const res = await axiosSecure.get<Response<FareDetailsView[]>>(
+		`${baseUrl}/fare/plane`,
+		{
+			params: Object.keys(finalFilterParams).length === 0 ? {} : finalFilterParams,
+		},
+	);
+	return res.data;
+}
+
+export async function getBusFares(
+	axiosSecure: AxiosInstance,
+	filterParams: FareSearchParams | {},
+) {
+	const finalFilterParams = filterParams || {};
+	const res = await axiosSecure.get<Response<FareDetailsView[]>>(
+		`${baseUrl}/fare/bus`,
+		{
+			params: Object.keys(finalFilterParams).length === 0 ? {} : finalFilterParams,
+		},
+	);
+	return res.data;
 }
