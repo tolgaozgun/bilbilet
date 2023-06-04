@@ -100,7 +100,7 @@ const router = createBrowserRouter([
 						element: <TravelerProfilePage />,
 					},
 					{
-						path: '/tickets/select-seats',
+						path: '/fare/:fareId/select-seats',
 						element: <SeatSelectionPage />,
 					},
 				],

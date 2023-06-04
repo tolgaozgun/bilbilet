@@ -12,9 +12,10 @@ import { PaymentWithCCRequest } from '../../../types/PaymentTypes';
 
 interface PayWithCreditCardFormProps {
 	price: number;
+	ticketId: number;
 }
 
-const PayWithCreditCardForm = ({ price }: PayWithCreditCardFormProps) => {
+const PayWithCreditCardForm = ({ price, ticketId }: PayWithCreditCardFormProps) => {
 	const axiosSecure = useAxiosSecure();
 	const user = useUser();
 	const navigate = useNavigate();
@@ -60,6 +61,7 @@ const PayWithCreditCardForm = ({ price }: PayWithCreditCardFormProps) => {
 			return;
 		}
 		const paymentDetails: PaymentWithCCRequest = {
+			ticketId: ticketId,
 			amount: price,
 			creditCard: {
 				cardNumber: form.values.cardNumber || 0,

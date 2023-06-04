@@ -18,8 +18,15 @@ export interface Transaction {
 }
 
 export interface PaymentWithCCRequest {
+	ticketId: number;
 	travelerId: number;
 	creditCard: CreditCard;
+	amount: number;
+}
+
+export interface PaymentWithBalanceRequest {
+	ticketId: number;
+	travelerId: number;
 	amount: number;
 }
 

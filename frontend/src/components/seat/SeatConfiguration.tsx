@@ -16,7 +16,7 @@ import { convertFlightColumnToAlphabetic } from '../../utils/utils';
 
 interface SeatConfigurationProps {
 	seatConfig: VehicleSeatConfig;
-	seatTickets: SeatTicket[];
+	seatTickets?: SeatTicket[];
 }
 
 const SeatConfiguration = ({ seatConfig, seatTickets }: SeatConfigurationProps) => {
@@ -41,6 +41,20 @@ const SeatConfiguration = ({ seatConfig, seatTickets }: SeatConfigurationProps) 
 
 	const getRowNumber = (rowIndex: number) => {
 		return rowIndex + 1;
+	};
+
+	const isSeatSelected = (
+		rowIndex: number,
+		colDivisionIndex: number,
+		colIndex: number,
+	) => {
+		const rowNumber = getRowNumber(rowIndex);
+		const colNumber = getColNumber(colDivisionIndex, colIndex);
+		for (const [index, selectedSeat] of selectedSeats.entries()) {
+			if (selectedSeat[0] === rowNumber && selectedSeat[1] === colNumber) {
+				return true;
+			}
+		}
 	};
 
 	const getSeatDisplayString = (
@@ -76,21 +90,7 @@ const SeatConfiguration = ({ seatConfig, seatTickets }: SeatConfigurationProps) 
 		const rowNumber = getRowNumber(rowIndex);
 		const colNumber = getColNumber(colDivisionIndex, colIndex);
 		const seatLocation: SeatLocation = [rowNumber, colNumber];
-		for (const [index, selectedSeat] of selectedSeats.entries()) {
-			if (
-				selectedSeat[0] === seatLocation[0] &&
-				selectedSeat[1] === seatLocation[1]
-			) {
-				const nextSelectedSeats = [
-					...selectedSeats.slice(0, index),
-					...selectedSeats.slice(index + 1),
-				];
-				setSelectedSeats(nextSelectedSeats);
-				return;
-			}
-		}
-
-		setSelectedSeats((prev) => [...prev, seatLocation]);
+		setSelectedSeats([seatLocation]);
 	};
 
 	return (
@@ -102,6 +102,7 @@ const SeatConfiguration = ({ seatConfig, seatTickets }: SeatConfigurationProps) 
 					<Badge color="violet">Business Class</Badge>
 					<Badge color="orange">Premium Economy Class</Badge>
 					<Badge color="gray">Economy Class</Badge>
+					<Badge color="red">Selected</Badge>
 				</Group>
 				<Flex direction="column">
 					{Array.from(
@@ -123,9 +124,17 @@ const SeatConfiguration = ({ seatConfig, seatTickets }: SeatConfigurationProps) 
 															(_, columnIndex) => (
 																<Button
 																	variant="filled"
-																	color={getButtonColor(
-																		rowIndex,
-																	)}
+																	color={
+																		isSeatSelected(
+																			rowIndex,
+																			colDivisionIndex,
+																			columnIndex,
+																		)
+																			? 'red'
+																			: getButtonColor(
+																					rowIndex,
+																			  )
+																	}
 																	key={getSeatDisplayString(
 																		rowIndex,
 																		colDivisionIndex,
