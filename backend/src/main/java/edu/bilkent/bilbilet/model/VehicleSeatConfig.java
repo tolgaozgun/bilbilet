@@ -22,10 +22,10 @@ public class VehicleSeatConfig {
     private String seatingArrangement; // "1, 2, 1", "3, 3" etc.
 
     @NotNull
-    private int configRows;
+    private int configTotalRows; // i.e. 180
 
     @NotNull
-	private int configTotalColumns;
+	private int configTotalColumns; // i.e. 6
 
     @NotNull
 	private int firstClassAfter;

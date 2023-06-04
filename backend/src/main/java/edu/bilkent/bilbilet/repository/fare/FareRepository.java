@@ -31,6 +31,10 @@ public class FareRepository {
         fare.setEstimatedDepTime(rs.getTimestamp("departure_time"));
         fare.setEstimatedArrTime(rs.getTimestamp("estimated_arrival_time"));
         fare.setPrice(rs.getBigDecimal("price"));
+        fare.setPremiumEconExtraPrice(rs.getBigDecimal("premium_econ_extra_price"));
+        fare.setBusinessExtraPrice(rs.getBigDecimal("business_extra_price"));
+        fare.setFirstClassExtraPrice(rs.getBigDecimal("first_class_extra_price"));
+        fare.setReservationFee(rs.getBigDecimal("reservation_fee"));
         fare.setCompanyId(rs.getInt("company_id"));
         fare.setVehicleId(rs.getInt("vehicle_id"));
         fare.setDepStationId(rs.getInt("dep_stat_id"));
@@ -43,8 +47,12 @@ public class FareRepository {
             return updateFare(newFare);
         }
         
-        String sql = "INSERT INTO Fare (departure_time, estimated_arrival_time, price, company_id, vehicle_id, dep_stat_id, arrive_stat_id)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Fare "
+                + "(departure_time, estimated_arrival_time, "
+                + "price, premium_econ_extra_price, business_extra_price, "
+                + "first_class_extra_price, reservation_fee, company_id, "
+                + "vehicle_id, dep_stat_id, arrive_stat_id)"
+                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -54,10 +62,14 @@ public class FareRepository {
                 ps.setTimestamp(1, newFare.getEstimatedDepTime());
                 ps.setTimestamp(2, newFare.getEstimatedArrTime());
                 ps.setBigDecimal(3, newFare.getPrice());
-                ps.setInt(4, newFare.getCompanyId());
-                ps.setInt(5, newFare.getVehicleId());
-                ps.setInt(6, newFare.getDepStationId());
-                ps.setInt(7, newFare.getArrStationId());
+                ps.setBigDecimal(4, newFare.getPremiumEconExtraPrice());
+                ps.setBigDecimal(5, newFare.getBusinessExtraPrice());
+                ps.setBigDecimal(6, newFare.getFirstClassExtraPrice());
+                ps.setBigDecimal(7, newFare.getReservationFee());
+                ps.setInt(8, newFare.getCompanyId());
+                ps.setInt(9, newFare.getVehicleId());
+                ps.setInt(10, newFare.getDepStationId());
+                ps.setInt(11, newFare.getArrStationId());
                 return ps;
             }, keyHolder);
             
@@ -78,8 +90,19 @@ public class FareRepository {
     }
 
     public Optional<Fare> updateFare(Fare newFare) throws Exception {
-        String sql = "UPDATE Fare SET departure_time = ?, estimated_arrival_time = ?, price = ?, company_id = ?, vehicle_id = ?, dep_stat_id = ?, arrive_stat_id = ? " +
-                     "WHERE fare_id = " + newFare.getFareId();
+        String sql = "UPDATE Fare "
+                    + "SET departure_time = ?, "
+                    + "estimated_arrival_time = ?, "
+                    + "price = ?, "
+                    + "premium_econ_extra_price = ?, "
+                    + "business_extra_price = ?, "
+                    + "first_class_extra_price = ?, "
+                    + "reservation_fee = ?, "
+                    + "company_id = ?, "
+                    + "vehicle_id = ?, "
+                    + "dep_stat_id = ?, "
+                    + "arrive_stat_id = ? "
+                    + "WHERE fare_id = " + newFare.getFareId();
     
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -89,10 +112,14 @@ public class FareRepository {
                 ps.setTimestamp(1, newFare.getEstimatedDepTime());
                 ps.setTimestamp(2, newFare.getEstimatedArrTime());
                 ps.setBigDecimal(3, newFare.getPrice());
-                ps.setInt(4, newFare.getCompanyId());
-                ps.setInt(5, newFare.getVehicleId());
-                ps.setInt(6, newFare.getDepStationId());
-                ps.setInt(7, newFare.getArrStationId());
+                ps.setBigDecimal(4, newFare.getPremiumEconExtraPrice());
+                ps.setBigDecimal(5, newFare.getBusinessExtraPrice());
+                ps.setBigDecimal(6, newFare.getFirstClassExtraPrice());
+                ps.setBigDecimal(7, newFare.getReservationFee());
+                ps.setInt(8, newFare.getCompanyId());
+                ps.setInt(9, newFare.getVehicleId());
+                ps.setInt(10, newFare.getDepStationId());
+                ps.setInt(11, newFare.getArrStationId());
                 return ps;
             }, keyHolder);
             
@@ -117,8 +144,19 @@ public class FareRepository {
     }
 
     public Optional<Fare> updateFareById(Fare newFare, int fareToUpdateId) throws Exception {
-        String sql = "UPDATE Fare SET departure_time = ?, estimated_arrival_time = ?, price = ?, company_id = ?, vehicle_id = ?, dep_stat_id = ?, arrive_stat_id = ? " +
-                     "WHERE fare_id = " + fareToUpdateId;
+        String sql = "UPDATE Fare "
+                    + "SET departure_time = ?, "
+                    + "estimated_arrival_time = ?, "
+                    + "price = ?, "
+                    + "premium_econ_extra_price = ?, "
+                    + "business_extra_price = ?, "
+                    + "first_class_extra_price = ?, "
+                    + "reservation_fee = ?, "
+                    + "company_id = ?, "
+                    + "vehicle_id = ?, "
+                    + "dep_stat_id = ?, "
+                    + "arrive_stat_id = ? "
+                    + "WHERE fare_id = " + fareToUpdateId;
     
         KeyHolder keyHolder = new GeneratedKeyHolder();
     
@@ -128,10 +166,14 @@ public class FareRepository {
                 ps.setTimestamp(1, newFare.getEstimatedDepTime());
                 ps.setTimestamp(2, newFare.getEstimatedArrTime());
                 ps.setBigDecimal(3, newFare.getPrice());
-                ps.setInt(4, newFare.getCompanyId());
-                ps.setInt(5, newFare.getVehicleId());
-                ps.setInt(6, newFare.getDepStationId());
-                ps.setInt(7, newFare.getArrStationId());
+                ps.setBigDecimal(4, newFare.getPremiumEconExtraPrice());
+                ps.setBigDecimal(5, newFare.getBusinessExtraPrice());
+                ps.setBigDecimal(6, newFare.getFirstClassExtraPrice());
+                ps.setBigDecimal(7, newFare.getReservationFee());
+                ps.setInt(8, newFare.getCompanyId());
+                ps.setInt(9, newFare.getVehicleId());
+                ps.setInt(10, newFare.getDepStationId());
+                ps.setInt(11, newFare.getArrStationId());
                 return ps;
             }, keyHolder);
             

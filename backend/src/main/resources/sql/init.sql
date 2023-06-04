@@ -34,25 +34,17 @@ CREATE TABLE IF NOT EXISTS Traveler (
     CHECK (balance >= 0)
 );
 
-/* Ticket and other related tables */
 CREATE TABLE IF NOT EXISTS SeatConfiguration (
     seat_configuration_id INT NOT NULL AUTO_INCREMENT,
     seat_configuration_name VARCHAR(50) NOT NULL,
+    seating_arrangement VARCHAR(50) NOT NULL,
+    total_rows INT NOT NULL,
+    total_columns INT NOT NULL,
+    premium_econ_class_after INT NOT NULL,
+    business_class_after INT NOT NULL,
+    first_class_after INT NOT NULL,
     PRIMARY KEY (seat_configuration_id)
 );
-
-CREATE TABLE IF NOT EXISTS Seat (
-    seat_id INT NOT NULL AUTO_INCREMENT,
-    seat_class VARCHAR(50) NOT NULL,
-    seat_type VARCHAR(50) NOT NULL,
-    row_num INT NOT NULL,
-    column_num INT NOT NULL,
-    extra_price DECIMAL(10, 2) NOT NULL,
-    seat_configuration_id INT NOT NULL,
-    PRIMARY KEY (seat_id),
-    FOREIGN KEY (seat_configuration_id) REFERENCES SeatConfiguration(seat_configuration_id) ON DELETE CASCADE
-);
-
 
 CREATE TABLE IF NOT EXISTS Address (
     address_id INT NOT NULL AUTO_INCREMENT,
@@ -105,7 +97,6 @@ CREATE TABLE IF NOT EXISTS CompanyBus (
     plate_number VARCHAR(50) NOT NULL,
     PRIMARY KEY (bus_id)
 );
-
 
 CREATE TABLE IF NOT EXISTS CompanyVehicle (
     vehicle_id INT NOT NULL AUTO_INCREMENT,

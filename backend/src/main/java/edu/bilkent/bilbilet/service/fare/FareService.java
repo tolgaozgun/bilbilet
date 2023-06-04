@@ -205,7 +205,7 @@ public class FareService {
         }
     }
 
-    public List<Fare> getPlaneFaresByProperty(Map<String, Object> properties, VehicleType vehicleType) throws Exception {
+    public List<Fare> getFaresByProperty(Map<String, Object> properties, VehicleType vehicleType) throws Exception {
         try {
             return fareRepository.findFareByProperties(properties, vehicleType);
         }

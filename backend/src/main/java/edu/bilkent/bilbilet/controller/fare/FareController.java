@@ -142,7 +142,7 @@ public class FareController {
     @GetMapping("/plane")
     public ResponseEntity<Object> getPlaneFares(@RequestParam Map<String, Object> requestParams) {
         try {
-            List<Fare> fares = fareService.getPlaneFaresByProperty(requestParams, VehicleType.PLANE);
+            List<Fare> fares = fareService.getFaresByProperty(requestParams, VehicleType.PLANE);
             return Response.create("Successfully fetched plane fares.", HttpStatus.OK, fares);
         }
         catch (Exception e) {
@@ -154,7 +154,7 @@ public class FareController {
     @GetMapping("/bus")
     public ResponseEntity<Object> getBusFares(@RequestParam Map<String, Object> requestParams) {
         try {
-            List<Fare> fares = fareService.getPlaneFaresByProperty(requestParams, VehicleType.BUS);
+            List<Fare> fares = fareService.getFaresByProperty(requestParams, VehicleType.BUS);
             return Response.create("Successfully fetched bus fares.", HttpStatus.OK, fares);
         }
         catch (Exception e) {
