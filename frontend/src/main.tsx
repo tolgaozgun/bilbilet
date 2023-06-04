@@ -52,7 +52,7 @@ const router = createBrowserRouter([
 						element: <SearchFarePage />,
 					},
 					{
-						path: '/purchase-ticket',
+						path: '/purchase-ticket/:ticketId',
 						element: <PurchaseTicketPage />,
 					},
 					{

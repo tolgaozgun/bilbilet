@@ -9,6 +9,7 @@ import { useUser } from '../../../hooks/auth';
 import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
 import { payTicketPriceWithCC } from '../../../services/payment';
 import { PaymentWithCCRequest } from '../../../types/PaymentTypes';
+import { isErrorResponse } from '../../../utils/utils';
 
 interface PayWithCreditCardFormProps {
 	price: number;
@@ -40,7 +41,7 @@ const PayWithCreditCardForm = ({ price, ticketId }: PayWithCreditCardFormProps) 
 	const {
 		isLoading: isPaymentLoading,
 		isError: isPaymentError,
-		mutate: payTicketPrice,
+		mutateAsync: payTicketPrice,
 	} = useMutation({
 		mutationKey: ['payWithCC'],
 		mutationFn: (paymentDetails: PaymentWithCCRequest) => {
@@ -55,7 +56,7 @@ const PayWithCreditCardForm = ({ price, ticketId }: PayWithCreditCardFormProps) 
 		},
 	});
 
-	const onTransfer = () => {
+	const onTransfer = async () => {
 		const validate = form.validate();
 		if (validate.hasErrors) {
 			return;
@@ -72,12 +73,15 @@ const PayWithCreditCardForm = ({ price, ticketId }: PayWithCreditCardFormProps) 
 			},
 			travelerId: user?.id!,
 		};
-		payTicketPrice(paymentDetails);
+		const res = await payTicketPrice(paymentDetails);
+		if (isErrorResponse(res)) {
+			notifications.show({
+				message: res.msg,
+				color: 'red',
+			});
+			navigate('/purchase-failed');
+		}
 	};
-
-	if (isPaymentError) {
-		navigate('/purchase-failed');
-	}
 
 	return (
 		<Group>

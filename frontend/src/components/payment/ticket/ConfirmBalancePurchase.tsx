@@ -3,6 +3,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
 import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
 import { payTicketWithBalance } from '../../../services/payment';
 import { PaymentWithBalanceRequest } from '../../../types/PaymentTypes';
@@ -27,6 +28,7 @@ const ConfirmBalancePurchase = ({
 }: BuyTicketFormProps) => {
 	const [opened, { open, close }] = useDisclosure(false);
 	const axiosSecure = useAxiosSecure();
+	const navigate = useNavigate();
 
 	const { isLoading, mutateAsync: payWithBalance } = useMutation({
 		mutationFn: (paymentDetails: PaymentWithBalanceRequest) =>
@@ -44,7 +46,11 @@ const ConfirmBalancePurchase = ({
 				message: result.msg,
 				color: 'red',
 			});
+			navigate('/purchase-failed');
+			return;
 		}
+
+		navigate('/purchase-successful');
 	};
 	return (
 		<>
