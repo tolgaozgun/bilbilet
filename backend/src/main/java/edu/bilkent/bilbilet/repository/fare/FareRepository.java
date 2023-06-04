@@ -278,7 +278,7 @@ public class FareRepository {
     }
 
     public List<Fare> findFareByProperties(Map<String, Object> properties, VehicleType vehicleType) {
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Fare f INNER JOIN TransportVehicle t ON f.vehicle_id = t.vehicle_id WHERE t.vehicle_type = ? ");
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Fare f INNER JOIN CompanyVehicle t ON f.vehicle_id = t.vehicle_id WHERE t.vehicle_type = ? ");
         List<Object> parameterValues = new ArrayList<>();
 
         parameterValues.add(vehicleType.toString()); // VehicleType.PLANE, VehicleType.BUS 

@@ -31,15 +31,15 @@ public class DatabaseInitializer {
     @Autowired
     private DataSource dataSource;
 
-    @PostConstruct
-    public void initializeTriggers() {
-        ResourceDatabasePopulator triggersPopulator = 
-            new ResourceDatabasePopulator(false, false, StandardCharsets.UTF_8.toString(), new ClassPathResource("sql/triggers.sql"));
-        triggersPopulator.setSeparator("//");
-        triggersPopulator.execute(dataSource);
+    // @PostConstruct
+    // public void initializeTriggers() {
+    //     ResourceDatabasePopulator triggersPopulator = 
+    //         new ResourceDatabasePopulator(false, false, StandardCharsets.UTF_8.toString(), new ClassPathResource("sql/triggers.sql"));
+    //     triggersPopulator.setSeparator("//");
+    //     triggersPopulator.execute(dataSource);
 
-        System.out.println("hola triger");
-    }
+    //     System.out.println("hola triger");
+    // }
 
     @PostConstruct
     public void initializeDatabase() throws IOException {
@@ -51,7 +51,19 @@ public class DatabaseInitializer {
             ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), resource);
             ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), data);
             ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), view);
-        } catch (ScriptException | SQLException e) {
+
+            ResourceDatabasePopulator triggersPopulator = new ResourceDatabasePopulator(
+                false,
+                false,
+                StandardCharsets.UTF_8.toString(),
+                new ClassPathResource("sql/triggers.sql")
+            );
+            triggersPopulator.setSeparator("//");
+            triggersPopulator.execute(dataSource);
+
+            System.out.println("hola triger");
+        }
+        catch (ScriptException | SQLException e) {
             e.printStackTrace();
         }
 
