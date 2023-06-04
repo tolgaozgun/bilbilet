@@ -10,7 +10,7 @@ const SystemReportsPage = () => {
 						Most Rented Cars
 					</Tabs.Tab>
 					<Tabs.Tab icon={<IconTicket size="1rem" />} value="companyWithMostPurchasedTickets">
-						Company With Most Purchased Tickets
+						Companies With Most Purchased Tickets
 					</Tabs.Tab>
 					<Tabs.Tab icon={<IconLocation size="1rem" />} value="mostPurchasedArrival">
 						Most Purchased Arrival
@@ -19,10 +19,10 @@ const SystemReportsPage = () => {
 						Most Purchased Destination
 					</Tabs.Tab>
 					<Tabs.Tab icon={<IconMoneybag size="1rem" />} value="mostExpensiveTicketOfCompany">
-						Most Expensive Ticket Of Company
+						Most Expensive Ticket Of Companies
 					</Tabs.Tab>
 					<Tabs.Tab icon={<IconPigMoney size="1rem" />} value="cheapestTicketOfCompany">
-						Cheapest Ticket Of Company
+						Cheapest Ticket Of Companies
 					</Tabs.Tab>
 				</Tabs.List>
 
@@ -34,7 +34,7 @@ const SystemReportsPage = () => {
 
 				<Tabs.Panel value="companyWithMostPurchasedTickets" pt="md">
 					<Flex direction="column" gap="md">
-						<Title>Company With Most Purchased Tickets</Title>
+						<Title>Companies With Most Purchased Tickets</Title>
 					</Flex>
 				</Tabs.Panel>
 
@@ -52,13 +52,13 @@ const SystemReportsPage = () => {
 
 				<Tabs.Panel value="mostExpensiveTicketOfCompany" pt="md">
 					<Flex direction="column" gap="md">
-						<Title>Most Expensive Ticket Of Company</Title>
+						<Title>Most Expensive Ticket Of Companies</Title>
 					</Flex>
 				</Tabs.Panel>
 
 				<Tabs.Panel value="cheapestTicketOfCompany" pt="md">
 					<Flex direction="column" gap="md">
-						<Title>Cheapest Ticket Of Company</Title>
+						<Title>Cheapest Ticket Of Companies</Title>
 					</Flex>
 				</Tabs.Panel>
 			</Tabs>
