@@ -1,4 +1,4 @@
-import { Button, Card, Modal, Stack, Text, TextInput } from '@mantine/core';
+import { Button, Card, Center, Modal, Stack, Text, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
@@ -11,6 +11,19 @@ import { isErrorResponse } from '../../utils/utils';
 import LoadingPage from '../LoadingPage';
 
 const CompanyProfilePage = () => {
+	// const [opened, { open, close }] = useDisclosure(false);
+	// const axiosSecure = useAxiosSecure();
+	// const user = useUser();
+	// const {
+	// 	isLoading,
+	// 	isError,
+	// 	data: travelerResponse,
+	// } = useTraveler(axiosSecure, user?.id!);
+	// const traveler = travelerResponse?.data;
+
+	// if (isLoading) {
+	// 	return <LoadingPage />;
+	// }
 	const [opened, { open, close }] = useDisclosure(false);
 	const axiosSecure = useAxiosSecure();
 	const user = useUser();
@@ -34,10 +47,13 @@ const CompanyProfilePage = () => {
 	}
 	const companyData = companyResponse.data;
 
+
 	return (
 		<>
-			<Card>
-				<Stack spacing="lg">
+			<Center>
+				<Card>
+					<Title order={3}>Profile details</Title>
+					<Stack spacing="lg">
 					<Text>
 						<Text fw={700}> Company title</Text>
 						{companyData?.company.company_title}
@@ -76,7 +92,8 @@ const CompanyProfilePage = () => {
 						</Stack>
 					</Card>
 				</Stack>
-			</Card>
+				</Card>
+			</Center>
 			<Modal opened={opened} onClose={close}>
 				<UploadToBalanceWithCCForm />
 			</Modal>
