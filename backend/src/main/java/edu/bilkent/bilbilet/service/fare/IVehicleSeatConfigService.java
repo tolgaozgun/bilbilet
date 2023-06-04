@@ -9,5 +9,5 @@ public interface IVehicleSeatConfigService {
     public VehicleSeatConfig updateConfig(VehicleSeatConfig toUpdate) throws Exception;
     public VehicleSeatConfig updateConfigById(VehicleSeatConfig toUpdate, int toUpdateId) throws Exception;
     public boolean deleteConfigById(int toDeleteId) throws Exception;
-    public List<VehicleSeatConfig> getConfigByVehicleId(int vehicleId) throws Exception;
+    public VehicleSeatConfig getConfigByVehicleId(int vehicleId) throws Exception;
 }
