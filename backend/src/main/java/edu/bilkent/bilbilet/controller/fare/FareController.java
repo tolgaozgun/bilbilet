@@ -22,6 +22,7 @@ import edu.bilkent.bilbilet.exception.InsertionFailedException;
 import edu.bilkent.bilbilet.exception.NothingDeletedException;
 import edu.bilkent.bilbilet.exception.UpdateFailedException;
 import edu.bilkent.bilbilet.model.Fare;
+import edu.bilkent.bilbilet.model.VehicleSeatConfig;
 import edu.bilkent.bilbilet.request.fare.CreateFare;
 import edu.bilkent.bilbilet.response.Response;
 import edu.bilkent.bilbilet.service.fare.FareService;
@@ -160,5 +161,17 @@ public class FareController {
         catch (Exception e) {
             return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }        
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "/seat/config/{fareId}")
+    public ResponseEntity<Object> getSeatConfigByFareId(@PathVariable("fareId") int fareId) {
+        try {
+            VehicleSeatConfig config = fareService.getSeatConfigByFareId(fareId);
+            return Response.create("Successfully fetched the seat config of fare with the ID " + fareId + ".", HttpStatus.OK, config);
+        }
+        catch (Exception e) {
+            return Response.create("An error has occurred while fetching seat config.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

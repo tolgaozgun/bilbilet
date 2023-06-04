@@ -246,6 +246,22 @@ public class FareRepository {
         return Collections.emptyList();
     }
 
+    public Optional<Fare> getFareById(int fareId) throws Exception {
+        String sql = "SELECT * FROM Fare WHERE fare_id = ?";
+    
+        try {
+            return Optional.of(jdbcTemplate.queryForObject(sql, fareRowMapper, fareId));
+        }
+        catch (EmptyResultDataAccessException erda) {
+            return Optional.empty();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
+
     public boolean existsById(int fareId) throws Exception {
         try {
             List<Fare> fareList = getFaresByFareId(fareId);
