@@ -43,7 +43,7 @@ const CompanyMenu = () => {
 					</Menu.Item>
 					<Menu.Item>
 						<SubtleLinkButton
-							to="/search-fare"
+							to="/add-fare"
 							size="sm"
 							leftIcon={<IconMapPin />}
 						>
@@ -52,7 +52,7 @@ const CompanyMenu = () => {
 					</Menu.Item>
 					<Menu.Item>
 						<SubtleLinkButton
-							to="/traveler/tickets"
+							to="/add-vehicle"
 							size="sm"
 							leftIcon={<IconCar />}
 						>
@@ -61,20 +61,11 @@ const CompanyMenu = () => {
 					</Menu.Item>
 					<Menu.Item>
 						<SubtleLinkButton
-							to="/traveler/travel-list"
+							to="/sold-tickets"
 							size="sm"
 							leftIcon={<IconTicket />}
 						>
 							View Sold Tickets
-						</SubtleLinkButton>
-					</Menu.Item>
-					<Menu.Item>
-						<SubtleLinkButton
-							to="/traveler/journey-plans"
-							size="sm"
-							leftIcon={<IconBackpack />}
-						>
-							Journey Planner
 						</SubtleLinkButton>
 					</Menu.Item>
 					<Menu.Item>
