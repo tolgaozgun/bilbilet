@@ -22,6 +22,7 @@ import AddCarPage from './pages/rent-car/AddCarPage';
 import SearchRentCarPage from './pages/rent-car/SearchRentCarPage';
 import ReviewPage from './pages/review/ReviewPage';
 import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
+import MyReviewsPage from './pages/review/MyReviewsPage';
 
 const router = createBrowserRouter([
 	{
@@ -97,6 +98,10 @@ const router = createBrowserRouter([
 					{
 						path: '/traveler/profile',
 						element: <TravelerProfilePage />,
+					},
+					{
+						path: '/my-reviews',
+						element: <MyReviewsPage />,
 					},
 				],
 			},
