@@ -1,1 +1,1 @@
-export * from './FlightService';
+export * from './FareService';

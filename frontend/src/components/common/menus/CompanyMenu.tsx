@@ -53,11 +53,11 @@ const CompanyMenu = () => {
 					</Menu.Item>
 					<Menu.Item>
 						<SubtleLinkButton
-							to="/add-vehicle"
+							to="/list-vehicles"
 							size="sm"
 							leftIcon={<IconCar />}
 						>
-							Add Vehicle
+							Vehicles
 						</SubtleLinkButton>
 					</Menu.Item>
 					<Menu.Item>
