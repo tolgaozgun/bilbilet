@@ -14,10 +14,13 @@ import edu.bilkent.bilbilet.exception.NothingDeletedException;
 import edu.bilkent.bilbilet.exception.UpdateFailedException;
 import edu.bilkent.bilbilet.model.Company;
 import edu.bilkent.bilbilet.model.Fare;
+import edu.bilkent.bilbilet.model.Station;
 import edu.bilkent.bilbilet.model.VehicleSeatConfig;
 import edu.bilkent.bilbilet.repository.CompanyRepository;
+import edu.bilkent.bilbilet.repository.StationRepository;
 import edu.bilkent.bilbilet.repository.fare.FareRepository;
 import edu.bilkent.bilbilet.request.fare.CreateFare;
+import edu.bilkent.bilbilet.response.RFareDetailsView;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,6 +29,7 @@ public class FareService {
     private final FareRepository fareRepository;    
     private final CompanyRepository companyRepository;
     private final VehicleSeatConfigService configService;
+    private final StationRepository stationRepository;
 
     public Fare createFare(CreateFare fareInfo) throws Exception {     
         try {
@@ -211,6 +215,72 @@ public class FareService {
     public List<Fare> getFaresByProperty(Map<String, Object> properties, VehicleType vehicleType) throws Exception {
         try {
             return fareRepository.findFareByProperties(properties, vehicleType);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public List<RFareDetailsView> getDetailedFaresByProperty(Map<String, Object> properties, VehicleType vehicleType) throws Exception {
+        try {
+            // Get desired fares
+            List<Fare> fares = fareRepository.findFareByProperties(properties, vehicleType);
+
+            // Construct List<RFareDetailsView> from List<Fare>
+            List<RFareDetailsView> result = new ArrayList<>();
+
+            for (Fare f : fares) {
+                // Create empty details object
+                RFareDetailsView details = new RFareDetailsView();
+                
+                // Set Fare related data
+                details.setFareId(f.getFareId());
+                details.setDepTime(f.getEstimatedDepTime());
+                details.setArrTime(f.getEstimatedArrTime());
+                details.setBasePrice(f.getPrice());
+                details.setPremiumEconExtraPrice(f.getPremiumEconExtraPrice());
+                details.setBusinessExtraPrice(f.getBusinessExtraPrice());
+                details.setFirstClassExtraPrice(f.getFirstClassExtraPrice());
+                details.setReservationFee(f.getReservationFee());
+
+                // Set arrival station related data
+                Optional<Station> arrivalStationOptional = stationRepository.findStationById(f.getArrStationId());
+
+                if (!arrivalStationOptional.isPresent()) {
+                    throw new ItemNotFoundException("Could not find arrival station with the ID '" + f.getArrStationId() + "'.");
+                }
+
+                Station arrivalStation = arrivalStationOptional.get();
+                details.setArrStationTitle(arrivalStation.getTitle());
+                details.setArrStationAbbr(arrivalStation.getAbbreviation());
+
+                // Set departure station related data
+                Optional<Station> departureStationOptional = stationRepository.findStationById(f.getDepStationId());
+
+                if (!departureStationOptional.isPresent()) {
+                    throw new ItemNotFoundException("Could not find departure station with the ID '" + f.getDepStationId() + "'.");
+                }
+
+                Station departureStation = departureStationOptional.get();
+                details.setArrStationTitle(departureStation.getTitle());
+                details.setArrStationAbbr(departureStation.getAbbreviation());
+
+                // Set company title
+                Optional<Company> optionalCompany = companyRepository.getCompanyById(f.getCompanyId());
+            
+                if (!optionalCompany.isPresent()) {
+                    throw new CompanyNotFoundException("Could not find company with the ID '" + f.getCompanyId() + "'.");
+                }
+
+                Company company = optionalCompany.get();
+                details.setCompanyName(company.getCompany_title());
+
+                // Add details to result
+                result.add(details);
+            }
+
+            return result;
         }
         catch (Exception e) {
             e.printStackTrace();
