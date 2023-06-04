@@ -3,7 +3,7 @@ import PastTicketCard from '../../../components/ticket/PastTicketCard';
 import SortPastTicketsBar from '../../../components/ticket/SortPastTicketsBar';
 import PastTicketsFilter from '../../../components/ticket/PastTicketsFilter';
 
-const PastTicketsPage = () => {
+const MyTicketsPage = () => {
 	return (
 		<Center>
 			<Flex direction={'column'} gap={'sm'}>
@@ -32,4 +32,4 @@ const PastTicketsPage = () => {
 	);
 };
 
-export default PastTicketsPage;
+export default MyTicketsPage;
