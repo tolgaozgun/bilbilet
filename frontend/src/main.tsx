@@ -23,10 +23,12 @@ import AddCarPage from './pages/rent-car/AddCarPage';
 import SearchRentCarPage from './pages/rent-car/SearchRentCarPage';
 import ReviewPage from './pages/review/ReviewPage';
 import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
+import MyReviewsPage from './pages/review/MyReviewsPage';
 import CompanyProfilePage from './pages/profile/CompanyProfilePage';
 import AddFarePage from './pages/fare/AddFarePage';
 import AddVehiclePage from './pages/vehicle/AddVehiclePage';
 import SoldTicketsPage from './pages/tickets/past-tickets/SoldTicketsPage';
+import CompanyReviewsPage from './pages/review/CompanyReviewsPage';
 
 const router = createBrowserRouter([
 	{
@@ -116,13 +118,20 @@ const router = createBrowserRouter([
 						element: <TravelerProfilePage />,
 					},
 					{
+						path: '/my-reviews',
+						element: <MyReviewsPage />,
+					},
+					{
 						path: '/fare/:fareId/select-seats',
 						element: <SeatSelectionPage />,
           },
           {
 						path: '/company/profile',
 						element: <CompanyProfilePage />,
-          }
+          },
+					{
+						path: '/my-companys-reviews',
+						element: <CompanyReviewsPage />,
 					},
 				],
 			},
