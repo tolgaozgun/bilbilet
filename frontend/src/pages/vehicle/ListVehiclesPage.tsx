@@ -1,18 +1,18 @@
-import { Card, Flex, Title } from '@mantine/core';
+import { Card, Center, Divider, Flex, Stack, Title } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
+import { IconCar } from '@tabler/icons-react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import CustomElevatedButton from '../../components/common/buttons/CustomElevatedButton';
+import ItemsNotFoundPage from '../../components/common/feedback/ItemsNotFoundPage';
+import VehicleInfoCard from '../../components/vehicle/VehicleInfoCard';
 import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
-import LoadingPage from '../../pages/LoadingPage';
-import { isErrorResponse } from '../../utils/utils';
-import useGetVehicles from '../../hooks/vehicle/useGetVehicles';
 import { useUser } from '../../hooks/auth/useUser';
 import useCompany from '../../hooks/users/useCompany';
+import useGetVehicles from '../../hooks/vehicle/useGetVehicles';
+import LoadingPage from '../../pages/LoadingPage';
 import { CompanyVehicle } from '../../types/VehicleTypes';
-import VehicleInfoCard from '../../components/vehicle/VehicleInfoCard';
-import ItemsNotFoundPage from '../../components/common/feedback/ItemsNotFoundPage';
-import { useEffect } from 'react';
-import CustomElevatedButton from '../../components/common/buttons/CustomElevatedButton';
-import { useNavigate } from 'react-router-dom';
-import { IconCar } from '@tabler/icons-react';
+import { isErrorResponse } from '../../utils/utils';
 
 const ListVehiclesPage = () => {
 	const user = useUser();
@@ -22,8 +22,8 @@ const ListVehiclesPage = () => {
 		isError: isCompanyError,
 		data: companyResponse,
 	} = useCompany(axiosSecure, user?.id!);
-	const companyId: number = companyResponse?.data?.company.company_id!
-    
+	const companyId: number = companyResponse?.data?.company.company_id!;
+
 	const {
 		data: vehiclesListRes,
 		isLoading: isVehiclesLoading,
@@ -31,14 +31,15 @@ const ListVehiclesPage = () => {
 	} = useGetVehicles(axiosSecure, companyId);
 
 	const navigate = useNavigate();
-	
 
-
-	const vehiclesList: Array<CompanyVehicle> = vehiclesListRes ? vehiclesListRes.data!: [];
-    console.log(vehiclesList);
-    console.log(vehiclesListRes);
-	const vehiclesListCards = vehiclesList.map((vehicle) => <VehicleInfoCard vehicle={vehicle} />);
-
+	const vehiclesList: Array<CompanyVehicle> = vehiclesListRes
+		? vehiclesListRes.data!
+		: [];
+	console.log(vehiclesList);
+	console.log(vehiclesListRes);
+	const vehiclesListCards = vehiclesList.map((vehicle) => (
+		<VehicleInfoCard vehicle={vehicle} />
+	));
 
 	if (isVehiclesLoading || isCompanyLoading) {
 		return <LoadingPage />;
@@ -54,7 +55,7 @@ const ListVehiclesPage = () => {
 				message: vehiclesListRes.msg,
 			});
 		}
-        if (companyResponse?.msg) {
+		if (companyResponse?.msg) {
 			notifications.show({
 				message: companyResponse.msg,
 			});
@@ -63,26 +64,28 @@ const ListVehiclesPage = () => {
 	}
 
 	return (
-		<Card withBorder radius="xl" shadow="xl" p={48} miw={500} mx="auto">
-			<CustomElevatedButton
-				text={'Add Vehicle'}
-				leftIcon={<IconCar />}
-				size={'lg'}
-				onClick={() => {
-					navigate('/add-vehicle');
-				}}
-			/>
-			<Title mt={20}>Company Vehicles</Title>
-			
-
-			<Flex mt={20} direction={'column'} align={'start'} gap={'xl'}>
-					{vehiclesListCards.length === 0 ? (
-						<ItemsNotFoundPage />
-					) : (
-						vehiclesListCards
-					)}
-			</Flex>
-		</Card>
+		<Center>
+			<Card withBorder radius="xl" shadow="xl" p={48} miw={500} mx="auto">
+				<Stack align="center">
+					<CustomElevatedButton
+						text={'Add Vehicle'}
+						leftIcon={<IconCar />}
+						size={'lg'}
+						onClick={() => {
+							navigate('/add-vehicle');
+						}}
+					/>
+					<Title mt={20}>Company Vehicles</Title>
+					<Flex mt={20} direction={'column'} align={'start'} gap={'xl'}>
+						{vehiclesListCards.length === 0 ? (
+							<ItemsNotFoundPage />
+						) : (
+							vehiclesListCards
+						)}
+					</Flex>
+				</Stack>
+			</Card>
+		</Center>
 	);
 };
 

@@ -21,6 +21,7 @@ import LoadingPage from '../../../pages/LoadingPage';
 import { FareSearchParams } from '../../../types';
 import {
 	convertDateToTime,
+	formatDate,
 	getTimeDifference,
 	isErrorResponse,
 } from '../../../utils/utils';
@@ -118,9 +119,16 @@ const BusTab = ({ stationData }: BusTabProps) => {
 		return;
 	};
 
+	console.log(busResponse.data);
+	const stations = stationData.filter(
+		(station) => station.stationType === 'BUS_TERMINAL',
+	);
+
 	return (
 		<Card withBorder radius="xl" shadow="xl" p={48} sx={{ minWidth: 400 }} mx="auto">
 			<Flex direction={'column'} align={'start'} gap={'xl'}>
+				<Text></Text>{' '}
+				{/* DON'T YOU DARE REMOVE THIS OR ELSE THIS COMPONENT FAILS*/}
 				<Title>Buy Bus Ticket</Title>
 				<Stack>
 					<Radio.Group
@@ -144,7 +152,7 @@ const BusTab = ({ stationData }: BusTabProps) => {
 							searchable
 							nothingFound="No location found"
 							itemComponent={CustomSelectItem}
-							data={stationData}
+							data={stations}
 							allowDeselect
 							clearable
 						/>
@@ -158,7 +166,7 @@ const BusTab = ({ stationData }: BusTabProps) => {
 							searchable
 							itemComponent={CustomSelectItem}
 							nothingFound="No location found"
-							data={stationData}
+							data={stations}
 							allowDeselect
 							clearable
 						/>
@@ -187,15 +195,24 @@ const BusTab = ({ stationData }: BusTabProps) => {
 						</Button>
 					</Flex>
 				</Stack>
-				<Flex direction={'row'} gap={'xl'}>
-					{/* <BusFilter></BusFilter> */}
+				<Flex direction={'column'} gap={'xl'}>
 					{busResponse.data?.map((bus) => {
-						const depTime = convertDateToTime(bus.depTime);
-						const arrTime = convertDateToTime(bus.arrTime);
-						const duration = getTimeDifference(bus.depTime, bus.arrTime);
+						const depTimeDateObj = new Date(bus.depTime);
+						const arrTimeDateObj = new Date(bus.arrTime);
+
+						const depTime = convertDateToTime(depTimeDateObj);
+						const arrTime = convertDateToTime(arrTimeDateObj);
+						const depDate = formatDate(depTimeDateObj);
+						const arrDate = formatDate(arrTimeDateObj);
+						const duration = getTimeDifference(
+							depTimeDateObj,
+							arrTimeDateObj,
+						);
 						return (
 							<FareInfoCard
-								companyName={'name'}
+								companyName={bus.companyName}
+								arrDate={arrDate}
+								depDate={depDate}
 								departureTime={depTime}
 								arrivalTime={arrTime}
 								departureLocation={bus.depStationTitle}
@@ -205,6 +222,7 @@ const BusTab = ({ stationData }: BusTabProps) => {
 								duration={duration}
 								price={bus.basePrice}
 								fareId={bus.fareId}
+								key={bus.fareId}
 							/>
 						);
 					})}

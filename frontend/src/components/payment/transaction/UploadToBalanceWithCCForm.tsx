@@ -73,6 +73,7 @@ const UploadToBalanceWithCCForm = () => {
 		uploadToBalance(uploadDetails);
 		queryClient.invalidateQueries(['getTravelerInfo']);
 		form.reset();
+		close();
 	};
 
 	return (

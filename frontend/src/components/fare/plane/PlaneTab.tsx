@@ -21,6 +21,7 @@ import LoadingPage from '../../../pages/LoadingPage';
 import { FareSearchParams } from '../../../types';
 import {
 	convertDateToTime,
+	formatDate,
 	getTimeDifference,
 	isErrorResponse,
 } from '../../../utils/utils';
@@ -84,7 +85,7 @@ const PlaneTab = ({ stationData }: PlaneTabProps) => {
 		}
 		return <ItemsNotFoundPage />;
 	}
-
+	const stations = stationData.filter((station) => station.stationType === 'AIRPORT');
 	const onSearch = () => {
 		if (direction === 'one-way' && depValue && arrValue && deptDate) {
 			const newSearchParams: FareSearchParams = {
@@ -145,7 +146,7 @@ const PlaneTab = ({ stationData }: PlaneTabProps) => {
 							searchable
 							nothingFound="No location found"
 							itemComponent={CustomSelectItem}
-							data={stationData}
+							data={stations}
 							allowDeselect
 							clearable
 						/>
@@ -159,7 +160,7 @@ const PlaneTab = ({ stationData }: PlaneTabProps) => {
 							searchable
 							itemComponent={CustomSelectItem}
 							nothingFound="No location found"
-							data={stationData}
+							data={stations}
 							allowDeselect
 							clearable
 						/>
@@ -192,16 +193,24 @@ const PlaneTab = ({ stationData }: PlaneTabProps) => {
 					{/* <PlaneFilter /> */}
 					<Flex direction={'column'} gap={'xl'}>
 						{flightResponse.data?.map((flight) => {
-							const depTime = convertDateToTime(flight.depTime);
-							const arrTime = convertDateToTime(flight.arrTime);
+							const depTimeDateObj = new Date(flight.depTime);
+							const arrTimeDateObj = new Date(flight.arrTime);
+
+							const depTime = convertDateToTime(depTimeDateObj);
+							const arrTime = convertDateToTime(arrTimeDateObj);
+							const depDate = formatDate(depTimeDateObj);
+							const arrDate = formatDate(arrTimeDateObj);
 							const duration = getTimeDifference(
-								flight.depTime,
-								flight.arrTime,
+								depTimeDateObj,
+								arrTimeDateObj,
 							);
 							return (
 								<FareInfoCard
+									key={flight.fareId}
 									companyName={flight.companyName}
+									depDate={depDate}
 									departureTime={depTime}
+									arrDate={arrDate}
 									arrivalTime={arrTime}
 									departureLocation={flight.depStationTitle}
 									arrivalLocation={flight.arrStationTitle}

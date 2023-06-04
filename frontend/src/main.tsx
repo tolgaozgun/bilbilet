@@ -8,6 +8,7 @@ import './index.css';
 import Layout from './layout';
 import SearchFarePage from './pages/fare/SearchFarePage';
 
+import PageNotFound from './pages/PageNotFound';
 import AddFarePage from './pages/fare/AddFarePage';
 import SeatSelectionPage from './pages/fare/SeatSelectionPage';
 import AddHotelPage from './pages/hotel/AddHotelPage';
@@ -81,7 +82,7 @@ const router = createBrowserRouter([
 						element: <PurchaseTicketPage />,
 					},
 					{
-						path: '/purchase-succeeded',
+						path: '/purchase-successful',
 						element: <PurchaseSucceeded ticketDetails={null} />,
 					},
 					{
@@ -140,9 +141,15 @@ const router = createBrowserRouter([
 						path: '/my-companys-reviews',
 						element: <CompanyReviewsPage />,
 					},
-					{
-						path: '/system-reports',
+          {
+            path: '/system-reports',
 						element: <SystemReportsPage />,
+          },
+          {
+						path: '*',
+						element: <PageNotFound />,
+          }
+					
 					},
 				],
 			},

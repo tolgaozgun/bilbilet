@@ -29,7 +29,7 @@ import { PaymentType } from '../../types/PaymentTypes';
 import LoadingPage from '../LoadingPage';
 
 const PurchaseTicketPage = () => {
-	const ticketId = useParams();
+	const { ticketId } = useParams();
 	const axiosSecure = useAxiosSecure();
 	const user = useUser();
 
@@ -44,7 +44,7 @@ const PurchaseTicketPage = () => {
 		isError: isTicketError,
 		data: ticket,
 	} = useQuery({
-		queryKey: ['getTIcket'],
+		queryKey: ['getTicket'],
 		queryFn: () => getTicketById(axiosSecure, Number(ticketId)),
 	});
 	// Traveler information form
@@ -82,7 +82,8 @@ const PurchaseTicketPage = () => {
 		return <ItemsNotFoundPage />;
 	}
 
-	const price = ticket.totalPrice;
+	console.log(ticket?.data!);
+	const price = ticket?.data!.totalPrice;
 
 	const PaymentForm = () => {
 		switch (selectedPaymentOption) {
@@ -91,7 +92,7 @@ const PurchaseTicketPage = () => {
 					<>
 						<Title order={2}>Confirm payment from balance</Title>
 						<ConfirmBalancePurchase
-							ticketId={ticket.ticketId}
+							ticketId={ticket?.data!.ticketId}
 							travelerId={user?.id!}
 							price={price}
 							pricePostfix="TL"
@@ -104,7 +105,7 @@ const PurchaseTicketPage = () => {
 						<Title order={2}>Enter credit card information</Title>
 						<Flex align="center" justify="space-evenly">
 							<PayWithCreditCardForm
-								ticketId={ticket.ticketId}
+								ticketId={ticket?.data!.ticketId}
 								price={price}
 							/>
 						</Flex>
@@ -133,7 +134,7 @@ const PurchaseTicketPage = () => {
 				>
 					<Stack spacing={36}>
 						<Flex align="center" justify="space-evenly">
-							<TicketInformation />
+							<TicketInformation ticket={ticket?.data!} />
 							<TravelerInformationForm form={travelerInformationForm} />
 						</Flex>
 						<Container>
