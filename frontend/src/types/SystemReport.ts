@@ -1,7 +1,7 @@
 export type SpecificSystemReportData = {
     title: string;
     count: number;
-}
+};
 
 export type AllSystemReport = {
 	mostRentedCars: SpecificSystemReportData[];
