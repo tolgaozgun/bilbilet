@@ -23,7 +23,7 @@ const WithdrawBalanceWithIBANForm = () => {
 	return (
 		<form>
 			<Stack spacing="xl">
-				<Title order={2}>Transfer money to your balance</Title>
+				<Title order={2}>Withdraw Money</Title>
 				<Stack spacing="md">
 					<TextInput
 						label="IBAN Number"
@@ -31,7 +31,7 @@ const WithdrawBalanceWithIBANForm = () => {
 						{...form.getInputProps('ibanNumber')}
 					/>
 					<MoneyNumberInput amount={amount} setAmount={setAmount} />
-					<Button onClick={onTransfer}>Transfer to your balance</Button>
+					<Button onClick={onTransfer}>Withdraw money from your balance</Button>
 				</Stack>
 			</Stack>
 		</form>
