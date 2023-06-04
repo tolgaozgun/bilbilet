@@ -24,6 +24,7 @@ import edu.bilkent.bilbilet.exception.UpdateFailedException;
 import edu.bilkent.bilbilet.model.Fare;
 import edu.bilkent.bilbilet.model.VehicleSeatConfig;
 import edu.bilkent.bilbilet.request.fare.CreateFare;
+import edu.bilkent.bilbilet.response.RFareDetailsView;
 import edu.bilkent.bilbilet.response.Response;
 import edu.bilkent.bilbilet.service.fare.FareService;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -140,7 +141,7 @@ public class FareController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping("/plane")
+    @GetMapping("/old/plane")
     public ResponseEntity<Object> getPlaneFares(@RequestParam Map<String, Object> requestParams) {
         try {
             List<Fare> fares = fareService.getFaresByProperty(requestParams, VehicleType.PLANE);
@@ -152,10 +153,34 @@ public class FareController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
-    @GetMapping("/bus")
+    @GetMapping("/old/bus")
     public ResponseEntity<Object> getBusFares(@RequestParam Map<String, Object> requestParams) {
         try {
             List<Fare> fares = fareService.getFaresByProperty(requestParams, VehicleType.BUS);
+            return Response.create("Successfully fetched bus fares.", HttpStatus.OK, fares);
+        }
+        catch (Exception e) {
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("/plane")
+    public ResponseEntity<Object> getDetailedPlaneFares(@RequestParam Map<String, Object> requestParams) {
+        try {
+            List<RFareDetailsView> fares = fareService.getDetailedFaresByProperty(requestParams, VehicleType.PLANE);
+            return Response.create("Successfully fetched plane fares.", HttpStatus.OK, fares);
+        }
+        catch (Exception e) {
+            return Response.create(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("/bus")
+    public ResponseEntity<Object> getDetailedBusFares(@RequestParam Map<String, Object> requestParams) {
+        try {
+            List<RFareDetailsView> fares = fareService.getDetailedFaresByProperty(requestParams, VehicleType.BUS);
             return Response.create("Successfully fetched bus fares.", HttpStatus.OK, fares);
         }
         catch (Exception e) {

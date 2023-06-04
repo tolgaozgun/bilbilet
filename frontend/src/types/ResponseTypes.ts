@@ -1,4 +1,5 @@
 export type Response<T> = SuccessResponse<T> | ErrorResponse;
+
 export interface SuccessResponse<T> {
 	status: number;
 	msg: string;

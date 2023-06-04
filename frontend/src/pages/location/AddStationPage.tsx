@@ -1,6 +1,6 @@
 import { Center } from '@mantine/core';
-import AddStationForm from '../../components/location/AddStationForm';
 import { useForm } from '@mantine/form';
+import AddStationForm from '../../components/location/AddStationForm';
 
 const AddStationPage = () => {
 	const newStationForm = useForm({
@@ -18,6 +18,7 @@ const AddStationPage = () => {
 			stationType: (value) =>
 				value === '' ? 'This field cannot be left empty' : null,
 			city: (value) => (value === '' ? 'This field cannot be left empty' : null),
+			country: (value) => (value === '' ? 'This field cannot be left empty' : null),
 		},
 	});
 	return (

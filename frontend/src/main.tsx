@@ -8,6 +8,8 @@ import './index.css';
 import Layout from './layout';
 import SearchFarePage from './pages/fare/SearchFarePage';
 
+import PageNotFound from './pages/PageNotFound';
+import AddFarePage from './pages/fare/AddFarePage';
 import SeatSelectionPage from './pages/fare/SeatSelectionPage';
 import AddHotelPage from './pages/hotel/AddHotelPage';
 import JourneyPlansPage from './pages/journey/JourneyPlansPage';
@@ -15,20 +17,21 @@ import AddAddressPage from './pages/location/AddAddressPage';
 import AddStationPage from './pages/location/AddStationPage';
 import LoginPage from './pages/login/LoginPage';
 import RegisterPage from './pages/login/RegisterPage';
+import CompanyProfilePage from './pages/profile/CompanyProfilePage';
 import TravelerProfilePage from './pages/profile/TravelerProfilePage';
 import PurchaseFailed from './pages/purchase-ticket/PurchaseFailed';
 import PurchaseSucceeded from './pages/purchase-ticket/PurchaseSucceeded';
 import PurchaseTicketPage from './pages/purchase-ticket/PurchaseTicketPage';
 import AddCarPage from './pages/rent-car/AddCarPage';
 import SearchRentCarPage from './pages/rent-car/SearchRentCarPage';
+import MyReviewsPage from './pages/review/MyReviewsPage';
 import ReviewPage from './pages/review/ReviewPage';
 import MyTicketsPage from './pages/tickets/past-tickets/MyTicketsPage';
-import MyReviewsPage from './pages/review/MyReviewsPage';
-import CompanyProfilePage from './pages/profile/CompanyProfilePage';
-import AddFarePage from './pages/fare/AddFarePage';
-import AddVehiclePage from './pages/vehicle/AddVehiclePage';
 import SoldTicketsPage from './pages/tickets/past-tickets/SoldTicketsPage';
+import AddVehiclePage from './pages/vehicle/AddVehiclePage';
+import ListVehiclesPage from './pages/vehicle/ListVehiclesPage';
 import CompanyReviewsPage from './pages/review/CompanyReviewsPage';
+import SystemReportsPage from './pages/system/SystemReportsPage';
 
 const router = createBrowserRouter([
 	{
@@ -62,6 +65,10 @@ const router = createBrowserRouter([
 						element: <AddVehiclePage />,
 					},
 					{
+						path: '/list-vehicles',
+						element: <ListVehiclesPage />,
+					},
+					{
 						path: '/sold-tickets',
 						element: <SoldTicketsPage />,
 					},
@@ -74,7 +81,7 @@ const router = createBrowserRouter([
 						element: <PurchaseTicketPage />,
 					},
 					{
-						path: '/purchase-succeeded',
+						path: '/purchase-successful',
 						element: <PurchaseSucceeded ticketDetails={null} />,
 					},
 					{
@@ -132,6 +139,14 @@ const router = createBrowserRouter([
 					{
 						path: '/my-companys-reviews',
 						element: <CompanyReviewsPage />,
+					},
+					{
+						path: '/system-reports',
+						element: <SystemReportsPage />,
+					},
+					{
+						path: '*',
+						element: <PageNotFound />,
 					},
 				],
 			},
