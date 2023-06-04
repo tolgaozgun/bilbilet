@@ -1,15 +1,16 @@
-import { Card, Title, Flex, TextInput } from '@mantine/core';
-import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
-import { primaryAccordionColor } from '../../constants/colors';
+import { Card, Flex, TextInput, Title } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
+import { notifications } from '@mantine/notifications';
 import { IconBuilding } from '@tabler/icons-react';
-import RatingBar from '../common/RatingBar';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { notifications } from '@mantine/notifications';
 import { AddHotel, Hotel } from '../../types/HotelTypes';
+import { primaryAccordionColor } from '../../constants/colors';
 import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
-import { useMutation } from '@tanstack/react-query';
 import { addHotel } from '../../services/hotel';
+import RatingBar from '../common/RatingBar';
+import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
 
 interface HotelFormProps {
 	form: UseFormReturnType<
