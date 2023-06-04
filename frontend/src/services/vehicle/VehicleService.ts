@@ -26,7 +26,7 @@ export async function getCompanyVehicles(
     companyId: number,
 ): Promise<Response<Array<CompanyVehicle>>> {
 	const finalFilterParams = filterParams || {};
-	const res = await axiosSecure.get<Response<Array<CompanyVehicle>>>(`${baseUrl}/company-vehicles/${companyId}`, {
+	const res = await axiosSecure.get<Response<Array<CompanyVehicle>>>(`${baseUrl}/company-vehicles/company/${companyId}`, {
 		params: Object.keys(finalFilterParams).length === 0 ? {} : finalFilterParams,
 		paramsSerializer: function paramsSerializer(params) {
 			return Object.entries(Object.assign({}, params))

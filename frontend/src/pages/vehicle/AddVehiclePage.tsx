@@ -1,6 +1,9 @@
 import { Center } from '@mantine/core';
 import AddVehicleForm from '../../components/vehicle/AddVehicleForm';
 import { useForm } from '@mantine/form';
+import CustomElevatedButton from '../../components/common/buttons/CustomElevatedButton';
+import { useNavigate } from 'react-router-dom';
+import { IconCar } from '@tabler/icons-react';
 
 const AddVehiclePage = () => {
 	const vehicleForm = useForm({
@@ -33,6 +36,8 @@ const AddVehiclePage = () => {
 				value == 0 ? 'This field cannot be left empty' : null,
 		},
 	});
+
+	const navigate = useNavigate();
 	return (
 		<Center>
 			<AddVehicleForm form={vehicleForm}></AddVehicleForm>

@@ -7,8 +7,9 @@ const useGetVehicles = (
     companyId: number,
 ) => {
 	return useQuery({
-		queryKey: ['getCompanyVehicles'],
+		queryKey: ['getCompanyVehicles', companyId],
 		queryFn: () => getCompanyVehicles(axiosSecure, {}, companyId),
+		enabled: !!companyId,
 	});
 };
 

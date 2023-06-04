@@ -1,19 +1,18 @@
 import { Card, Flex, Title } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
 import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
-import useGetHotels from '../../hooks/hotel/useGetHotels';
 import LoadingPage from '../../pages/LoadingPage';
-import { Hotel, HotelFilterParams } from '../../types';
 import { isErrorResponse } from '../../utils/utils';
-import ItemsNotFoundPage from '../common/feedback/ItemsNotFoundPage';
-import HotelFilter from './HotelFilter';
-import HotelInfoCard from './HotelInfoCard';
 import useGetVehicles from '../../hooks/vehicle/useGetVehicles';
 import { useUser } from '../../hooks/auth/useUser';
 import useCompany from '../../hooks/users/useCompany';
 import { CompanyVehicle } from '../../types/VehicleTypes';
+import VehicleInfoCard from '../../components/vehicle/VehicleInfoCard';
+import ItemsNotFoundPage from '../../components/common/feedback/ItemsNotFoundPage';
+import { useEffect } from 'react';
+import CustomElevatedButton from '../../components/common/buttons/CustomElevatedButton';
+import { useNavigate } from 'react-router-dom';
+import { IconCar } from '@tabler/icons-react';
 
 const ListVehiclesPage = () => {
 	const user = useUser();
@@ -23,7 +22,7 @@ const ListVehiclesPage = () => {
 		isError: isCompanyError,
 		data: companyResponse,
 	} = useCompany(axiosSecure, user?.id!);
-	const companyId: number = companyResponse?.data?.company.company_id!;
+	const companyId: number = companyResponse?.data?.company.company_id!
     
 	const {
 		data: vehiclesListRes,
@@ -31,7 +30,21 @@ const ListVehiclesPage = () => {
 		isError: isVehiclesError,
 	} = useGetVehicles(axiosSecure, companyId);
 
-	if (isVehiclesError) {
+	const navigate = useNavigate();
+	
+
+
+	const vehiclesList: Array<CompanyVehicle> = vehiclesListRes ? vehiclesListRes.data!: [];
+    console.log(vehiclesList);
+    console.log(vehiclesListRes);
+	const vehiclesListCards = vehiclesList.map((vehicle) => <VehicleInfoCard vehicle={vehicle} />);
+
+
+	if (isVehiclesLoading || isCompanyLoading) {
+		return <LoadingPage />;
+	}
+
+	if (isVehiclesError || isCompanyError) {
 		if (!vehiclesListRes) {
 			notifications.show({
 				message: 'Error with connection to the server.',
@@ -41,32 +54,33 @@ const ListVehiclesPage = () => {
 				message: vehiclesListRes.msg,
 			});
 		}
+        if (companyResponse?.msg) {
+			notifications.show({
+				message: companyResponse.msg,
+			});
+		}
 		return <div>Couldn't fetch vehicles...</div>; // TODO: Error page
-	}
-
-	const hotelList: Array<CompanyVehicle> = vehiclesListRes.data!;
-	const hotelListCards = hotelList.map((hotel) => <HotelInfoCard hotel={hotel} />);
-
-
-
-	if (isVehiclesLoading || isCompanyLoading) {
-		return <LoadingPage />;
 	}
 
 	return (
 		<Card withBorder radius="xl" shadow="xl" p={48} miw={500} mx="auto">
-			<Flex direction={'column'} align={'start'} gap={'xl'}>
-				<Title>Discover Hotels</Title>
-				<Flex direction={'row'} gap={'xl'}>
-					<HotelFilter onFilter={onFilter} />
-					<Flex direction={'column'} gap={'xl'}>
-						{hotelListCards.length === 0 ? (
-							<ItemsNotFoundPage />
-						) : (
-							hotelListCards
-						)}
-					</Flex>
-				</Flex>
+			<CustomElevatedButton
+				text={'Add Vehicle'}
+				leftIcon={<IconCar />}
+				size={'lg'}
+				onClick={() => {
+					navigate('/add-vehicle');
+				}}
+			/>
+			<Title mt={20}>Company Vehicles</Title>
+			
+
+			<Flex mt={20} direction={'column'} align={'start'} gap={'xl'}>
+					{vehiclesListCards.length === 0 ? (
+						<ItemsNotFoundPage />
+					) : (
+						vehiclesListCards
+					)}
 			</Flex>
 		</Card>
 	);

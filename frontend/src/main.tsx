@@ -27,6 +27,7 @@ import CompanyProfilePage from './pages/profile/CompanyProfilePage';
 import AddFarePage from './pages/fare/AddFarePage';
 import AddVehiclePage from './pages/vehicle/AddVehiclePage';
 import SoldTicketsPage from './pages/tickets/past-tickets/SoldTicketsPage';
+import ListVehiclesPage from './pages/vehicle/ListVehiclesPage';
 
 const router = createBrowserRouter([
 	{
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
 					{
 						path: '/add-vehicle',
 						element: <AddVehiclePage />,
+					},
+					{
+						path: '/list-vehicles',
+						element: <ListVehiclesPage />,
 					},
 					{
 						path: '/sold-tickets',
