@@ -7,18 +7,20 @@ import {
 	Grid,
 	Group,
 	Stack,
+	Text,
 	Title,
 } from '@mantine/core';
 import { useState } from 'react';
-import { VehicleSeatConfig } from '../../types/SeatTypes';
+import { SeatLocation, SeatTicket, VehicleSeatConfig } from '../../types/SeatTypes';
 import { convertFlightColumnToAlphabetic } from '../../utils/utils';
 
 interface SeatConfigurationProps {
 	seatConfig: VehicleSeatConfig;
+	seatTickets: SeatTicket[];
 }
 
-const SeatConfiguration = ({ seatConfig }: SeatConfigurationProps) => {
-	const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+const SeatConfiguration = ({ seatConfig, seatTickets }: SeatConfigurationProps) => {
+	const [selectedSeats, setSelectedSeats] = useState<[number, number][]>([]);
 	const noOfSeatsPerColumn = seatConfig.seatingArrangement.split(',');
 
 	const noOfSeatsBeforeDivision = (divIndex: number) => {
@@ -33,12 +35,20 @@ const SeatConfiguration = ({ seatConfig }: SeatConfigurationProps) => {
 		return total;
 	};
 
+	const getColNumber = (colDivisionIndex: number, columnIndex: number) => {
+		return noOfSeatsBeforeDivision(colDivisionIndex) + columnIndex + 1;
+	};
+
+	const getRowNumber = (rowIndex: number) => {
+		return rowIndex + 1;
+	};
+
 	const getSeatDisplayString = (
 		rowIndex: number,
 		colDivisionIndex: number,
 		columnIndex: number,
 	) => {
-		const col = noOfSeatsBeforeDivision(colDivisionIndex) + columnIndex + 1;
+		const col = getColNumber(colDivisionIndex, columnIndex);
 		const colToAlphabet = convertFlightColumnToAlphabetic(col);
 		return `${rowIndex + 1}${colToAlphabet}`;
 	};
@@ -55,11 +65,34 @@ const SeatConfiguration = ({ seatConfig }: SeatConfigurationProps) => {
 			color = 'gray ';
 		}
 
-		console.log(color);
 		return color;
 	};
 
-	console.log(noOfSeatsPerColumn);
+	const onSeatSelection = (
+		rowIndex: number,
+		colDivisionIndex: number,
+		colIndex: number,
+	) => {
+		const rowNumber = getRowNumber(rowIndex);
+		const colNumber = getColNumber(colDivisionIndex, colIndex);
+		const seatLocation: SeatLocation = [rowNumber, colNumber];
+		for (const [index, selectedSeat] of selectedSeats.entries()) {
+			if (
+				selectedSeat[0] === seatLocation[0] &&
+				selectedSeat[1] === seatLocation[1]
+			) {
+				const nextSelectedSeats = [
+					...selectedSeats.slice(0, index),
+					...selectedSeats.slice(index + 1),
+				];
+				setSelectedSeats(nextSelectedSeats);
+				return;
+			}
+		}
+
+		setSelectedSeats((prev) => [...prev, seatLocation]);
+	};
+
 	return (
 		<Center>
 			<Stack>
@@ -98,6 +131,13 @@ const SeatConfiguration = ({ seatConfig }: SeatConfigurationProps) => {
 																		colDivisionIndex,
 																		columnIndex,
 																	)}
+																	onClick={() =>
+																		onSeatSelection(
+																			rowIndex,
+																			colDivisionIndex,
+																			columnIndex,
+																		)
+																	}
 																>
 																	{getSeatDisplayString(
 																		rowIndex,
