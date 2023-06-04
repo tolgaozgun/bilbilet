@@ -16,7 +16,7 @@ export async function addCompanyReview(
 	reviewDetails: AddCompanyReview,
 ) {
 	const res = await axiosSecure.post<Response<RCompanyReview>>(
-		`${baseUrl}/address`,
+		`${baseUrl}/review/company`,
 		reviewDetails,
 	);
 	return res.data;
@@ -27,7 +27,7 @@ export async function addTripReview(
 	reviewDetails: AddTripReview,
 ) {
 	const res = await axiosSecure.post<Response<RTripReview>>(
-		`${baseUrl}/address`,
+		`${baseUrl}/review/trip`,
 		reviewDetails,
 	);
 	return res.data;
