@@ -35,6 +35,4 @@ public class VehicleSeatConfig {
 
     @NotNull
 	private int premiumEconomyClassAfter;
-
-    @NotNull
 }
