@@ -1,8 +1,22 @@
 import { AxiosInstance } from 'axios';
 import { baseUrl } from '../../constants/api';
-import { CompanyVehicle, Fare, FareDetailsView, FareSearchParams } from '../../types';
+import {
+	AddFare,
+	CompanyVehicle,
+	Fare,
+	FareDetailsView,
+	FareSearchParams,
+} from '../../types';
 import { Response } from '../../types/ResponseTypes';
 import { SeatTicket, VehicleSeatConfig } from '../../types/SeatTypes';
+
+export async function createFare(axiosSecure: AxiosInstance, addFareRequest: AddFare) {
+	const response = await axiosSecure.post<Response<Fare>>(
+		`${baseUrl}/fare`,
+		addFareRequest,
+	);
+	return response.data;
+}
 
 export async function getFareView(axiosSecure: AxiosInstance, fareId: number) {
 	const response = await axiosSecure.get<Response<SeatTicket[]>>(

@@ -11,8 +11,9 @@ import {
 } from '@mantine/core';
 import { DatePickerInput, TimeInput } from '@mantine/dates';
 import { UseFormReturnType, useForm } from '@mantine/form';
+import { notifications } from '@mantine/notifications';
 import { IconBus, IconPlane } from '@tabler/icons-react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { forwardRef, useState } from 'react';
 import { primaryAccordionColor } from '../../constants/colors';
@@ -22,7 +23,7 @@ import useVehicles from '../../hooks/fare/useVehicles';
 import useGetStations from '../../hooks/location/useGetStations';
 import useCompany from '../../hooks/users/useCompany';
 import LoadingPage from '../../pages/LoadingPage';
-import { getCompanyVehicles } from '../../services/fare';
+import { createFare, getCompanyVehicles } from '../../services/fare';
 import { AddFare, CompanyVehicle } from '../../types/FareTypes';
 import { Station, StationType } from '../../types/LocationTypes';
 import { isErrorResponse } from '../../utils/utils';
@@ -136,6 +137,10 @@ const AddFareForm = () => {
 		};
 	});
 
+	const { mutateAsync: addFare } = useMutation({
+		mutationKey: ['addFare'],
+		mutationFn: (addFare: AddFare) => createFare(axiosSecure, addFare),
+	});
 	const handleAddFare = async () => {
 		const validation = form.validate();
 		if (validation.hasErrors) {
@@ -160,6 +165,18 @@ const AddFareForm = () => {
 			companyId: companyQuery?.data?.data?.company.company_id!,
 			price: form.values.price,
 		};
+		const res = await addFare(fareDetails);
+		if (isErrorResponse(res)) {
+			notifications.show({
+				message: res?.msg || "Something went wrong. Couldn't add the fare",
+				color: 'red',
+			});
+		} else {
+			notifications.show({
+				message: 'Fare added successfully.',
+				color: 'green',
+			});
+		}
 	};
 	return (
 		<Card padding={36} bg={primaryAccordionColor} withBorder radius="xl" shadow="xl">
