@@ -31,6 +31,7 @@ import SoldTicketsPage from './pages/tickets/past-tickets/SoldTicketsPage';
 import AddVehiclePage from './pages/vehicle/AddVehiclePage';
 import ListVehiclesPage from './pages/vehicle/ListVehiclesPage';
 import CompanyReviewsPage from './pages/review/CompanyReviewsPage';
+import SystemReportsPage from './pages/system/SystemReportsPage';
 
 const router = createBrowserRouter([
 	{
@@ -138,6 +139,10 @@ const router = createBrowserRouter([
 					{
 						path: '/my-companys-reviews',
 						element: <CompanyReviewsPage />,
+					},
+					{
+						path: '/system-reports',
+						element: <SystemReportsPage />,
 					},
 				],
 			},

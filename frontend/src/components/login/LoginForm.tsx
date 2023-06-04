@@ -59,6 +59,10 @@ const LoginForm = () => {
 			autoClose: 5000,
 			withCloseButton: true,
 			style: { backgroundColor: 'green' },
+			styles: (theme) => ({
+				title: { color: theme.white },
+				description: { color: theme.white }
+			})
 		});
 		navigate('/search-fare');
 	};
