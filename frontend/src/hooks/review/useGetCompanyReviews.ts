@@ -4,8 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 
 const useGetCompanyReviews = (axiosSecure: AxiosInstance, companyId: number) => {
 	return useQuery({
-		queryKey: ['getCompanyReviews'],
+		queryKey: ['getCompanyReviews', companyId],
 		queryFn: () => getCompanyReviews(axiosSecure, companyId),
+		enabled: !!companyId,
 	});
 };
 

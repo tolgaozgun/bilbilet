@@ -65,7 +65,7 @@ export async function getMyCompanyReviews(axiosSecure: AxiosInstance, userId: nu
 }
 
 export async function getCompanyAverages(axiosSecure: AxiosInstance, companyId: number) {
-	const res = await axiosSecure.get<Response<RReviewAvg>>(
+	const res = await axiosSecure.get<Response<Array<RReviewAvg>>>(
 		`${baseUrl}/review/company/${companyId}/avg`,
 	);
 	return res.data;
@@ -75,7 +75,7 @@ export async function getTripAverageByCompany(
 	axiosSecure: AxiosInstance,
 	companyId: number,
 ) {
-	const res = await axiosSecure.get<Response<RReviewAvg>>(
+	const res = await axiosSecure.get<Response<Array<RReviewAvg>>>(
 		`${baseUrl}/review/trip/${companyId}/avg`,
 	);
 	return res.data;

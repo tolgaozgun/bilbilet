@@ -4,8 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 
 const useGetCompanyAverages = (axiosSecure: AxiosInstance, companyId: number) => {
 	return useQuery({
-		queryKey: ['getCompanyAverages'],
+		queryKey: ['getCompanyAverages', companyId],
 		queryFn: () => getCompanyAverages(axiosSecure, companyId),
+		enabled: !!companyId,
 	});
 };
 
