@@ -28,6 +28,7 @@ const TravelerProfilePage = () => {
 		isLoading,
 		isError,
 		data: travelerResponse,
+		refetch,
 	} = useTraveler(axiosSecure, user?.id!);
 	const traveler = travelerResponse?.data;
 

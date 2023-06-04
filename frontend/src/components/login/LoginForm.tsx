@@ -60,7 +60,12 @@ const LoginForm = () => {
 			withCloseButton: true,
 			style: { backgroundColor: 'green' },
 		});
-		navigate('/search-fare');
+
+		if (res.data.userType === 'COMPANY') {
+			navigate('/add-fare');
+		} else if (res.data.userType === 'TRAVELER') {
+			navigate('/search-fare');
+		}
 	};
 
 	return (

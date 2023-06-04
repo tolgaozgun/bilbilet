@@ -9,7 +9,7 @@ import LoadingPage from '../LoadingPage';
 const AddFarePage = () => {
 	return (
 		<Center>
-			<AddFareForm></AddFareForm>
+			<AddFareForm />
 		</Center>
 	);
 };
