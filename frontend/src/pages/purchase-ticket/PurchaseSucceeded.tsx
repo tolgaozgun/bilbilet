@@ -11,7 +11,17 @@ import {
 import { IconArrowLeft, IconDownload } from '@tabler/icons-react';
 import SubtleLinkButton from '../../components/common/buttons/SubtleLinkButton';
 
-const PurchaseSucceeded = () => {
+interface PurchaseSucceededProps {
+	message?: string;
+	ticketId?: number;
+	ticketDetails: null;
+}
+
+const PurchaseSucceeded = ({
+	message,
+	ticketId,
+	ticketDetails,
+}: PurchaseSucceededProps) => {
 	return (
 		<Center h="90%">
 			<Stack align="center" maw={450} spacing="xl">

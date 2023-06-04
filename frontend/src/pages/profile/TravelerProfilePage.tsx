@@ -36,7 +36,12 @@ const TravelerProfilePage = () => {
 	}
 
 	if (isError) {
-		if (isErrorResponse<TravelerInfo>(travelerResponse)) {
+		if (!travelerResponse) {
+			notifications.show({
+				message:
+					"We couldn't receive a response from the servers. Please try again.",
+			});
+		} else if (isErrorResponse<TravelerInfo>(travelerResponse)) {
 			notifications.show({
 				message: travelerResponse.msg,
 			});
