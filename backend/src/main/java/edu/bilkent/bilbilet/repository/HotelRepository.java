@@ -123,6 +123,7 @@ public class HotelRepository {
             // Check the case
             boolean isOrderBy = property.compareTo("order_by") == 0;
             boolean isBetweenStatement = property.compareTo("avg_price") == 0 || property.compareTo("rating") == 0;
+            boolean isName = property.compareTo("name") == 0;
             
             if (!isOrderBy && andNeeded) {
                 sqlBuilder.append(" AND ");
@@ -147,8 +148,11 @@ public class HotelRepository {
                 String[] rangeList = paramStr.split(",");
                 parameterValues.add(rangeList[0]);
                 parameterValues.add(rangeList[1]);
-            } 
-            else {
+            } else if (isName) {
+                sqlBuilder.append(property);
+                sqlBuilder.append(" LIKE CONCAT('%', ?, '%')");
+                parameterValues.add(param);
+            } else {
                 sqlBuilder.append(property);
                 sqlBuilder.append(" = ? ");
                 parameterValues.add(param);
