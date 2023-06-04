@@ -5,7 +5,7 @@ import { FareSearchParams } from '../../types';
 
 const useBusFares = (axiosSecure: AxiosInstance, filterParams: FareSearchParams | {}) => {
 	return useQuery({
-		queryKey: ['flightFares', filterParams],
+		queryKey: ['busFares', filterParams],
 		queryFn: () => getBusFares(axiosSecure, filterParams),
 	});
 };

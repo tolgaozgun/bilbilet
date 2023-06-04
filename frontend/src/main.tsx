@@ -27,12 +27,11 @@ import SearchRentCarPage from './pages/rent-car/SearchRentCarPage';
 import CompanyReviewsPage from './pages/review/CompanyReviewsPage';
 import MyReviewsPage from './pages/review/MyReviewsPage';
 import ReviewPage from './pages/review/ReviewPage';
+import SystemReportsPage from './pages/system/SystemReportsPage';
 import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
 import SoldTicketsPage from './pages/tickets/past-tickets/SoldTicketsPage';
 import AddVehiclePage from './pages/vehicle/AddVehiclePage';
 import ListVehiclesPage from './pages/vehicle/ListVehiclesPage';
-import CompanyReviewsPage from './pages/review/CompanyReviewsPage';
-import SystemReportsPage from './pages/system/SystemReportsPage';
 
 const router = createBrowserRouter([
 	{
@@ -141,15 +140,13 @@ const router = createBrowserRouter([
 						path: '/my-companys-reviews',
 						element: <CompanyReviewsPage />,
 					},
-          {
-            path: '/system-reports',
+					{
+						path: '/system-reports',
 						element: <SystemReportsPage />,
-          },
-          {
+					},
+					{
 						path: '*',
 						element: <PageNotFound />,
-          }
-					
 					},
 				],
 			},

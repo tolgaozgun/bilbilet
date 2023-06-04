@@ -25,7 +25,7 @@ const PurchaseFailed = ({ message, ticketId }: PurchaseFailedProps) => {
 					Something went wrong during the payment process. Please try again and
 					make sure you have the right amount of money.
 				</Text>
-				<SubtleLinkButton to="/fare/:id">
+				<SubtleLinkButton to="/search-fare">
 					<IconArrowLeft /> Go back to purchasing page
 				</SubtleLinkButton>
 			</Stack>
