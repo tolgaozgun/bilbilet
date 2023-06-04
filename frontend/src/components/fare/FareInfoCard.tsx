@@ -1,5 +1,5 @@
 import { Card, Flex, Text, Title } from '@mantine/core';
-import { IconArrowRight, IconPlane } from '@tabler/icons-react';
+import { IconArrowRight, IconBus, IconPlane } from '@tabler/icons-react';
 import SubtleLinkButton from '../common/buttons/SubtleLinkButton';
 interface FareInfoCardProps {
 	companyName: string;
@@ -14,6 +14,7 @@ interface FareInfoCardProps {
 	duration: string;
 	price: number;
 	fareId: number;
+	type: string;
 }
 const FareInfoCard = ({
 	companyName,
@@ -28,12 +29,14 @@ const FareInfoCard = ({
 	duration,
 	price,
 	fareId,
+	type,
 }: FareInfoCardProps) => {
 	return (
 		<Card shadow="xl" withBorder radius={'lg'}>
 			<Flex direction={'column'} gap={'xs'} align={'start'} rowGap={20}>
 				<Flex direction={'row'} gap={'sm'} align={'center'}>
-					<IconPlane></IconPlane>
+					{type === 'bus' && <IconBus />}
+					{type === 'plane' && <IconPlane />}
 					<Title color="blue" order={3}>
 						{companyName}
 					</Title>
