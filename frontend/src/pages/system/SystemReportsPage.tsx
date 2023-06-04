@@ -7,22 +7,22 @@ const SystemReportsPage = () => {
 			<Tabs defaultValue="mostRentedCars">
 				<Tabs.List>
 					<Tabs.Tab icon={<IconCar size="1rem" />} value="mostRentedCars">
-						Most Rented Cars
+						Most Popular Rental Cars
 					</Tabs.Tab>
 					<Tabs.Tab icon={<IconTicket size="1rem" />} value="companyWithMostPurchasedTickets">
-						Companies With Most Purchased Tickets
+						Most Popular Companies
 					</Tabs.Tab>
 					<Tabs.Tab icon={<IconLocation size="1rem" />} value="mostPurchasedArrival">
-						Most Purchased Arrival
+						Most Popular Arrivals
 					</Tabs.Tab>
 					<Tabs.Tab icon={<IconLocation size="1rem" />} value="mostPurchasedDestination">
-						Most Purchased Destination
+						Most Popular Destinations
 					</Tabs.Tab>
 					<Tabs.Tab icon={<IconMoneybag size="1rem" />} value="mostExpensiveTicketOfCompany">
-						Most Expensive Ticket Of Companies
+						Most Expensive Tickets
 					</Tabs.Tab>
 					<Tabs.Tab icon={<IconPigMoney size="1rem" />} value="cheapestTicketOfCompany">
-						Cheapest Ticket Of Companies
+						Cheapest Tickets
 					</Tabs.Tab>
 				</Tabs.List>
 
@@ -40,25 +40,25 @@ const SystemReportsPage = () => {
 
 				<Tabs.Panel value="mostPurchasedArrival" pt="md">
 					<Flex direction="column" gap="md">
-						<Title>Most Purchased Arrival</Title>
+						<Title>Most Purchased Arrivals</Title>
 					</Flex>
 				</Tabs.Panel>
 
 				<Tabs.Panel value="mostPurchasedDestination" pt="md">
 					<Flex direction="column" gap="md">
-						<Title>Most Purchased Destination</Title>
+						<Title>Most Purchased Destinations</Title>
 					</Flex>
 				</Tabs.Panel>
 
 				<Tabs.Panel value="mostExpensiveTicketOfCompany" pt="md">
 					<Flex direction="column" gap="md">
-						<Title>Most Expensive Ticket Of Companies</Title>
+						<Title>Most Expensive Tickets Of Companies</Title>
 					</Flex>
 				</Tabs.Panel>
 
 				<Tabs.Panel value="cheapestTicketOfCompany" pt="md">
 					<Flex direction="column" gap="md">
-						<Title>Cheapest Ticket Of Companies</Title>
+						<Title>Cheapest Tickets Of Companies</Title>
 					</Flex>
 				</Tabs.Panel>
 			</Tabs>
