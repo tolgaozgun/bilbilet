@@ -9,7 +9,7 @@ import {
 	TextInput,
 	Title,
 } from '@mantine/core';
-import { DatePickerInput, TimeInput } from '@mantine/dates';
+import { DatePickerInput, DateTimePicker, TimeInput } from '@mantine/dates';
 import { UseFormReturnType, useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { IconBus, IconPlane } from '@tabler/icons-react';
@@ -24,7 +24,7 @@ import useGetStations from '../../hooks/location/useGetStations';
 import useCompany from '../../hooks/users/useCompany';
 import LoadingPage from '../../pages/LoadingPage';
 import { createFare, getCompanyVehicles } from '../../services/fare';
-import { AddFare, CompanyVehicle } from '../../types/FareTypes';
+import { AddFare, CompanyVehicle, VehicleType } from '../../types/FareTypes';
 import { Station, StationType } from '../../types/LocationTypes';
 import { isErrorResponse } from '../../utils/utils';
 import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
@@ -51,55 +51,67 @@ const CustomSelectItem = forwardRef<HTMLDivElement, ItemProps>(
 		</div>
 	),
 );
+
+interface VehicleSelectItemProps extends React.ComponentPropsWithoutRef<'div'> {
+	vehicleType: VehicleType;
+	label: string;
+	description: string;
+}
+
+const CustomVehicleSelectItem = forwardRef<HTMLDivElement, VehicleSelectItemProps>(
+	({ vehicleType, label, description, ...others }: VehicleSelectItemProps, ref) => (
+		<div ref={ref} {...others}>
+			<Group noWrap>
+				{vehicleType === 'PLANE' ? <IconPlane /> : <IconBus />}
+				<div>
+					<Text size="sm">{label}</Text>
+					<Text size="xs" opacity={0.65}>
+						{description}
+					</Text>
+				</div>
+			</Group>
+		</div>
+	),
+);
+
 const AddFareForm = () => {
 	const axiosSecure = useAxiosSecure();
 	const user = useUser();
+	const companyQuery = useCompany(axiosSecure, user?.id!);
+
 	const form = useForm({
 		initialValues: {
-			companyName: '',
-			transportationType: '',
 			price: 0,
 			depDate: new Date(),
-			depTime: new Date(),
 			depStation: 0,
 			arrivalStation: 0,
 			arrivalTime: new Date(),
 			capacity: 0,
-			duration: '',
-			vehicleType: '',
+			duration: 0,
 			businessExtraPrice: 0,
 			firstClassExtraPrice: 0,
 			premiumEconExtraPrice: 0,
 			vehicleId: 0,
 		},
 		validate: {
-			companyName: (value) =>
-				value.trim().length > 0 ? true : 'Company name is required',
-			price: (value) => (value > 0 ? true : 'Price must be greater than 0'),
-			depDate: (value) =>
-				value > new Date() ? true : 'Departure date must be in the future',
-			depTime: (value) =>
-				value > new Date() ? true : 'Departure time must be in the future',
-			depStation: (value) => (value > 0 ? true : 'Departure station is required'),
-			arrivalStation: (value) => (value > 0 ? true : 'Arrival station is required'),
-			arrivalTime: (value) =>
-				value > new Date() ? true : 'Arrival time must be in the future',
-			capacity: (value) => (value > 0 ? true : 'Capacity must be greater than 0'),
-			duration: (value) =>
-				value.trim().length > 0 ? true : 'Duration is required',
-			vehicleType: (value) =>
-				value.trim().length > 0 ? true : 'Vehicle type is required',
-			businessExtraPrice: (value) =>
-				value > 0 ? true : 'Business extra price must be greater than 0',
-			firstClassExtraPrice: (value) =>
-				value > 0 ? true : 'First class extra price must be greater than 0',
-			premiumEconExtraPrice: (value) =>
-				value > 0 ? true : 'Premium extra price must be greater than 0',
-			vehicleId: (value) => (value > 0 ? true : 'Vehicle id is required'),
+			depDate: (value, values) =>
+				value < values.arrivalTime
+					? null
+					: 'Departure date must be before arrival date',
+			arrivalTime: (value, values) => {
+				return value > values.depDate
+					? null
+					: 'Arrival date must be after departure date';
+			},
+			price: (value) => (value > 0 ? null : 'Price must be greater than 0'),
+			duration: (value) => (value > 0 ? null : 'Duration must be greater than 0'),
+			capacity: (value) => (value > 0 ? null : 'Capacity must be greater than 0'),
+			arrivalStation: (value) =>
+				Number(value) > 0 ? null : 'Arrival station must be selected',
+			depStation: (value) =>
+				Number(value) > 0 ? null : 'Departure station must be selected',
 		},
 	});
-
-	const companyQuery = useCompany(axiosSecure, user?.id!);
 	const {
 		data: allStations,
 		isLoading: isStationsLoading,
@@ -112,6 +124,11 @@ const AddFareForm = () => {
 		enabled: !!companyQuery.data?.data?.company.company_id,
 	});
 
+	const { mutateAsync: addFare } = useMutation({
+		mutationKey: ['addFare'],
+		mutationFn: (addFare: AddFare) => createFare(axiosSecure, addFare),
+	});
+
 	if (isStationsLoading || companyQuery.isLoading || vehiclesQuery.isLoading) {
 		return <LoadingPage />;
 	}
@@ -120,41 +137,63 @@ const AddFareForm = () => {
 	}
 
 	const stationList: Array<Station> = allStations.data!;
-	const stationData: Array<SelectItem> = stationList!.map((station) => {
-		return {
-			stationType: station.stationType,
-			label: station.title,
-			value: String(station.stationId),
-			description: station.city,
-		};
-	});
+	const stationData: Array<SelectItem> = stationList!
+		.map((station) => {
+			return {
+				stationType: station.stationType,
+				label: station.title,
+				value: String(station.stationId),
+				description: station.city,
+			};
+		})
+		.filter((station) => {
+			if (
+				station.stationType === 'AIRPORT' &&
+				companyQuery.data?.data?.company.type === 'AIRLINE'
+			) {
+				return station;
+			} else if (
+				station.stationType === 'BUS_TERMINAL' &&
+				companyQuery.data?.data?.company.type === 'BUS'
+			) {
+				return station;
+			}
+		});
 	const vehicleList: Array<CompanyVehicle> = vehiclesQuery.data.data!;
+	console.log(vehicleList);
 	const vehicleData: Array<SelectItem> = vehicleList!.map((vehicle) => {
 		return {
+			vehicleType: vehicle.vehicleType,
 			label: String(vehicle.vehicleId),
 			value: String(vehicle.vehicleId),
 			description: vehicle.vehicleType,
 		};
 	});
-
-	const { mutateAsync: addFare } = useMutation({
-		mutationKey: ['addFare'],
-		mutationFn: (addFare: AddFare) => createFare(axiosSecure, addFare),
+	const vehicleDataFinal = vehicleData.filter((vehicle) => {
+		if (
+			vehicle.vehicleType === 'BUS' &&
+			companyQuery.data?.data?.company.type === 'BUS'
+		) {
+			return vehicle;
+		} else if (
+			vehicle.vehicleType === 'PLANE' &&
+			companyQuery.data?.data?.company.type === 'AIRLINE'
+		) {
+			return vehicle;
+		}
 	});
+
 	const handleAddFare = async () => {
+		console.log(form.values);
 		const validation = form.validate();
 		if (validation.hasErrors) {
 			return;
 		}
 
-		const estimatedDepTime = new Date(form.values.depDate);
-		estimatedDepTime.setHours(form.values.depTime.getHours());
-		estimatedDepTime.setMinutes(form.values.depTime.getMinutes());
-
 		const fareDetails: AddFare = {
 			fareId: 0,
 			depStationId: form.values.depStation,
-			estimatedDepTime: estimatedDepTime,
+			estimatedDepTime: form.values.depDate,
 			arrStationId: form.values.arrivalStation,
 			estimatedArrTime: form.values.arrivalTime,
 			firstClassExtraPrice: form.values.firstClassExtraPrice,
@@ -178,6 +217,7 @@ const AddFareForm = () => {
 			});
 		}
 	};
+
 	return (
 		<Card padding={36} bg={primaryAccordionColor} withBorder radius="xl" shadow="xl">
 			<Title>Add A New Fare</Title>
@@ -187,14 +227,14 @@ const AddFareForm = () => {
 						<TextInput
 							withAsterisk
 							label="Company Name"
-							{...form.getInputProps('companyName')}
+							disabled
+							value={companyQuery.data?.data?.company.company_title}
 						/>
-						<Select
+						<TextInput
 							withAsterisk
 							label="Transportation type"
-							data={['FLIGHT', 'BUS_TERMINAL']}
-							clearable
-							{...form.getInputProps('transportationType')}
+							disabled
+							value={companyQuery.data?.data?.company.type}
 						/>
 						<Select
 							label="Departure Station"
@@ -207,27 +247,21 @@ const AddFareForm = () => {
 							maxDropdownHeight={400}
 							nothingFound="No station found"
 						/>
-						<DatePickerInput
-							type="default"
+						<DateTimePicker
 							label="Departure Date"
 							placeholder="Departure Date"
 							withAsterisk
 							valueFormat="DD-MM-YYYY"
 							{...form.getInputProps('depDate')}
 						/>
-						<TimeInput
-							label="Departure Time"
-							withAsterisk
-							{...form.getInputProps('depTime')}
-						/>
 						<Select
 							label="Vehicle"
 							placeholder="Pick one"
-							itemComponent={CustomSelectItem}
-							data={vehicleData}
+							itemComponent={CustomVehicleSelectItem}
+							data={vehicleDataFinal}
 							searchable
 							withAsterisk
-							{...form.getInputProps('depStation')}
+							{...form.getInputProps('vehicleId')}
 						/>
 						<Select
 							label="Arrival Station"
@@ -240,9 +274,11 @@ const AddFareForm = () => {
 							maxDropdownHeight={400}
 							nothingFound="No station found"
 						/>
-						<TimeInput
-							label="Arrival Time"
+						<DateTimePicker
+							label="Arrival Date"
+							placeholder="Arrival Date"
 							withAsterisk
+							valueFormat="DD-MM-YYYY"
 							{...form.getInputProps('arrivalTime')}
 						/>
 						<TextInput
@@ -259,33 +295,26 @@ const AddFareForm = () => {
 						/>
 						<NumberInput
 							withAsterisk
-							label="Capacity"
+							label="First Class Extra Price"
 							variant="filled"
 							min={0}
 							{...form.getInputProps('firstClassExtraPrice')}
 						/>
 						<NumberInput
 							withAsterisk
-							label="Capacity"
+							label="Business Extra Price"
 							variant="filled"
 							min={0}
 							{...form.getInputProps('businessExtraPrice')}
 						/>
 						<NumberInput
 							withAsterisk
-							label="Capacity"
+							label="Premium Economy Extra Price"
 							variant="filled"
 							min={0}
 							{...form.getInputProps('premiumEconExtraPrice')}
 						/>
 						<NumberInput
-							withAsterisk
-							label="Capacity"
-							variant="filled"
-							min={0}
-							{...form.getInputProps('capacity')}
-						/>
-						<TextInput
 							withAsterisk
 							label="Duration"
 							variant="filled"

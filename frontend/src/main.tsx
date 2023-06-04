@@ -8,6 +8,7 @@ import './index.css';
 import Layout from './layout';
 import SearchFarePage from './pages/fare/SearchFarePage';
 
+import PageNotFound from './pages/PageNotFound';
 import AddFarePage from './pages/fare/AddFarePage';
 import SeatSelectionPage from './pages/fare/SeatSelectionPage';
 import AddHotelPage from './pages/hotel/AddHotelPage';
@@ -26,11 +27,11 @@ import SearchRentCarPage from './pages/rent-car/SearchRentCarPage';
 import CompanyReviewsPage from './pages/review/CompanyReviewsPage';
 import MyReviewsPage from './pages/review/MyReviewsPage';
 import ReviewPage from './pages/review/ReviewPage';
+import SystemReportsPage from './pages/system/SystemReportsPage';
 import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
 import SoldTicketsPage from './pages/tickets/past-tickets/SoldTicketsPage';
 import AddVehiclePage from './pages/vehicle/AddVehiclePage';
 import ListVehiclesPage from './pages/vehicle/ListVehiclesPage';
-import SystemReportsPage from './pages/system/SystemReportsPage';
 
 const router = createBrowserRouter([
 	{
@@ -80,7 +81,7 @@ const router = createBrowserRouter([
 						element: <PurchaseTicketPage />,
 					},
 					{
-						path: '/purchase-succeeded',
+						path: '/purchase-successful',
 						element: <PurchaseSucceeded ticketDetails={null} />,
 					},
 					{
@@ -142,6 +143,10 @@ const router = createBrowserRouter([
 					{
 						path: '/system-reports',
 						element: <SystemReportsPage />,
+					},
+					{
+						path: '*',
+						element: <PageNotFound />,
 					},
 				],
 			},

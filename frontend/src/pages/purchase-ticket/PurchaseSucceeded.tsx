@@ -41,7 +41,6 @@ const PurchaseSucceeded = ({
 					We have sent to your email and phone number a copy of the ticket, but
 					you can still download the ticket if you want.
 				</Text>
-				<Button leftIcon={<IconDownload />}>Download Ticket</Button>
 				<SubtleLinkButton to="/travel-list">
 					<IconArrowLeft /> Go to your travel list
 				</SubtleLinkButton>

@@ -12,6 +12,7 @@ import {
 } from '@mantine/core';
 import { IconArrowRight } from '@tabler/icons-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { SeatLocation, SeatTicket, VehicleSeatConfig } from '../../types/SeatTypes';
 import { convertFlightColumnToAlphabetic } from '../../utils/utils';
 
@@ -94,15 +95,20 @@ const SeatConfiguration = ({ seatConfig, seatTickets }: SeatConfigurationProps) 
 		setSelectedSeats([seatLocation]);
 	};
 
-	const selectedSeatInfo = seatTickets.find(
-		(seat) =>
+	const selectedSeatInfo = seatTickets.find((seat) => {
+		if (selectedSeats.length === 0) {
+			return false;
+		}
+
+		return (
 			seat.seatRow === selectedSeats[0][0] &&
-			seat.seatColumn === selectedSeats[0][1],
-	);
+			seat.seatColumn === selectedSeats[0][1]
+		);
+	});
 
 	return (
 		<Center>
-			<Stack>
+			<Stack align="center" spacing="lg">
 				<Title>{seatConfig.configName}</Title>
 				<Group>
 					<Badge color="yellow">First Class</Badge>
@@ -111,17 +117,23 @@ const SeatConfiguration = ({ seatConfig, seatTickets }: SeatConfigurationProps) 
 					<Badge color="gray">Economy Class</Badge>
 					<Badge color="red">Selected</Badge>
 				</Group>
-				<Button
-					rightIcon={<IconArrowRight />}
-					disabled={selectedSeats.length === 0}
-				>
+				<Text fw={700} color="blue">
+					Selected seat:{' '}
 					{selectedSeatInfo
-						? `${selectedSeatInfo.seatRow},${convertFlightColumnToAlphabetic(
+						? `${selectedSeatInfo.seatRow}${convertFlightColumnToAlphabetic(
 								selectedSeatInfo.seatColumn,
 						  )}`
-						: ''}
-					Buy Now {selectedSeatInfo ? `${selectedSeatInfo.totalPrice}` : null}
-				</Button>
+						: 'None'}{' '}
+				</Text>
+				<Link to={`/purchase-ticket/${selectedSeatInfo?.ticketId}`}>
+					<Button
+						rightIcon={<IconArrowRight />}
+						disabled={selectedSeats.length === 0}
+					>
+						Buy Now{' '}
+						{selectedSeatInfo ? ` ${selectedSeatInfo.totalPrice} TL` : null}
+					</Button>
+				</Link>
 				<Flex direction="column">
 					{Array.from(
 						{ length: Number(seatConfig.configTotalRows) },

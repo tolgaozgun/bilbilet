@@ -72,11 +72,24 @@ public class TicketRepository {
         }
     }
     
+    public Integer findCompanyUserIdByTicketId(int ticketId) throws ItemNotFoundException {
+        String sql = "SELECT c.user_id FROM Ticket t INNER JOIN Fare f ON f.fare_id = t.fare_id "
+                   + "INNER JOIN Company c ON c.company_id = f.company_id WHERE ticket_id = ?";
+        try {
+            Integer ticket = jdbcTemplate.queryForObject(sql, TicketRowMapper.COMPANY_USER_ID_ROW_MAPPER, ticketId);
+            return ticket;
+        } catch (EmptyResultDataAccessException e) {
+            throw new ItemNotFoundException("Ticket id not found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    
     public List<RTicketView> findTicketByFareId(int fareId) {
         String sql = "SELECT * FROM DisplayFareTicketsView WHERE fare_id = ?";
         try {
             List<RTicketView> tickets = jdbcTemplate.query(sql, TicketRowMapper.DISPLAY_FARE_TICKETS_VIEW_ROW_MAPPER, fareId);
-            System.out.println("bu ne sacmalik amk");
             return tickets;
         } catch (Exception e) {
             e.printStackTrace();

@@ -30,6 +30,9 @@ export function convertFlightColumnToAlphabetic(num: number): string {
 }
 
 export function convertDateToTime(date: Date): string {
+	if (date === null || date === undefined || date.toString() === 'Invalid Date') {
+		return '';
+	}
 	const hours = date.getHours().toString().padStart(2, '0');
 	const minutes = date.getMinutes().toString().padStart(2, '0');
 	return `${hours}:${minutes}`;
@@ -42,4 +45,27 @@ export function getTimeDifference(start: Date, end: Date): string {
 		(differenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60),
 	);
 	return `${hours} hours ${minutes} minutes`;
+}
+
+export function formatDate(date: Date): string {
+	const months: string[] = [
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December',
+	];
+
+	const day: number = date.getDate();
+	const month: string = months[date.getMonth()];
+	const year: number = date.getFullYear();
+
+	return `${day}, ${month} ${year}`;
 }

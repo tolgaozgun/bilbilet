@@ -16,6 +16,4 @@ public class BalancePayment {
 
     @NotNull
     BigDecimal amount;
-
-
 }

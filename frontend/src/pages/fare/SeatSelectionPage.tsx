@@ -10,16 +10,7 @@ import LoadingPage from '../LoadingPage';
 const SeatSelectionPage = () => {
 	const { fareId } = useParams();
 	const axiosSecure = useAxiosSecure();
-	const config: VehicleSeatConfig = {
-		configId: 1,
-		configName: 'Deneme',
-		seatingArrangement: '3,2,3',
-		configTotalRows: 30,
-		configTotalColumns: 8,
-		firstClassAfter: 3,
-		businessClassAfter: 8,
-		premiumEconomyClassAfter: 15,
-	};
+
 	const result = useQueries({
 		queries: [
 			{
@@ -27,12 +18,14 @@ const SeatSelectionPage = () => {
 				queryFn: () => getFareView(axiosSecure, Number(fareId)),
 			},
 			{
-				queryKey: ['getVehicleSeatConfig', 1],
+				queryKey: ['getVehicleSeatConfig', 2],
 				queryFn: () => getVehicleSeatConfig(axiosSecure, Number(fareId)),
 			},
 		],
 	});
 
+	console.log(fareId);
+	console.log(result);
 	if (result[0].isLoading || result[1].isLoading) {
 		return <LoadingPage />;
 	}
