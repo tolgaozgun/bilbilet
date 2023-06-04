@@ -1,6 +1,7 @@
 package edu.bilkent.bilbilet.request.vehicle;
 
 import edu.bilkent.bilbilet.enums.VehicleType;
+import edu.bilkent.bilbilet.model.VehicleSeatConfig;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ public class AddCompanyBus {
     private int capacity;
 
     @NotNull
-    private int seatConfigurationId;
+    private VehicleSeatConfig seatConfig;
 
     @NotNull
     private int companyId;

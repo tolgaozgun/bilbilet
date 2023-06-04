@@ -1,17 +1,17 @@
 import {
-	Flex,
 	Button,
-	Select,
-	NumberInput,
+	Flex,
 	Group,
-	Text,
+	NumberInput,
+	Select,
 	SelectItem,
+	Text,
 } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
-import { forwardRef, useState } from 'react';
-import { primaryButtonColor } from '../../constants/colors';
 import { IconBus, IconPlane } from '@tabler/icons-react';
-import { StationType } from '../../types/LocationTypes';
+import { forwardRef, useState } from 'react';
+import { primaryButtonColor } from '../../../constants/colors';
+import { StationType } from '../../../types/LocationTypes';
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
 	stationType: StationType;
 	label: string;

@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useUser } from '../../../hooks/auth';
 import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
 import { uploadMoneyToBalance } from '../../../services/payment';
-import { BalanceAddFundsRequest } from '../../../types/PaymentTypes';
+import { UploadMoneyToBalanceWithCCRequest } from '../../../types/PaymentTypes';
 import MoneyNumberInput from '../../common/inputs/MoneyNumberInput';
 
 const UploadToBalanceWithCCForm = () => {
@@ -42,7 +42,7 @@ const UploadToBalanceWithCCForm = () => {
 		data: transaction,
 	} = useMutation({
 		mutationKey: ['uploadToBalance'],
-		mutationFn: (uploadDetails: BalanceAddFundsRequest) => {
+		mutationFn: (uploadDetails: UploadMoneyToBalanceWithCCRequest) => {
 			return uploadMoneyToBalance(axiosSecure, uploadDetails);
 		},
 		onSuccess: () => {
@@ -58,7 +58,7 @@ const UploadToBalanceWithCCForm = () => {
 			return;
 		}
 
-		const uploadDetails: BalanceAddFundsRequest = {
+		const uploadDetails: UploadMoneyToBalanceWithCCRequest = {
 			amount: amount,
 			creditCard: {
 				cardNumber: form.values.cardNumber || 0,

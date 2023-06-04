@@ -8,6 +8,7 @@ import './index.css';
 import Layout from './layout';
 import SearchFarePage from './pages/fare/SearchFarePage';
 
+import SeatSelectionPage from './pages/fare/SeatSelectionPage';
 import AddHotelPage from './pages/hotel/AddHotelPage';
 import JourneyPlansPage from './pages/journey/JourneyPlansPage';
 import AddAddressPage from './pages/location/AddAddressPage';
@@ -22,6 +23,12 @@ import AddCarPage from './pages/rent-car/AddCarPage';
 import SearchRentCarPage from './pages/rent-car/SearchRentCarPage';
 import ReviewPage from './pages/review/ReviewPage';
 import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
+import MyReviewsPage from './pages/review/MyReviewsPage';
+import CompanyProfilePage from './pages/profile/CompanyProfilePage';
+import AddFarePage from './pages/fare/AddFarePage';
+import AddVehiclePage from './pages/vehicle/AddVehiclePage';
+import SoldTicketsPage from './pages/tickets/past-tickets/SoldTicketsPage';
+import CompanyReviewsPage from './pages/review/CompanyReviewsPage';
 
 const router = createBrowserRouter([
 	{
@@ -47,16 +54,28 @@ const router = createBrowserRouter([
 						element: <AddCarPage />,
 					},
 					{
+						path: '/add-fare',
+						element: <AddFarePage />,
+					},
+					{
+						path: '/add-vehicle',
+						element: <AddVehiclePage />,
+					},
+					{
+						path: '/sold-tickets',
+						element: <SoldTicketsPage />,
+					},
+					{
 						path: '/search-fare',
 						element: <SearchFarePage />,
 					},
 					{
-						path: '/purchase-ticket',
+						path: '/purchase-ticket/:ticketId',
 						element: <PurchaseTicketPage />,
 					},
 					{
 						path: '/purchase-succeeded',
-						element: <PurchaseSucceeded />,
+						element: <PurchaseSucceeded ticketDetails={null} />,
 					},
 					{
 						path: '/purchase-failed',
@@ -97,6 +116,22 @@ const router = createBrowserRouter([
 					{
 						path: '/traveler/profile',
 						element: <TravelerProfilePage />,
+					},
+					{
+						path: '/my-reviews',
+						element: <MyReviewsPage />,
+					},
+					{
+						path: '/fare/:fareId/select-seats',
+						element: <SeatSelectionPage />,
+          },
+          {
+						path: '/company/profile',
+						element: <CompanyProfilePage />,
+          },
+					{
+						path: '/my-companys-reviews',
+						element: <CompanyReviewsPage />,
 					},
 				],
 			},

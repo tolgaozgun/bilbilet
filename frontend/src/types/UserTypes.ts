@@ -12,7 +12,7 @@ export type User = {
 	surname: string;
 	email: string;
 	TCK: string;
-	phone: string;
+	telephone: string;
 	userType: UserType;
 	accessToken: string;
 	refreshToken: string;
