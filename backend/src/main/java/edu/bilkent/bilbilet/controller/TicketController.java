@@ -34,6 +34,17 @@ public class TicketController {
     private final TicketService ticketService;
 
     @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping
+    public ResponseEntity<Object> findAllTickets() {
+        try {
+            List<Ticket> tickets = ticketService.findAllTickets();
+            return Response.create("ok", HttpStatus.OK, tickets);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }        
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     @GetMapping("{ticketId}")
     public ResponseEntity<Object> findTicketByTicketId(@PathVariable int ticketId) {
         try {

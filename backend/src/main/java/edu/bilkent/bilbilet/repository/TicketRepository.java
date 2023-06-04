@@ -51,6 +51,16 @@ public class TicketRepository {
         }
     }
 
+    public List<Ticket> findAllTickets() {
+        String sql = "SELECT * FROM Ticket";
+        try {
+            return jdbcTemplate.query(sql, ticketRowMapper);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     public List<RUserTicketView> findTicketDetailsByTicketId(int ticketId) {
         String sql = "SELECT * FROM DisplayUserTicketsView WHERE ticket_id = ?";
         try {

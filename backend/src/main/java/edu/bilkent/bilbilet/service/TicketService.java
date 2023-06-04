@@ -37,6 +37,15 @@ public class TicketService {
         }
     }
 
+    public List<Ticket> findAllTickets() throws Exception {
+        try {
+            return ticketRepository.findAllTickets();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     public Optional<Ticket> findTicketByTicketId(int ticketId) throws Exception, ItemNotFoundException {
         try {
             Optional<Ticket> ticket = ticketRepository.findTicketByTicketId(ticketId);

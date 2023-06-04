@@ -87,13 +87,13 @@ CREATE TABLE IF NOT EXISTS CompanyCar (
 );
 
 CREATE TABLE IF NOT EXISTS CompanyPlane (
-    plane_id    INT         NOT NULL,
+    plane_id    INT NOT NULL AUTO_INCREMENT,
     tail_number VARCHAR(50) NOT NULL,
     PRIMARY KEY (plane_id)
 );
 
 CREATE TABLE IF NOT EXISTS CompanyBus (
-    bus_id       INT         NOT NULL,
+    bus_id       INT NOT NULL AUTO_INCREMENT,
     plate_number VARCHAR(50) NOT NULL,
     PRIMARY KEY (bus_id)
 );
