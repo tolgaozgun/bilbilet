@@ -68,7 +68,7 @@ const TravelerProfilePage = () => {
 							<Stack>
 								<Text>
 									<Text fw={700}> Balance: </Text>
-									{traveler?.traveler.balance}
+									{traveler?.traveler.balance} TL
 								</Text>
 								<Button onClick={open}>
 									Upload money to your balance

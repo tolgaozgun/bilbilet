@@ -9,6 +9,7 @@ import useCompany from '../../hooks/users/useCompany';
 import { CompanyInfo } from '../../types';
 import { isErrorResponse } from '../../utils/utils';
 import LoadingPage from '../LoadingPage';
+import WithdrawBalanceWithIBANForm from '../../components/payment/transaction/WithdrawBalanceWithIBANForm';
 
 const CompanyProfilePage = () => {
 	// const [opened, { open, close }] = useDisclosure(false);
@@ -86,16 +87,16 @@ const CompanyProfilePage = () => {
 						<Stack>
 							<Text>
 								<Text fw={700}> Balance: </Text>
-								{companyData?.company.balance}
+								{companyData?.company.balance} TL
 							</Text>
-							<Button>Upload money to balance</Button>
+							<Button onClick={open}>Withdraw Money</Button>
 						</Stack>
 					</Card>
 				</Stack>
 				</Card>
 			</Center>
 			<Modal opened={opened} onClose={close}>
-				<UploadToBalanceWithCCForm />
+				<WithdrawBalanceWithIBANForm />
 			</Modal>
 		</>
 	);
