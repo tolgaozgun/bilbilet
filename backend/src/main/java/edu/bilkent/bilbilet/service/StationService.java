@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import edu.bilkent.bilbilet.enums.StationType;
 import edu.bilkent.bilbilet.model.Address;
 import edu.bilkent.bilbilet.model.Station;
 import edu.bilkent.bilbilet.repository.AddressRepository;
@@ -25,7 +26,19 @@ public class StationService {
         try {
             List<RStationAddress> stationList = stationRepository.findStations();
             return stationList;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public List<RStationAddress> getStationsByType(StationType type) throws Exception {
+        try {
+            List<RStationAddress> stationList = stationRepository.findStationsByType(type);
+            return stationList;
+        }
+        catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
@@ -37,11 +50,14 @@ public class StationService {
             if (stationRepository.existsByTitle(stationDetails.getTitle())) {
                 throw new Exception("station already exists");
             }
+
             Address address;
+
             if (addressRepository.existsByCityCountry(stationDetails.getCity(), stationDetails.getCountry())) {
                 address = addressRepository
                         .findAddressByCityCountry(stationDetails.getCity(), stationDetails.getCountry()).get();
-            } else {
+            }
+            else {
                 Address addressToAdd = new Address();
                 addressToAdd.setCity(stationDetails.getCity());
                 addressToAdd.setCountry(stationDetails.getCountry());
@@ -60,7 +76,8 @@ public class StationService {
             Station newStation = stationRepository.save(stationToAdd);
 
             return newStation;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
