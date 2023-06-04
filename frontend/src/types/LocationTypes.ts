@@ -2,6 +2,7 @@ export type Station = AddStation & {
 	stationId: number;
 	addressId: number;
 };
+
 export type StationType = 'AIRPORT' | 'BUS_TERMINAL' | 'OTHER';
 
 export type AddStation = {
@@ -18,6 +19,7 @@ export type AddAddress = {
 	longitude: number;
 	latitude: number;
 };
+
 export type Address = AddAddress & {
 	addressId: number;
 };
