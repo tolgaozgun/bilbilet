@@ -118,6 +118,10 @@ public class TransactionService {
             if (amount.compareTo(BigDecimal.ZERO) <= 0) {
                 throw new IllegalArgumentException("Invalid amount");
             }
+            
+            if (traveler.get().getBalance().compareTo(amount) < 0) {
+                throw new IllegalArgumentException("Not enough balance 🥺");
+            }
 
             accountRepository.decrementTravelerBalance(travelerId, amount);
             // TODO: Ticket purchase
@@ -127,6 +131,42 @@ public class TransactionService {
             transaction.setTransactionAmount(amount);
             transaction.setSenderId(travelerId);
             transaction.setReceiverId(null);
+            return transactionRepository.save(transaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+    }
+
+    public Transaction balancePayment(BalancePayment balancePayment, int companyUserId) throws Exception{
+        try {
+            int travelerId = balancePayment.getTravelerId();
+
+            Optional<Traveler> traveler = accountRepository.findTravelerByUserId(travelerId);
+
+            if (traveler.isEmpty()) {
+                throw new IllegalArgumentException("Invalid traveler id");
+            }
+
+            BigDecimal amount = balancePayment.getAmount();
+
+            if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+                throw new IllegalArgumentException("Invalid amount");
+            }
+            
+            if (traveler.get().getBalance().compareTo(amount) < 0) {
+                throw new IllegalArgumentException("Not enough balance 🥺");
+            }
+
+            accountRepository.decrementTravelerBalance(travelerId, amount);
+            accountRepository.incrementCompanyBalance(companyUserId, amount);
+
+            Transaction transaction = new Transaction();
+            transaction.setTransactionType(TransactionType.BUY_TICKET_WITH_BALANCE);
+            transaction.setTransactionAmount(amount);
+            transaction.setSenderId(travelerId);
+            transaction.setReceiverId(companyUserId);
             return transactionRepository.save(transaction);
         } catch (Exception e) {
             e.printStackTrace();
@@ -242,6 +282,68 @@ public class TransactionService {
             throw e;
         }
     }
+    
+    public Transaction cardPayment(CardPayment cardPayment, int companyUserId) throws Exception {
+        try {
+            CreditCard creditCard = cardPayment.getCreditCard();
+
+            if (creditCard == null) {
+                throw new IllegalArgumentException("Credit card cannot be null");
+            }
+
+            String creditCardNumber = creditCard.getCardNumber();
+
+            if (creditCardNumber == null) {
+                throw new IllegalArgumentException("Credit card number cannot be null");
+            }
+
+            int creditCardMonth = creditCard.getExpirationMonth();
+
+            int creditCardYear = creditCard.getExpirationYear();
+
+            if (creditCardMonth <= 0 || creditCardMonth > 12) {
+                throw new IllegalArgumentException("Invalid month");
+            }
+
+            if (creditCardYear <= 0) {
+                throw new IllegalArgumentException("Invalid year");
+            }
+
+            // if (!CreditCardChecker.isValidExpiration(creditCardMonth, creditCardYear)) {
+            //     throw new IllegalArgumentException("Invalid expiration date");
+            // }
+
+            // if (!CreditCardChecker.isValidCreditCardNumber(creditCardNumber)) {
+            //     throw new IllegalArgumentException("Invalid credit card number");
+            // }
+
+            int travelerId = cardPayment.getTravelerId();
+
+            Optional<Traveler> traveler = accountRepository.findTravelerByUserId(travelerId);
+
+            if (traveler.isEmpty()) {
+                throw new IllegalArgumentException("Invalid traveler id");
+            }
+
+            BigDecimal amount = cardPayment.getAmount();
+
+            if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+                throw new IllegalArgumentException("Invalid amount");
+            }
+
+            accountRepository.incrementCompanyBalance(companyUserId, amount);
+
+            Transaction transaction = new Transaction();
+            transaction.setTransactionType(TransactionType.BUY_TICKET_WITH_CARD);
+            transaction.setTransactionAmount(amount);
+            transaction.setSenderId(travelerId);
+            transaction.setReceiverId(companyUserId);
+            return transactionRepository.save(transaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 
     public Transaction refund(Refund refund) throws Exception {
         try {
@@ -266,6 +368,37 @@ public class TransactionService {
             transaction.setTransactionAmount(amount);
             transaction.setSenderId(travelerId);
             transaction.setReceiverId(null);
+            return transactionRepository.save(transaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    
+    public Transaction refund(Refund refund, int companyUserId) throws Exception {
+        try {
+            int travelerId = refund.getTravelerId();
+
+            Optional<Traveler> traveler = accountRepository.findTravelerByUserId(travelerId);
+
+            if (traveler.isEmpty()) {
+                throw new IllegalArgumentException("Invalid traveler id");
+            }
+
+            BigDecimal amount = refund.getAmount();
+
+            if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+                throw new IllegalArgumentException("Invalid amount");
+            }
+
+            accountRepository.incrementTravelerBalance(travelerId, amount);
+            accountRepository.decrementCompanyBalance(companyUserId, amount);
+
+            Transaction transaction = new Transaction();
+            transaction.setTransactionType(TransactionType.REFUND);
+            transaction.setTransactionAmount(amount);
+            transaction.setSenderId(travelerId);
+            transaction.setReceiverId(companyUserId);
             return transactionRepository.save(transaction);
         } catch (Exception e) {
             e.printStackTrace();

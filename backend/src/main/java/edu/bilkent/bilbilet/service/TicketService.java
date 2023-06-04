@@ -17,6 +17,9 @@ import edu.bilkent.bilbilet.request.ticket.BuyTicketCC;
 import edu.bilkent.bilbilet.request.ticket.CancelTicket;
 import edu.bilkent.bilbilet.request.ticket.ReserveTicketBalance;
 import edu.bilkent.bilbilet.request.ticket.ReserveTicketCC;
+import edu.bilkent.bilbilet.request.transaction.BalancePayment;
+import edu.bilkent.bilbilet.request.transaction.CardPayment;
+import edu.bilkent.bilbilet.request.transaction.Refund;
 import edu.bilkent.bilbilet.response.RTicketView;
 import edu.bilkent.bilbilet.response.RUserTicketView;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +30,7 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final FareRepository fareRepository;
     private final AccountRepository accountRepository;
+    private final TransactionService transactionService;
 
     public boolean isTicketAvailable(int ticketId) throws Exception {
         try {
@@ -93,11 +97,29 @@ public class TicketService {
         }
     }
     
+    public RUserTicketView findTicketDetailsByTicketId(int ticketId) throws Exception, ItemNotFoundException {
+        try {
+            List<RUserTicketView> tickets = ticketRepository.findTicketDetailsByTicketId(ticketId);
+
+            if (tickets.size() <= 0) {
+                throw new ItemNotFoundException("Ticket not found");
+            }
+
+            return tickets.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    
     public List<RUserTicketView> buyTicketWithCC(BuyTicketCC buyTicket) throws Exception, ItemNotFoundException {
         try {
-            buyTicket(buyTicket.getTravelerId(), buyTicket.getTicketId());
+            // make transactions
+            int companyUserId = ticketRepository.findCompanyUserIdByTicketId(buyTicket.getTicketId());
+            transactionService.cardPayment(
+                new CardPayment(buyTicket.getTravelerId(), buyTicket.getCreditCard(), buyTicket.getAmount()), companyUserId);
 
-            // TO DO transactions
+            buyTicket(buyTicket.getTravelerId(), buyTicket.getTicketId());
 
             return ticketRepository.findTicketDetailsByTicketId(buyTicket.getTicketId());
         } catch (ItemNotFoundException e) {
@@ -110,9 +132,12 @@ public class TicketService {
 
     public List<RUserTicketView> buyTicketWithBalance(BuyTicketBalance buyTicket) throws Exception, ItemNotFoundException {
         try {
-            buyTicket(buyTicket.getTravelerId(), buyTicket.getTicketId());
+            // make transactions
+            int companyUserId = ticketRepository.findCompanyUserIdByTicketId(buyTicket.getTicketId());
+            System.out.println("comp user id: " + companyUserId);
+            transactionService.balancePayment(new BalancePayment(buyTicket.getTravelerId(), buyTicket.getAmount()), companyUserId);
 
-            // TO DO transactions
+            buyTicket(buyTicket.getTravelerId(), buyTicket.getTicketId());
 
             return ticketRepository.findTicketDetailsByTicketId(buyTicket.getTicketId());
         } catch (ItemNotFoundException e) {
@@ -154,21 +179,21 @@ public class TicketService {
     public Optional<Ticket> cancelTicketOrReservation(CancelTicket cancelTicket) throws Exception, ItemNotFoundException {
         try {
             // check if user exist
-            boolean userExist = accountRepository.travelerExistByUserId(cancelTicket.getTicketId());
+            boolean userExist = accountRepository.travelerExistByUserId(cancelTicket.getTravelerId());
             if (!userExist) {
                 throw new ItemNotFoundException("User does not exist!");
             }
 
-            Optional<Ticket> tickets = ticketRepository.cancelTicketOrReservation(cancelTicket.getTicketId(), cancelTicket.getTicketId());
-
-            if (tickets.isEmpty()) {
-                throw new ItemNotFoundException("Ticket does not exist");
-            }
+            int companyUserId = ticketRepository.findCompanyUserIdByTicketId(cancelTicket.getTicketId());
+            
+            // make transaction
+            transactionService.refund(new Refund(cancelTicket.getTravelerId(), cancelTicket.getAmount()), companyUserId);
 
             Optional<Ticket> ticket = ticketRepository.cancelTicketOrReservation(cancelTicket.getTravelerId(), cancelTicket.getTicketId());
-            // TO DO add reservation repo
 
-            // TO DO transaction
+            if (ticket.isEmpty()) {
+                throw new ItemNotFoundException("Ticket does not exist");
+            }
 
             return ticket;
         } catch (ItemNotFoundException e) {
@@ -179,6 +204,7 @@ public class TicketService {
         }
     }
     
+    @Deprecated
     private void reserveTicket(int userId, int ticketId) throws Exception, ItemNotFoundException {
         try {
             // check if user exist
@@ -206,6 +232,7 @@ public class TicketService {
         }
     }
     
+    @Deprecated
     public List<RUserTicketView> reserveTicketCC(ReserveTicketCC reserveTicket) throws Exception, ItemNotFoundException {
         try {
             reserveTicket(reserveTicket.getTravelerId(), reserveTicket.getTicketId());
@@ -222,6 +249,7 @@ public class TicketService {
         }
     }
     
+    @Deprecated
     public List<RUserTicketView> reserveTicketBalance(ReserveTicketBalance reserveTicket) throws Exception, ItemNotFoundException {
         try {
             reserveTicket(reserveTicket.getTravelerId(), reserveTicket.getTicketId());
