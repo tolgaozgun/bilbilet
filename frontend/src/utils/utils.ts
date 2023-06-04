@@ -28,3 +28,18 @@ export function convertFlightColumnToAlphabetic(num: number): string {
 
 	return String.fromCharCode(64 + num);
 }
+
+export function convertDateToTime(date: Date): string {
+	const hours = date.getHours().toString().padStart(2, '0');
+	const minutes = date.getMinutes().toString().padStart(2, '0');
+	return `${hours}:${minutes}`;
+}
+
+export function getTimeDifference(start: Date, end: Date): string {
+	const differenceInMilliseconds = end.getTime() - start.getTime();
+	const hours = Math.floor(differenceInMilliseconds / (1000 * 60 * 60));
+	const minutes = Math.floor(
+		(differenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60),
+	);
+	return `${hours} hours ${minutes} minutes`;
+}

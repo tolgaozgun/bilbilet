@@ -3,7 +3,7 @@ export type Station = AddStation & {
 	addressId: number;
 };
 
-export type StationType = 'AIRPORT' | 'BUS_TERMINAL' | 'TRAIN_STATION' | 'PORT' | 'OTHER';
+export type StationType = 'AIRPORT' | 'BUS_TERMINAL' | 'OTHER';
 
 export type AddStation = {
 	title: string;

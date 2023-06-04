@@ -10,6 +10,7 @@ import {
 	Text,
 	Title,
 } from '@mantine/core';
+import { IconArrowRight } from '@tabler/icons-react';
 import { useState } from 'react';
 import { SeatLocation, SeatTicket, VehicleSeatConfig } from '../../types/SeatTypes';
 import { convertFlightColumnToAlphabetic } from '../../utils/utils';
@@ -93,7 +94,11 @@ const SeatConfiguration = ({ seatConfig, seatTickets }: SeatConfigurationProps) 
 		setSelectedSeats([seatLocation]);
 	};
 
-	// TODO: Add continue with payment button if a seat is selected, get the seat using the seatTIckets info
+	const selectedSeatInfo = seatTickets.find(
+		(seat) =>
+			seat.seatRow === selectedSeats[0][0] &&
+			seat.seatColumn === selectedSeats[0][1],
+	);
 
 	return (
 		<Center>
@@ -106,6 +111,17 @@ const SeatConfiguration = ({ seatConfig, seatTickets }: SeatConfigurationProps) 
 					<Badge color="gray">Economy Class</Badge>
 					<Badge color="red">Selected</Badge>
 				</Group>
+				<Button
+					rightIcon={<IconArrowRight />}
+					disabled={selectedSeats.length === 0}
+				>
+					{selectedSeatInfo
+						? `${selectedSeatInfo.seatRow},${convertFlightColumnToAlphabetic(
+								selectedSeatInfo.seatColumn,
+						  )}`
+						: ''}
+					Buy Now {selectedSeatInfo ? `${selectedSeatInfo.totalPrice}` : null}
+				</Button>
 				<Flex direction="column">
 					{Array.from(
 						{ length: Number(seatConfig.configTotalRows) },

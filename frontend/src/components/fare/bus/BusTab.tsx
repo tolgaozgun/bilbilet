@@ -16,7 +16,7 @@ import { IconMapPin } from '@tabler/icons-react';
 import { forwardRef, useState } from 'react';
 import { primaryButtonColor } from '../../../constants/colors';
 import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
-import useFlightFares from '../../../hooks/fare/useFlightFares';
+import useBusFares from '../../../hooks/fare/useBusFares';
 import LoadingPage from '../../../pages/LoadingPage';
 import { FareSearchParams } from '../../../types';
 import {
@@ -27,7 +27,7 @@ import {
 import ItemsNotFoundPage from '../../common/feedback/ItemsNotFoundPage';
 import FareInfoCard from '../FareInfoCard';
 
-interface PlaneTabProps {
+interface BusTabProps {
 	stationData: Array<SelectItem>;
 }
 
@@ -51,7 +51,7 @@ const CustomSelectItem = forwardRef<HTMLDivElement, ItemProps>(
 	),
 );
 
-const PlaneTab = ({ stationData }: PlaneTabProps) => {
+const BusTab = ({ stationData }: BusTabProps) => {
 	const [depSearchValue, setDepSearchValue] = useState('');
 	const [arrSearchValue, setArrSearchValue] = useState('');
 	const [direction, setDirection] = useState('one-way');
@@ -66,20 +66,20 @@ const PlaneTab = ({ stationData }: PlaneTabProps) => {
 	const {
 		isLoading: isFareLoading,
 		isError: isFareFetchError,
-		data: flightResponse,
-	} = useFlightFares(axiosSecure, searchParams);
+		data: busResponse,
+	} = useBusFares(axiosSecure, searchParams);
 
 	if (isFareLoading) {
 		return <LoadingPage />;
 	}
 	if (isFareFetchError) {
-		if (!flightResponse) {
+		if (!busResponse) {
 			notifications.show({
 				message: 'Something went wrong',
 			});
-		} else if (isErrorResponse(flightResponse)) {
+		} else if (isErrorResponse(busResponse)) {
 			notifications.show({
-				message: flightResponse.msg,
+				message: busResponse.msg,
 			});
 		}
 		return <ItemsNotFoundPage />;
@@ -101,7 +101,6 @@ const PlaneTab = ({ stationData }: PlaneTabProps) => {
 			deptDate &&
 			returnDate
 		) {
-			console.log(arrValue, depValue);
 			const newSearchParams: FareSearchParams = {
 				arrive_stat_id: Number(arrValue),
 				dep_stat_id: Number(depValue),
@@ -113,7 +112,7 @@ const PlaneTab = ({ stationData }: PlaneTabProps) => {
 		}
 
 		notifications.show({
-			message: 'Please fill all the fields',
+			message: 'Please fill in all the fields.',
 			color: 'red',
 		});
 		return;
@@ -122,7 +121,7 @@ const PlaneTab = ({ stationData }: PlaneTabProps) => {
 	return (
 		<Card withBorder radius="xl" shadow="xl" p={48} sx={{ minWidth: 400 }} mx="auto">
 			<Flex direction={'column'} align={'start'} gap={'xl'}>
-				<Title>Buy Plane Ticket</Title>
+				<Title>Buy Bus Ticket</Title>
 				<Stack>
 					<Radio.Group
 						value={direction}
@@ -189,35 +188,30 @@ const PlaneTab = ({ stationData }: PlaneTabProps) => {
 					</Flex>
 				</Stack>
 				<Flex direction={'row'} gap={'xl'}>
-					{/* <PlaneFilter /> */}
-					<Flex direction={'column'} gap={'xl'}>
-						{flightResponse.data?.map((flight) => {
-							const depTime = convertDateToTime(flight.depTime);
-							const arrTime = convertDateToTime(flight.arrTime);
-							const duration = getTimeDifference(
-								flight.depTime,
-								flight.arrTime,
-							);
-							return (
-								<FareInfoCard
-									companyName={flight.companyName}
-									departureTime={depTime}
-									arrivalTime={arrTime}
-									departureLocation={flight.depStationTitle}
-									arrivalLocation={flight.arrStationTitle}
-									departureABB={flight.depStationAbbr}
-									arrivalABB={flight.arrStationAbbr}
-									duration={duration}
-									price={flight.basePrice}
-									fareId={flight.fareId}
-								/>
-							);
-						})}
-					</Flex>
+					{/* <BusFilter></BusFilter> */}
+					{busResponse.data?.map((bus) => {
+						const depTime = convertDateToTime(bus.depTime);
+						const arrTime = convertDateToTime(bus.arrTime);
+						const duration = getTimeDifference(bus.depTime, bus.arrTime);
+						return (
+							<FareInfoCard
+								companyName={'name'}
+								departureTime={depTime}
+								arrivalTime={arrTime}
+								departureLocation={bus.depStationTitle}
+								arrivalLocation={bus.arrStationTitle}
+								departureABB={bus.depStationAbbr}
+								arrivalABB={bus.arrStationAbbr}
+								duration={duration}
+								price={bus.basePrice}
+								fareId={bus.fareId}
+							/>
+						);
+					})}
 				</Flex>
 			</Flex>
 		</Card>
 	);
 };
 
-export default PlaneTab;
+export default BusTab;
