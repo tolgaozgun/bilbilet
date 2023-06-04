@@ -1,5 +1,6 @@
 import { Button, Card, Center, Container, Loader, Modal, Stack } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { IconCheck } from '@tabler/icons-react';
 import MoneyNumberInput from '../../common/inputs/MoneyNumberInput';
 import UploadToBalanceWithCCForm from '../transaction/UploadToBalanceWithCCForm';
 
@@ -21,7 +22,7 @@ const ConfirmBalancePurchase = ({
 	return (
 		<>
 			<Center>
-				<Card maw={400} withBorder>
+				<Card miw={400} withBorder>
 					<Stack>
 						{Number.isNaN(price) ? (
 							<Loader />
@@ -33,8 +34,9 @@ const ConfirmBalancePurchase = ({
 							/>
 						)}
 
-						<Button size="lg">
-							Pay {pricePrefix} {price} {pricePostfix} From Balance
+						<Button leftIcon={<IconCheck />} color="green" size="lg">
+							Confirm Paying {pricePrefix} {price} {pricePostfix} From
+							Balance
 						</Button>
 						<Button onClick={open} size="lg" variant="outline">
 							Transfer Money to Your Balance

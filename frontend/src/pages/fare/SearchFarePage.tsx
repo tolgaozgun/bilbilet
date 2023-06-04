@@ -1,10 +1,11 @@
 import { Card, Center, Flex, SelectItem, Tabs, Title } from '@mantine/core';
 import { IconBuilding, IconBus, IconPlane } from '@tabler/icons-react';
 import FareInfoCard from '../../components/fare/FareInfoCard';
-import PlaneFilter from '../../components/fare/PlaneFilter';
-import PlaneSearchBar from '../../components/fare/PlaneSearchbar';
 import BusFilter from '../../components/fare/bus/BusFilter';
 import BusSearchBar from '../../components/fare/bus/BusSearchbar';
+import PlaneFilter from '../../components/fare/plane/PlaneFilter';
+import PlaneSearchBar from '../../components/fare/plane/PlaneSearchbar';
+import PlaneTab from '../../components/fare/plane/PlaneTab';
 import HotelFilter from '../../components/hotel/HotelFilter';
 import HotelInfoCard from '../../components/hotel/HotelInfoCard';
 import HotelTab from '../../components/hotel/HotelTab';
@@ -13,6 +14,7 @@ import useGetHotels from '../../hooks/hotel/useGetHotels';
 import useGetStations from '../../hooks/location/useGetStations';
 import { Hotel } from '../../types/HotelTypes';
 import { Station } from '../../types/LocationTypes';
+import LoadingPage from '../LoadingPage';
 
 const SearchFarePage = () => {
 	const axiosSecure = useAxiosSecure();
@@ -23,7 +25,7 @@ const SearchFarePage = () => {
 	} = useGetStations(axiosSecure);
 
 	if (isStationsLoading || isStationsError || !allStations) {
-		return <Flex></Flex>;
+		return <LoadingPage />;
 	}
 
 	const stationList: Array<Station> = allStations.data!;
@@ -50,35 +52,7 @@ const SearchFarePage = () => {
 					</Tabs.Tab>
 				</Tabs.List>
 				<Tabs.Panel value="flight" pt="xs">
-					<Card
-						withBorder
-						radius="xl"
-						shadow="xl"
-						p={48}
-						sx={{ minWidth: 400 }}
-						mx="auto"
-					>
-						<Flex direction={'column'} align={'start'} gap={'xl'}>
-							<Title>Buy Ticket</Title>
-							<PlaneSearchBar stationList={stationData}></PlaneSearchBar>
-							<Flex direction={'row'} gap={'xl'}>
-								<PlaneFilter></PlaneFilter>
-								<Flex direction={'column'} gap={'xl'}>
-									<FareInfoCard
-										companyName={'Pegasus Airlines'}
-										departureTime={'12:05'}
-										arrivalTime={'13:30'}
-										departureLocation={'Ankara Esenboğa Airport'}
-										arrivalLocation={'İstanbul Sabiha Gökçen'}
-										departureABB={'ESB'}
-										arrivalABB={'SAW'}
-										duration={'1h 25min'}
-										price={900}
-									/>
-								</Flex>
-							</Flex>
-						</Flex>
-					</Card>
+					<PlaneTab stationData={stationData} />
 				</Tabs.Panel>
 				<Tabs.Panel value="bus" pt="xs">
 					<Card

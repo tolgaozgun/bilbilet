@@ -96,7 +96,11 @@ const HotelFilter = ({ onFilter }: HotelSearchBarProps) => {
 		return <Loader />;
 	}
 	if (isError) {
-		if (isErrorResponse(addresses)) {
+		if (!addresses) {
+			notifications.show({
+				message: 'Something went wrong',
+			});
+		} else if (isErrorResponse(addresses)) {
 			notifications.show({
 				message: addresses.msg,
 			});

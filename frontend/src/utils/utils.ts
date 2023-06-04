@@ -9,3 +9,22 @@ export function isErrorResponse<T>(
 
 	return false;
 }
+
+export function paramsSerializer(params: Record<string, any>) {
+	return Object.entries(Object.assign({}, params))
+		.map(([key, value]) => {
+			if (Array.isArray(value)) {
+				return `${key}=${value.join(',')}`;
+			}
+			return `${key}=${value}`;
+		})
+		.join('&');
+}
+
+export function convertFlightColumnToAlphabetic(num: number): string {
+	if (num < 1 || num > 27) {
+		return '';
+	}
+
+	return String.fromCharCode(64 + num);
+}

@@ -63,10 +63,16 @@ const PurchaseTicketPage = () => {
 	const PaymentForm = () => {
 		switch (selectedPaymentOption) {
 			case 'balance':
-				return <ConfirmBalancePurchase price={100} pricePostfix="TL" />;
+				return (
+					<>
+						<Title order={2}>Confirm payment from balance</Title>
+						<ConfirmBalancePurchase price={100} pricePostfix="TL" />
+					</>
+				);
 			case 'credit-card':
 				return (
 					<Card withBorder shadow="md" p={24}>
+						<Title order={2}>Enter credit card information</Title>
 						<Flex align="center" justify="space-evenly">
 							<PayWithCreditCardForm price={100} />
 						</Flex>
@@ -152,7 +158,6 @@ const PurchaseTicketPage = () => {
 									Back
 								</Button>
 							</Stack>
-							<Title order={2}>Enter credit card information</Title>
 							<PaymentForm />
 						</Stack>
 					</Card>

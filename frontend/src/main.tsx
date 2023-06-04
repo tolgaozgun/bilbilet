@@ -8,6 +8,7 @@ import './index.css';
 import Layout from './layout';
 import SearchFarePage from './pages/fare/SearchFarePage';
 
+import SeatSelectionPage from './pages/fare/SeatSelectionPage';
 import AddHotelPage from './pages/hotel/AddHotelPage';
 import JourneyPlansPage from './pages/journey/JourneyPlansPage';
 import AddAddressPage from './pages/location/AddAddressPage';
@@ -56,7 +57,7 @@ const router = createBrowserRouter([
 					},
 					{
 						path: '/purchase-succeeded',
-						element: <PurchaseSucceeded />,
+						element: <PurchaseSucceeded ticketDetails={null} />,
 					},
 					{
 						path: '/purchase-failed',
@@ -97,6 +98,10 @@ const router = createBrowserRouter([
 					{
 						path: '/traveler/profile',
 						element: <TravelerProfilePage />,
+					},
+					{
+						path: '/tickets/select-seats',
+						element: <SeatSelectionPage />,
 					},
 				],
 			},
