@@ -109,7 +109,7 @@ public class VehicleSeatConfigService implements IVehicleSeatConfigService {
     @Override
     public VehicleSeatConfig getConfigByVehicleId(int vehicleId) throws Exception {
         try {
-            // Check if the given company exists
+            // Check if the given config exists
             Optional<VehicleSeatConfig> optionalConfig = configRepository.getConfigByVehicleId(vehicleId);
             
             if (!optionalConfig.isPresent()) {
