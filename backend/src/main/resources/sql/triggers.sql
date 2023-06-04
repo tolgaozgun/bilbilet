@@ -62,12 +62,12 @@ BEGIN
     DECLARE col_counter INT DEFAULT 1;
 
     -- Set seat config id of the company vehicle
-    SELECT seat_configuration_id INTO config_id FROM CompanyVehicle WHERE vehicle_id = NEW.vehicle_id;
+    SELECT cv.seat_configuration_id INTO config_id FROM CompanyVehicle cv WHERE cv.vehicle_id = NEW.vehicle_id;
     
-    SELECT total_rows, total_columns, premium_econ_class_after, business_class_after, first_class_after
+    SELECT s.total_rows, s.total_columns, s.premium_econ_class_after, s.business_class_after, s.first_class_after
         INTO seat_rows, seat_columns, premium_econ_class_after, business_class_after, first_class_after
-        FROM SeatConfiguration
-        WHERE seat_configuration_id = config_id;
+        FROM SeatConfiguration s
+        WHERE s.seat_configuration_id = config_id;
 
     -- Create new tickets based on the seat configuration
     WHILE row_counter <= seat_rows DO
@@ -76,8 +76,8 @@ BEGIN
             VALUES ('AVAILABLE', 
                     CASE
                         WHEN row_counter <= first_class_after THEN 'FIRST_CLASS'
-                        WHEN row_counter <= business_after THEN 'BUSINESS'
-                        WHEN row_counter <= premium_econ_after THEN 'PREMIUM_ECONOMY'
+                        WHEN row_counter <= business_class_after THEN 'BUSINESS'
+                        WHEN row_counter <= premium_econ_class_after THEN 'PREMIUM_ECONOMY'
                         ELSE 'ECONOMY'
                     END,
                     NEW.fare_id,
@@ -89,5 +89,4 @@ BEGIN
         SET col_counter = 1;
         SET row_counter = row_counter + 1;
     END WHILE;
-END
-//
+END; //

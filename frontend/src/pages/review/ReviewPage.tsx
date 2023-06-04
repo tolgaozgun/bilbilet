@@ -9,7 +9,7 @@ const ReviewPage = ({ isCompany }: ReviewPageProps) => {
 
 	return (
 		<Center>
-			<AddReviewCard isCompany={isCompany} id={id}></AddReviewCard>
+			<AddReviewCard isCompany={isCompany} id={id ?? '0'}></AddReviewCard>
 		</Center>
 	);
 };

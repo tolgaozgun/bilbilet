@@ -4,10 +4,10 @@ import { notifications } from '@mantine/notifications';
 import { IconBuilding } from '@tabler/icons-react';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import { AddHotel, Hotel } from '../../types/HotelTypes';
 import { primaryAccordionColor } from '../../constants/colors';
 import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
 import { addHotel } from '../../services/hotel';
-import { AddHotel, Hotel } from '../../types/HotelTypes';
 import RatingBar from '../common/RatingBar';
 import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
 

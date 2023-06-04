@@ -5,6 +5,7 @@ import {
 	IconListDetails,
 	IconLogout,
 	IconMapPin,
+	IconPencil,
 	IconSearch,
 	IconTicket,
 	IconUserCircle,
@@ -70,8 +71,16 @@ const CompanyMenu = () => {
 					</Menu.Item>
 					<Menu.Item>
 						<SubtleLinkButton
+							to="/my-companys-reviews"
+							size="sm"
+							leftIcon={<IconPencil />}
+						>
+							My Reviews
+						</SubtleLinkButton>
+					</Menu.Item>
+					<Menu.Item>
+						<SubtleLinkButton
 							onClick={onLogout}
-
 							size="sm"
 							leftIcon={<IconLogout />}
 							color="red"
