@@ -215,7 +215,7 @@ public class VehicleSeatConfigRepository {
     public Optional<VehicleSeatConfig> getConfigByVehicleId(int vehicleId) {
         String sql = "SELECT s.* FROM SeatConfiguration s "
                     + "INNER JOIN CompanyVehicle c ON s.seat_configuration_id = c.seat_configuration_id "
-                    + "WHERE cv.vehicle_id = ?";
+                    + "WHERE c.vehicle_id = ?";
         
         try {
             return Optional.of(jdbcTemplate.queryForObject(sql, configRowMapper, vehicleId));
