@@ -85,7 +85,7 @@ BEGIN
                     col_counter);
             SET col_counter = col_counter + 1;
         END WHILE;
-        
+
         SET col_counter = 1;
         SET row_counter = row_counter + 1;
     END WHILE;
