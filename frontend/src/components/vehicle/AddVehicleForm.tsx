@@ -1,4 +1,4 @@
-import { Card, Flex, NumberInput, Select, TextInput, Title } from '@mantine/core';
+import { Card, Divider, Flex, NumberInput, Select, TextInput, Title } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { useMutation } from '@tanstack/react-query';
@@ -18,20 +18,25 @@ import { isErrorResponse } from '../../utils/utils';
 interface VehicleFormProps {
 	form: UseFormReturnType<
 		{
-			capacity: number;
-			seatConfigurationId: number;
-			companyId: number;
-			vehicleType: string;
-			plateNumber: string;
-			tailNumber: string;
+			capacity: number,
+			companyId: number,
+			vehicleType: string,
+			plateNumber: string,
+			tailNumber: string,
+			configName: string,
+			seatingArrangement: string,
+			configTotalRows: number,
+			configTotalColumns: number,
+			firstClassAfter: number,
+			businessClassAfter: number,
+			premiumEconomyClassAfter: number,
 		},
 		(values: {
 			capacity: number;
-			seatConfigurationId: number;
+			
 			companyId: number;
 		}) => {
 			capacity: number;
-			seatConfigurationId: number;
 			companyId: number;
 		}
 	>;
@@ -53,8 +58,16 @@ const AddVehicleForm = ({ form }: VehicleFormProps) => {
 
 	const vehicle: AddCompanyVehicle = {
 		capacity: form.values.capacity,
-		seatConfigurationId: form.values.seatConfigurationId,
-		companyId: companyId
+		companyId: companyId,
+		seatConfig: {
+			configName: form.values.configName,
+			seatingArrangement: form.values.seatingArrangement,
+			configTotalRows: form.values.configTotalRows,
+			configTotalColumns: form.values.configTotalColumns,
+			firstClassAfter: form.values.firstClassAfter,
+			businessClassAfter: form.values.businessClassAfter,
+			premiumEconomyClassAfter: form.values.premiumEconomyClassAfter,
+		}
 	}
 	const companyBus: AddCompanyBus = {
 		...vehicle,
@@ -69,7 +82,6 @@ const AddVehicleForm = ({ form }: VehicleFormProps) => {
 		mutationKey: ['addCompanyBus'],
 		mutationFn: () => (addCompanyBus(axiosSecure, companyBus)),
 		onSuccess: () => {
-			//queryClient.invalidateQueries(['wishlist']);
 			notifications.show({
 				id: 'add-success',
 				title: 'Bus Add Successful!',
@@ -95,7 +107,6 @@ const AddVehicleForm = ({ form }: VehicleFormProps) => {
 		mutationKey: ['addCompanyPlane'],
 		mutationFn: () => (addCompanyPlane(axiosSecure, companyPlane)),
 		onSuccess: () => {
-			//queryClient.invalidateQueries(['wishlist']);
 			notifications.show({
 				id: 'add-success',
 				title: 'Plane Add Successful!',
@@ -176,28 +187,14 @@ const AddVehicleForm = ({ form }: VehicleFormProps) => {
 			<Flex direction={'column'} gap={'xs'}>
 				<form>
 					<Flex direction={'column'} gap={'xs'}>
+						<Divider />
+						<Title size={20}>Vehicle Configuration</Title>
 						<NumberInput
 							withAsterisk
 							label="Capacity"
 							{...form.getInputProps('capacity')}
-							size="md"
 							min={0}
 						/>
-						<NumberInput
-							withAsterisk
-							label="Seat Configuration"
-							{...form.getInputProps('seatConfigurationId')}
-							size="md"
-							min={0}
-						/>
-
-						{/* <Select
-							withAsterisk
-							label="Seat Configuration"
-							clearable
-							data={[]}
-							{...form.getInputProps('seatConfigurationId')}
-						/> */}
 						<Select
 							withAsterisk
 							label="Vehicle Type"
@@ -206,6 +203,56 @@ const AddVehicleForm = ({ form }: VehicleFormProps) => {
 							{...form.getInputProps('vehicleType')}
 						/>
 						{extraInfo}
+
+						<Divider />
+						<Title size={20}>Seating Configuration</Title>
+
+						<TextInput
+							withAsterisk
+							label="Config Name"
+							{...form.getInputProps('configName')}
+						/>
+
+						<TextInput
+							withAsterisk
+							label="Seating Arrangement"
+							{...form.getInputProps('seatingArrangement')}
+						/>
+
+						<NumberInput
+							withAsterisk
+							label="Total Rows"
+							{...form.getInputProps('configTotalRows')}
+							min={0}
+						/>
+
+						<NumberInput
+							withAsterisk
+							label="Total Columns"
+							{...form.getInputProps('configTotalColumns')}
+							min={0}
+						/>
+
+						<NumberInput
+							withAsterisk
+							label="First Class After"
+							{...form.getInputProps('firstClassAfter')}
+							min={0}
+						/>
+
+						<NumberInput
+							withAsterisk
+							label="Business Class After"
+							{...form.getInputProps('businessClassAfter')}
+							min={0}
+						/>
+
+						<NumberInput
+							withAsterisk
+							label="Premium Economy Class After"
+							{...form.getInputProps('premiumEconomyClassAfter')}
+							min={0}
+						/>
 					</Flex>
 				</form>
 				<CustomElevatedButton

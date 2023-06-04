@@ -2,14 +2,12 @@ import { Fare } from '.';
 
 export type AddCompanyPlane = {
 	capacity: number;
-    seatConfigurationId: number;
     companyId: number;
     tailNumber: string;
 };
 
 export type AddCompanyBus = {
 	capacity: number;
-    seatConfigurationId: number;
     companyId: number;
     plateNumber: string;
 };
@@ -25,6 +23,15 @@ export type CompanyVehicle = {
 
 export type AddCompanyVehicle = {
     capacity: number,
-    seatConfigurationId: number,
     companyId: number
+
+    seatConfig: {
+        configName: string,
+        seatingArrangement: string,
+        configTotalRows: number,
+        configTotalColumns: number,
+        firstClassAfter: number,
+        businessClassAfter: number,
+        premiumEconomyClassAfter: number,
+    }
 }

@@ -118,11 +118,10 @@ const router = createBrowserRouter([
 					{
 						path: '/fare/:fareId/select-seats',
 						element: <SeatSelectionPage />,
-          },
-          {
+					},
+					{
 						path: '/company/profile',
 						element: <CompanyProfilePage />,
-          }
 					},
 				],
 			},
