@@ -16,7 +16,7 @@ import { convertFlightColumnToAlphabetic } from '../../utils/utils';
 
 interface SeatConfigurationProps {
 	seatConfig: VehicleSeatConfig;
-	seatTickets?: SeatTicket[];
+	seatTickets: SeatTicket[];
 }
 
 const SeatConfiguration = ({ seatConfig, seatTickets }: SeatConfigurationProps) => {
@@ -92,6 +92,8 @@ const SeatConfiguration = ({ seatConfig, seatTickets }: SeatConfigurationProps) 
 		const seatLocation: SeatLocation = [rowNumber, colNumber];
 		setSelectedSeats([seatLocation]);
 	};
+
+	// TODO: Add continue with payment button if a seat is selected, get the seat using the seatTIckets info
 
 	return (
 		<Center>
