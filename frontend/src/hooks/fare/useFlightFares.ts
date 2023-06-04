@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { AxiosInstance } from 'axios';
 import { getFlightFares } from '../../services/fare';
-import { FlightFilterParams } from '../../types/FlightFareTypes';
+import { FareSearchParams } from '../../types';
 
 const useFlightFares = (
 	axiosSecure: AxiosInstance,
-	filterParams: FlightFilterParams | {},
+	filterParams: FareSearchParams | {},
 ) => {
 	return useQuery({
 		queryKey: ['flightFares', filterParams],
