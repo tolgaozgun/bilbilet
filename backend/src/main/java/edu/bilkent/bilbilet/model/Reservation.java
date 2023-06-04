@@ -28,13 +28,7 @@ public class Reservation {
 	private Timestamp reservedUntil;
 
 	@NotNull
-	private BigDecimal reservationFee;
-
-	@NotNull
-	private int seatId;
-
-	@NotNull
-	private int fareId;
+	private int ticketId;
 
 	@NotNull
 	private int travelerId;

@@ -27,7 +27,7 @@ const TravelerMenu = () => {
 		<Group position="center">
 			<Menu withArrow>
 				<Menu.Target>
-					<UserButton email="cs.selim.guler@gmail.com" name="Selim Can" />
+					<UserButton email={user.email} name={user.name} />
 				</Menu.Target>
 				<Menu.Dropdown>
 					<Menu.Item>

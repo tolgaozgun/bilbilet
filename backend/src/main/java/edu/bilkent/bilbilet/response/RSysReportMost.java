@@ -1,6 +1,8 @@
-package edu.bilkent.bilbilet.model.vehicles;
+package edu.bilkent.bilbilet.response;
 
+import java.math.BigDecimal;
 
+import edu.bilkent.bilbilet.request.AddCompanyCar;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,13 +12,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyPlane implements CompanyVehicleReference {
-
-    @Id
-    @NotNull
-    private int planeId;
-
-    @NotNull
-    private String tailNumber;
-
+public class RSysReportMost {
+    private String title;
+    private int count;
 }
+
