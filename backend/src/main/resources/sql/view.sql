@@ -108,3 +108,23 @@ INNER JOIN Fare f ON f.fare_id = t.fare_id
 INNER JOIN Company c ON c.company_id = f.company_id
 INNER JOIN Station depStation ON depStation.station_id = f.dep_stat_id
 INNER JOIN Station arrStation ON arrStation.station_id = f.arrive_stat_id;
+
+CREATE OR REPLACE VIEW FareDetailsView AS
+SELECT
+    f.fare_id AS fare_id,
+    f.departure_time AS departure_time,
+    f.estimated_arrival_time AS estimated_arrival_time,
+    f.price AS price,
+    f.premium_econ_extra_price AS premium_econ_extra_price,
+    f.business_extra_price AS business_extra_price,
+    f.first_class_extra_price AS first_class_extra_price,
+    f.reservation_fee AS reservation_fee,
+    sa.title AS arrival_station_title,
+    sa.abbreviation AS arrival_station_abbr,
+    sd.title AS departure_station_title,
+    sd.abbreviation AS departure_station_abbr,
+    c.company_title AS company_title
+FROM Fare f
+INNER JOIN Station sa ON f.dep_stat_id = sa.station_id
+INNER JOIN Station sd ON f.arrive_stat_id = sd.station_id
+INNER JOIN Company c ON f.company_id = c.company_id;

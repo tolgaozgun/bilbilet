@@ -1,5 +1,6 @@
 package edu.bilkent.bilbilet.repository.fare;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -278,14 +279,14 @@ public class FareRepository {
     }
 
     public List<Fare> findFareByProperties(Map<String, Object> properties, VehicleType vehicleType) {
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Fare f INNER JOIN CompanyVehicle t ON f.vehicle_id = t.vehicle_id WHERE t.vehicle_type = ? ");
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Fare f INNER JOIN CompanyVehicle t ON f.vehicle_id = t.vehicle_id WHERE t.vehicle_type = '" + vehicleType.toString() + "'");
         List<Object> parameterValues = new ArrayList<>();
 
-        parameterValues.add(vehicleType.toString()); // VehicleType.PLANE, VehicleType.BUS 
+        // parameterValues.add(vehicleType.toString()); // VehicleType.PLANE, VehicleType.BUS 
 
         try {
             if (properties.isEmpty()) {
-                return jdbcTemplate.query(sqlBuilder.toString(), fareRowMapper, parameterValues);
+                return jdbcTemplate.query(sqlBuilder.toString(), fareRowMapper);
             }
     
             for (String property : properties.keySet()) {
@@ -301,7 +302,19 @@ public class FareRepository {
                 @Override
                 public void setValues(PreparedStatement ps) throws SQLException {
                     for (int i = 0; i < parameterValues.size(); i++) {
-                        ps.setObject(i + 1, parameterValues.get(i));
+                        Object value = parameterValues.get(i);
+                        if (value instanceof String) {
+                            ps.setString(i + 1, (String) value);
+                        }
+                        else if (value instanceof Integer) {
+                            ps.setInt(i + 1, (Integer) value);
+                        }
+                        else if (value instanceof BigDecimal) {
+                            ps.setBigDecimal(i + 1, (BigDecimal) value);
+                        }
+                        else {
+                            ps.setObject(i + 1, value);
+                        }
                     }
                 }
             }, fareRowMapper);
