@@ -263,8 +263,8 @@ public class FareService {
                 }
 
                 Station departureStation = departureStationOptional.get();
-                details.setArrStationTitle(departureStation.getTitle());
-                details.setArrStationAbbr(departureStation.getAbbreviation());
+                details.setDepStationTitle(departureStation.getTitle());
+                details.setDepStationAbbr(departureStation.getAbbreviation());
 
                 // Set company title
                 Optional<Company> optionalCompany = companyRepository.getCompanyById(f.getCompanyId());

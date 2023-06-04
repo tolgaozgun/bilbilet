@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import edu.bilkent.bilbilet.enums.StationType;
 import edu.bilkent.bilbilet.exception.ExceptionLogger;
 import edu.bilkent.bilbilet.model.Station;
 import edu.bilkent.bilbilet.request.AddStation;
@@ -32,7 +34,29 @@ public class StationController {
     public ResponseEntity<Object> getStations() {
         try {
             List<RStationAddress> stationList = stationService.getStations();
-            return Response.create("Got stations successfully", HttpStatus.OK, stationList);
+            return Response.create("Fetched all stations successfully.", HttpStatus.OK, stationList);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "/plane")
+    public ResponseEntity<Object> getPlaneStations() {
+        try {
+            List<RStationAddress> stationList = stationService.getStationsByType(StationType.AIRPORT);
+            return Response.create("Fetched plane stations successfully.", HttpStatus.OK, stationList);
+        } catch (Exception e) {
+            return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping(path = "/bus")
+    public ResponseEntity<Object> getBusStations() {
+        try {
+            List<RStationAddress> stationList = stationService.getStationsByType(StationType.BUS_TERMINAL);
+            return Response.create("Fetched bus stations successfully.", HttpStatus.OK, stationList);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -43,7 +67,7 @@ public class StationController {
     public ResponseEntity<Object> addStation(@Valid @RequestBody AddStation stationInfo) {
         try {
             Station newStation = stationService.addStation(stationInfo);
-            return Response.create("Station created successfully", HttpStatus.OK, newStation);
+            return Response.create("Station created successfully.", HttpStatus.OK, newStation);
         } catch (Exception e) {
             return Response.create(ExceptionLogger.log(e), HttpStatus.INTERNAL_SERVER_ERROR);
         }
