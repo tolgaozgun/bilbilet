@@ -101,6 +101,7 @@ const PlaneTab = ({ stationData }: PlaneTabProps) => {
 			deptDate &&
 			returnDate
 		) {
+			console.log(arrValue, depValue);
 			const newSearchParams: FareSearchParams = {
 				arrive_stat_id: Number(arrValue),
 				dep_stat_id: Number(depValue),

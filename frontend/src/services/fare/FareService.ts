@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { baseUrl } from '../../constants/api';
-import { Fare, FareDetailsView, FareSearchParams } from '../../types';
+import { CompanyVehicle, Fare, FareDetailsView, FareSearchParams } from '../../types';
 import { Response } from '../../types/ResponseTypes';
 import { SeatTicket, VehicleSeatConfig } from '../../types/SeatTypes';
 
@@ -42,6 +42,13 @@ export async function getBusFares(
 		{
 			params: Object.keys(finalFilterParams).length === 0 ? {} : finalFilterParams,
 		},
+	);
+	return res.data;
+}
+
+export async function getCompanyVehicles(axiosSecure: AxiosInstance, companyId: number) {
+	const res = await axiosSecure.get<Response<CompanyVehicle[]>>(
+		`${baseUrl}/company-vehicles/company/${companyId}`,
 	);
 	return res.data;
 }

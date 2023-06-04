@@ -22,10 +22,11 @@ const SearchFarePage = () => {
 
 	const stationList: Array<Station> = allStations.data!;
 	const stationData: Array<SelectItem> = stationList!.map((station) => {
+		const id = station.stationId;
 		return {
 			stationType: station.stationType,
 			label: station.title,
-			value: station.title,
+			value: id.toString(),
 			description: station.city,
 		};
 	});
