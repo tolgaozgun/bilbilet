@@ -103,24 +103,23 @@ public class AccountRepository {
 
 
     public void incrementCompanyBalance(int userId, BigDecimal amount) throws Exception {
-        String sql = "UPDATE Company SET balance = balance + ? WHERE user_id = ?";
+        String sql = "UPDATE Company c SET balance = balance + ? WHERE c.user_id = ?";
 
         try {
-            jdbcTemplate.update(sql, userId, amount);
+            jdbcTemplate.update(sql, amount, userId);
         } catch (EmptyResultDataAccessException e) {
             throw new Exception("Company not found");
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
-
     }
 
     public void decrementCompanyBalance(int userId, BigDecimal amount) throws Exception {
-        String sql = "UPDATE Company SET balance = balance - ? WHERE user_id = ?";
+        String sql = "UPDATE Company c SET balance = balance - ? WHERE c.user_id = ?";
 
         try {
-            jdbcTemplate.update(sql, userId, amount);
+            jdbcTemplate.update(sql, amount, userId);
         } catch (EmptyResultDataAccessException e) {
             throw new Exception("Company not found");
         } catch (Exception e) {

@@ -21,6 +21,11 @@ public class TicketRowMapper {
         fareTicket.setTotalPrice(rs.getDouble("total_price"));
         return fareTicket;
     };
+    
+    public static final RowMapper<Integer> COMPANY_USER_ID_ROW_MAPPER = (rs, rowNum) -> {
+        int companyUserId = rs.getInt("user_id");
+        return companyUserId;
+    };
 
     public static final RowMapper<RUserTicketView> DISPLAY_USER_TICKETS_VIEW_ROW_MAPPER = (rs, rowNum) -> {
         RUserTicketView displayFareTicket = new RUserTicketView();
