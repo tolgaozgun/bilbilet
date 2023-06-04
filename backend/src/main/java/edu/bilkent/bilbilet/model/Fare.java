@@ -24,6 +24,18 @@ public class Fare {
 
 	@NotNull
 	private BigDecimal price;
+	
+	@NotNull
+	private BigDecimal premiumEconExtraPrice;
+	
+	@NotNull
+	private BigDecimal businessExtraPrice;
+	
+	@NotNull
+	private BigDecimal firstClassExtraPrice;
+
+	@NotNull
+	private BigDecimal reservationFee;
 
 	@NotNull
 	private int companyId;
