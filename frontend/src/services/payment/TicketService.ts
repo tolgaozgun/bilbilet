@@ -6,7 +6,7 @@ import { RUserTicketView } from '../../types/TicketTypes';
 
 export async function getTicketById(axiosSecure: AxiosInstance, ticketId: number) {
 	const res = await axiosSecure.get<Response<SeatTicket>>(
-		`${baseUrl}/ticket/${ticketId}`,
+		`${baseUrl}/ticket/detail/${ticketId}`,
 	);
 	return res.data;
 }

@@ -16,6 +16,4 @@ public class Refund {
 
     @NotNull
     BigDecimal amount;
-
-
 }

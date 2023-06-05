@@ -18,7 +18,7 @@ import { primaryButtonColor } from '../../../constants/colors';
 import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
 import useFlightFares from '../../../hooks/fare/useFlightFares';
 import LoadingPage from '../../../pages/LoadingPage';
-import { FareSearchParams } from '../../../types';
+import { FareDetailsView, FareSearchParams } from '../../../types';
 import {
 	convertDateToTime,
 	formatDate,
@@ -30,6 +30,8 @@ import FareInfoCard from '../FareInfoCard';
 
 interface PlaneTabProps {
 	stationData: Array<SelectItem>;
+	setSearchParams: (params: FareSearchParams) => void;
+	flightData: FareDetailsView[];
 }
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -52,7 +54,7 @@ const CustomSelectItem = forwardRef<HTMLDivElement, ItemProps>(
 	),
 );
 
-const PlaneTab = ({ stationData }: PlaneTabProps) => {
+const PlaneTab = ({ stationData, setSearchParams, flightData }: PlaneTabProps) => {
 	const [depSearchValue, setDepSearchValue] = useState('');
 	const [arrSearchValue, setArrSearchValue] = useState('');
 	const [direction, setDirection] = useState('one-way');
@@ -63,35 +65,14 @@ const PlaneTab = ({ stationData }: PlaneTabProps) => {
 	const [returnDate, setReturnDate] = useState<Date | null>(null);
 
 	const axiosSecure = useAxiosSecure();
-	const [searchParams, setSearchParams] = useState<FareSearchParams | {}>({});
-	const {
-		isLoading: isFareLoading,
-		isError: isFareFetchError,
-		data: flightResponse,
-	} = useFlightFares(axiosSecure, searchParams);
 
-	if (isFareLoading) {
-		return <LoadingPage />;
-	}
-	if (isFareFetchError) {
-		if (!flightResponse) {
-			notifications.show({
-				message: 'Something went wrong',
-			});
-		} else if (isErrorResponse(flightResponse)) {
-			notifications.show({
-				message: flightResponse.msg,
-			});
-		}
-		return <ItemsNotFoundPage />;
-	}
 	const stations = stationData.filter((station) => station.stationType === 'AIRPORT');
 	const onSearch = () => {
-		if (direction === 'one-way' && depValue && arrValue && deptDate) {
+		if (direction === 'one-way' && (depValue || arrValue || deptDate)) {
 			const newSearchParams: FareSearchParams = {
-				arrive_stat_id: Number(arrValue),
-				dep_stat_id: Number(depValue),
-				departure_time: deptDate,
+				arrive_stat_id: Number(arrValue) === 0 ? undefined : Number(arrValue),
+				dep_stat_id: Number(depValue) === 0 ? undefined : Number(depValue),
+				departure_time: deptDate === null ? undefined : deptDate,
 			};
 			setSearchParams(newSearchParams);
 			return;
@@ -121,7 +102,7 @@ const PlaneTab = ({ stationData }: PlaneTabProps) => {
 	};
 
 	return (
-		<Card withBorder radius="xl" shadow="xl" p={48} sx={{ minWidth: 400 }} mx="auto">
+		<Card withBorder radius="xl" shadow="xl" p={48} sx={{ minWidth: 400, minHeight: 900 }} mx="auto">
 			<Flex direction={'column'} align={'start'} gap={'xl'}>
 				<Title>Buy Plane Ticket</Title>
 				<Stack>
@@ -192,7 +173,7 @@ const PlaneTab = ({ stationData }: PlaneTabProps) => {
 				<Flex direction={'row'} gap={'xl'}>
 					{/* <PlaneFilter /> */}
 					<Flex direction={'column'} gap={'xl'}>
-						{flightResponse.data?.map((flight) => {
+						{flightData?.map((flight) => {
 							const depTimeDateObj = new Date(flight.depTime);
 							const arrTimeDateObj = new Date(flight.arrTime);
 
@@ -219,6 +200,7 @@ const PlaneTab = ({ stationData }: PlaneTabProps) => {
 									duration={duration}
 									price={flight.basePrice}
 									fareId={flight.fareId}
+									type="plane"
 								/>
 							);
 						})}

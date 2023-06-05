@@ -17,4 +17,7 @@ public class CancelTicket {
 
     @NotNull
     int travelerId;
+
+    @NotNull
+    BigDecimal amount;
 }

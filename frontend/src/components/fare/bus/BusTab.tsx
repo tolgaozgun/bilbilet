@@ -18,7 +18,7 @@ import { primaryButtonColor } from '../../../constants/colors';
 import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
 import useBusFares from '../../../hooks/fare/useBusFares';
 import LoadingPage from '../../../pages/LoadingPage';
-import { FareSearchParams } from '../../../types';
+import { FareDetailsView, FareSearchParams } from '../../../types';
 import {
 	convertDateToTime,
 	formatDate,
@@ -30,6 +30,8 @@ import FareInfoCard from '../FareInfoCard';
 
 interface BusTabProps {
 	stationData: Array<SelectItem>;
+	setSearchParams: (params: FareSearchParams) => void;
+	busData: FareDetailsView[];
 }
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -52,7 +54,7 @@ const CustomSelectItem = forwardRef<HTMLDivElement, ItemProps>(
 	),
 );
 
-const BusTab = ({ stationData }: BusTabProps) => {
+const BusTab = ({ stationData, setSearchParams, busData }: BusTabProps) => {
 	const [depSearchValue, setDepSearchValue] = useState('');
 	const [arrSearchValue, setArrSearchValue] = useState('');
 	const [direction, setDirection] = useState('one-way');
@@ -61,30 +63,6 @@ const BusTab = ({ stationData }: BusTabProps) => {
 	const [arrValue, setArrValue] = useState<string | null>(null);
 	const [deptDate, setDeptDate] = useState<Date | null>(null);
 	const [returnDate, setReturnDate] = useState<Date | null>(null);
-
-	const axiosSecure = useAxiosSecure();
-	const [searchParams, setSearchParams] = useState<FareSearchParams | {}>({});
-	const {
-		isLoading: isFareLoading,
-		isError: isFareFetchError,
-		data: busResponse,
-	} = useBusFares(axiosSecure, searchParams);
-
-	if (isFareLoading) {
-		return <LoadingPage />;
-	}
-	if (isFareFetchError) {
-		if (!busResponse) {
-			notifications.show({
-				message: 'Something went wrong',
-			});
-		} else if (isErrorResponse(busResponse)) {
-			notifications.show({
-				message: busResponse.msg,
-			});
-		}
-		return <ItemsNotFoundPage />;
-	}
 
 	const onSearch = () => {
 		if (direction === 'one-way' && depValue && arrValue && deptDate) {
@@ -119,7 +97,6 @@ const BusTab = ({ stationData }: BusTabProps) => {
 		return;
 	};
 
-	console.log(busResponse.data);
 	const stations = stationData.filter(
 		(station) => station.stationType === 'BUS_TERMINAL',
 	);
@@ -127,11 +104,11 @@ const BusTab = ({ stationData }: BusTabProps) => {
 	return (
 		<Card withBorder radius="xl" shadow="xl" p={48} sx={{ minWidth: 400 }} mx="auto">
 			<Flex direction={'column'} align={'start'} gap={'xl'}>
-				<Text></Text>{' '}
 				{/* DON'T YOU DARE REMOVE THIS OR ELSE THIS COMPONENT FAILS*/}
 				<Title>Buy Bus Ticket</Title>
 				<Stack>
-					<Radio.Group
+					<Text>Select direction</Text>{' '}
+					{/* <Radio.Group
 						value={direction}
 						onChange={setDirection}
 						name="flightDirection"
@@ -140,7 +117,7 @@ const BusTab = ({ stationData }: BusTabProps) => {
 							<Radio value="one-way" label="One way" />
 							<Radio value="round-trip" label="Round trip" />
 						</Group>
-					</Radio.Group>
+					</Radio.Group> */}
 					<Flex direction={'row'} gap={'xs'} align={'end'}>
 						<Select
 							placeholder="Select Departure Location"
@@ -196,7 +173,7 @@ const BusTab = ({ stationData }: BusTabProps) => {
 					</Flex>
 				</Stack>
 				<Flex direction={'column'} gap={'xl'}>
-					{busResponse.data?.map((bus) => {
+					{busData?.map((bus) => {
 						const depTimeDateObj = new Date(bus.depTime);
 						const arrTimeDateObj = new Date(bus.arrTime);
 
@@ -223,6 +200,7 @@ const BusTab = ({ stationData }: BusTabProps) => {
 								price={bus.basePrice}
 								fareId={bus.fareId}
 								key={bus.fareId}
+								type={'bus'}
 							/>
 						);
 					})}

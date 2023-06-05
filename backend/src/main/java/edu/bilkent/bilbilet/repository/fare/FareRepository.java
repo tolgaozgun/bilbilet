@@ -290,6 +290,16 @@ public class FareRepository {
             }
     
             for (String property : properties.keySet()) {
+                if (property.equalsIgnoreCase("departure_time")) {
+                    sqlBuilder.append(" AND DATE(departure_time) >= DATE_SUB('"
+                        + properties.get(property)
+                        + "', INTERVAL 1 DAY) AND DATE(departure_time) <= DATE_ADD('"
+                        + properties.get(property)
+                        + "', INTERVAL 1 DAY) ");
+
+                    continue;
+                }
+
                 sqlBuilder.append(" AND ");
 
                 sqlBuilder.append(property).append(" = ?");
@@ -297,7 +307,8 @@ public class FareRepository {
             }
             
             String sql = sqlBuilder.toString();
-            
+            System.out.println("QUERY: [" + sql + "]");
+
             return jdbcTemplate.query(sql, new PreparedStatementSetter() {
                 @Override
                 public void setValues(PreparedStatement ps) throws SQLException {
