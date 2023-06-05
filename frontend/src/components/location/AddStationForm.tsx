@@ -61,11 +61,11 @@ const AddStationForm = ({ form }: StationFormProps) => {
 			});
 			form.reset();
 		},
-		onError: () =>
+		onError: (error) =>
 			notifications.show({
 				id: 'add-fail',
 				title: 'Station Add failed!',
-				message: 'Hmmmmmm',
+				message: error.response ? error.response.data.msg : 'Something went wrong',
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },

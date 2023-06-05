@@ -78,11 +78,11 @@ const AddHotelForm = ({ form }: HotelFormProps) => {
 			form.reset();
 			setRating(0);
 		},
-		onError: () =>
+		onError: (error) =>
 			notifications.show({
 				id: 'add-fail',
 				title: 'Hotel Add failed!',
-				message: 'Hmmmmmmm',
+				message: error.response ? error.response.data.msg : 'Something went wrong',
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },

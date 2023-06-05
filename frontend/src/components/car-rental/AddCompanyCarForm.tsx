@@ -88,11 +88,11 @@ const AddCompanyCarForm = ({ form, companyId }: AddCompanyCarFormProps) => {
 			});
 			form.reset();
 		},
-		onError: () =>
+		onError: (error) =>
 			notifications.show({
 				id: 'add-fail',
 				title: 'Company Car Add failed!',
-				message: 'error.msg',
+				message: error.response ? error.response.data.msg : 'Something went wrong',
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },

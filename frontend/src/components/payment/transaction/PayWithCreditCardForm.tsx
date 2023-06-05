@@ -54,6 +54,19 @@ const PayWithCreditCardForm = ({ price, ticketId }: PayWithCreditCardFormProps) 
 			});
 			navigate('/purchase-successful');
 		},
+		onError: (error) =>
+			notifications.show({
+				id: 'pay-ticket-cc-fail',
+				title: 'Ticket payment is failed!',
+				message: error.response ? error.response.data.msg : 'Something went wrong',
+				autoClose: 5000,
+				withCloseButton: true,
+				style: { backgroundColor: 'red' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
+			}),
 	});
 
 	const onTransfer = async () => {

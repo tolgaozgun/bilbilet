@@ -24,7 +24,7 @@ const CustomElevatedButton = ({
 			onClick={onClick}
 			bg={color ? color : primaryButtonColor}
 			size={size}
-			{text}>
+			>{text}
 		</Button>
 	);
 };

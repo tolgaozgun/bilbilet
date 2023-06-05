@@ -50,11 +50,11 @@ const SearchRentCarPage = () => {
 				style: { backgroundColor: 'green' },
 			});
 		},
-		onError: () =>
+		onError: (error) =>
 			notifications.show({
 				id: 'rent-fail',
 				title: 'Car Rent failed!',
-				message: 'Hmmmmmmm',
+				message: error.response ? error.response.data.msg : 'Something went wrong',
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },

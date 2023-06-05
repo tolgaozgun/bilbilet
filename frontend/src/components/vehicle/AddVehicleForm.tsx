@@ -96,11 +96,11 @@ const AddVehicleForm = ({ form }: VehicleFormProps) => {
 			});
 			form.reset();
 		},
-		onError: () =>
+		onError: (error) =>
 			notifications.show({
 				id: 'add-fail',
 				title: 'Vehicle Add failed!',
-				message: 'Hmmmmmmm',
+				message: error.response ? error.response.data.msg : 'Something went wrong',
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },
@@ -129,11 +129,11 @@ const AddVehicleForm = ({ form }: VehicleFormProps) => {
 			});
 			form.reset();
 		},
-		onError: () =>
+		onError: (error) =>
 			notifications.show({
 				id: 'add-fail',
 				title: 'Plane Add failed!',
-				message: 'Hmmmmmmm',
+				message: error.response ? error.response.data.msg : 'Something went wrong',
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },
