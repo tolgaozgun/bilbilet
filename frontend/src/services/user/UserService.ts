@@ -9,6 +9,7 @@ export async function getTraveler(axiosSecure: AxiosInstance, userId: number) {
 	);
 	return res.data;
 }
+
 export async function getCompany(axiosSecure: AxiosInstance, userId: number) {
 	const res = await axiosSecure.get<Response<CompanyInfo>>(
 		`${baseUrl}/auth/company/${userId}`,

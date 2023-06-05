@@ -8,10 +8,6 @@ export type Tokens = {
 export enum CompanyType {
 	AIRLINE = 'AIRLINE',
 	BUS = 'BUS',
-	TRAIN = 'TRAIN',
-	FERRY = 'FERRY',
-	SHIP = 'SHIP',
-	RENTAL = 'RENTAL',
 	OTHER = 'OTHER',
 }
 

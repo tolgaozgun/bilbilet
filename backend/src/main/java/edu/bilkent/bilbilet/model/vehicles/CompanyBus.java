@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyBus implements CompanyVehicleReference{
+public class CompanyBus implements CompanyVehicleReference {
 
     @Id
     @NotNull

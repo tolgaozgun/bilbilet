@@ -15,16 +15,16 @@ const MoneyNumberInput = ({
 }: MoneyNumberInputProps) => {
 	const valuePrefix = prefix || 'TL';
 
-	const formatter = (value: string) => {
-		if (!Number.isNaN(parseFloat(value))) {
-			return `${valuePrefix} ${value}`.replace(
-				/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-				',',
-			);
-		} else {
-			return `${valuePrefix} `;
-		}
-	};
+	// const formatter = (value: string) => {
+	// 	if (!Number.isNaN(parseFloat(value))) {
+	// 		return `${valuePrefix} ${value}`.replace(
+	// 			/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
+	// 			',',
+	// 		);
+	// 	} else {
+	// 		return `${valuePrefix} `;
+	// 	}
+	// };
 
 	return (
 		<NumberInput
@@ -32,8 +32,8 @@ const MoneyNumberInput = ({
 			disabled={disabled || false}
 			value={amount}
 			onChange={setAmount}
-			parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
-			formatter={formatter}
+			// parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+			// formatter={formatter}
 			size="md"
 			min={0}
 			max={100000}

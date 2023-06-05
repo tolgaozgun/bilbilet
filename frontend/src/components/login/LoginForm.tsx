@@ -48,6 +48,10 @@ const LoginForm = () => {
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
 			});
 			return;
 		}
@@ -59,8 +63,17 @@ const LoginForm = () => {
 			autoClose: 5000,
 			withCloseButton: true,
 			style: { backgroundColor: 'green' },
+			styles: (theme) => ({
+				title: { color: theme.white },
+				description: { color: theme.white }
+			})
 		});
-		navigate('/search-fare');
+
+		if (res.data.userType === 'COMPANY') {
+			navigate('/add-fare');
+		} else if (res.data.userType === 'TRAVELER') {
+			navigate('/search-fare');
+		}
 	};
 
 	return (

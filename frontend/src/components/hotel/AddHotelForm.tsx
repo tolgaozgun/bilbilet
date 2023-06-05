@@ -1,15 +1,15 @@
-import { Card, Title, Flex, TextInput } from '@mantine/core';
-import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
-import { primaryAccordionColor } from '../../constants/colors';
+import { Card, Flex, TextInput, Title } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import { IconBuilding } from '@tabler/icons-react';
-import RatingBar from '../common/RatingBar';
-import { useState } from 'react';
 import { notifications } from '@mantine/notifications';
-import { AddHotel, Hotel } from '../../types/HotelTypes';
-import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
+import { IconBuilding } from '@tabler/icons-react';
 import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
+import { AddHotel, Hotel } from '../../types/HotelTypes';
+import { primaryAccordionColor } from '../../constants/colors';
+import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
 import { addHotel } from '../../services/hotel';
+import RatingBar from '../common/RatingBar';
+import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
 
 interface HotelFormProps {
 	form: UseFormReturnType<
@@ -70,6 +70,10 @@ const AddHotelForm = ({ form }: HotelFormProps) => {
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'green' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
 			});
 			form.reset();
 			setRating(0);
@@ -82,6 +86,10 @@ const AddHotelForm = ({ form }: HotelFormProps) => {
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
 			}),
 	});
 

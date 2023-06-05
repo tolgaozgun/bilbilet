@@ -2,7 +2,12 @@ import { Button, Center, Container, Image, Stack, Text, Title } from '@mantine/c
 import { IconArrowLeft } from '@tabler/icons-react';
 import SubtleLinkButton from '../../components/common/buttons/SubtleLinkButton';
 
-const PurchaseFailed = () => {
+interface PurchaseFailedProps {
+	message?: string;
+	ticketId?: number;
+}
+
+const PurchaseFailed = ({ message, ticketId }: PurchaseFailedProps) => {
 	return (
 		<Center h="90%">
 			<Stack align="center" maw={450} spacing="xl">
@@ -20,7 +25,7 @@ const PurchaseFailed = () => {
 					Something went wrong during the payment process. Please try again and
 					make sure you have the right amount of money.
 				</Text>
-				<SubtleLinkButton to="/fare/:id">
+				<SubtleLinkButton to="/search-fare">
 					<IconArrowLeft /> Go back to purchasing page
 				</SubtleLinkButton>
 			</Stack>

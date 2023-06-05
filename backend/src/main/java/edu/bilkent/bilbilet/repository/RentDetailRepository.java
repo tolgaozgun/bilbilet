@@ -97,11 +97,11 @@ public class RentDetailRepository {
         sqlBuilder.append(" WHERE ");
 
         for (String property : properties.keySet()) { // TO DO test this
-            if (andNeeded) {
-                sqlBuilder.append(" AND ");
-            }
-
             if (!property.equals("start_date") && !property.equals("end_date")) {
+                if (andNeeded) {
+                    sqlBuilder.append(" AND ");
+                }
+
                 sqlBuilder.append(property).append(" = ?");
                 parameterValues.add(properties.get(property));
                 andNeeded = true;

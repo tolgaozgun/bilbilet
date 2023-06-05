@@ -1,8 +1,10 @@
 import { Group, Menu } from '@mantine/core';
 import {
 	IconBackpack,
+	IconCar,
 	IconListDetails,
 	IconLogout,
+	IconPencil,
 	IconSearch,
 	IconTicket,
 	IconUserCircle,
@@ -27,7 +29,7 @@ const TravelerMenu = () => {
 		<Group position="center">
 			<Menu withArrow>
 				<Menu.Target>
-					<UserButton email="cs.selim.guler@gmail.com" name="Selim Can" />
+					<UserButton email={user.email} name={user.name} />
 				</Menu.Target>
 				<Menu.Dropdown>
 					<Menu.Item>
@@ -77,8 +79,25 @@ const TravelerMenu = () => {
 					</Menu.Item>
 					<Menu.Item>
 						<SubtleLinkButton
+							to="/my-reviews"
+							size="sm"
+							leftIcon={<IconPencil />}
+						>
+							My Reviews
+						</SubtleLinkButton>
+					</Menu.Item>
+					<Menu.Item>
+						<SubtleLinkButton
+							to="/my-rentals"
+							size="sm"
+							leftIcon={<IconCar />}
+						>
+							My Rents
+						</SubtleLinkButton>
+					</Menu.Item>
+					<Menu.Item>
+						<SubtleLinkButton
 							onClick={onLogout}
-
 							size="sm"
 							leftIcon={<IconLogout />}
 							color="red"

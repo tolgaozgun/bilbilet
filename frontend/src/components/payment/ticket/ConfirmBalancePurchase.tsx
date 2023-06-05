@@ -1,5 +1,13 @@
 import { Button, Card, Center, Container, Loader, Modal, Stack } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons-react';
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
+import { payTicketWithBalance } from '../../../services/payment';
+import { PaymentWithBalanceRequest } from '../../../types/PaymentTypes';
+import { isErrorResponse } from '../../../utils/utils';
 import MoneyNumberInput from '../../common/inputs/MoneyNumberInput';
 import UploadToBalanceWithCCForm from '../transaction/UploadToBalanceWithCCForm';
 
@@ -7,20 +15,58 @@ interface BuyTicketFormProps {
 	price: number;
 	pricePostfix: string;
 	pricePrefix?: string;
+	ticketId: number;
+	travelerId: number;
 }
 
 const ConfirmBalancePurchase = ({
 	price,
 	pricePostfix = 'TL',
 	pricePrefix,
+	ticketId,
+	travelerId,
 }: BuyTicketFormProps) => {
 	const [opened, { open, close }] = useDisclosure(false);
+	const axiosSecure = useAxiosSecure();
+	const navigate = useNavigate();
 
-	// TODO: Fetch user balance from backend, create hook useBalance
+	const { isLoading, mutateAsync: payWithBalance } = useMutation({
+		mutationFn: (paymentDetails: PaymentWithBalanceRequest) =>
+			payTicketWithBalance(axiosSecure, paymentDetails),
+		onError: () => {
+			notifications.show({
+				message: "Payment Failed, You Don't Have Enough Balance",
+				color: 'red',
+			});
+			navigate('/purchase-failed');
+		},
+	});
+	const onBalancePurchase = async () => {
+		const paymentDetails: PaymentWithBalanceRequest = {
+			amount: price,
+			ticketId: ticketId,
+			travelerId: travelerId,
+		};
+		const result = await payWithBalance(paymentDetails);
+		if (isErrorResponse(result)) {
+			notifications.show({
+				message: result.msg,
+				color: 'red',
+			});
+			navigate('/purchase-failed');
+			return;
+		}
+
+		notifications.show({
+			message: 'Payment Successful',
+			color: 'green',
+		});
+		navigate('/purchase-successful');
+	};
 	return (
 		<>
 			<Center>
-				<Card maw={400} withBorder>
+				<Card miw={400} withBorder>
 					<Stack>
 						{Number.isNaN(price) ? (
 							<Loader />
@@ -32,10 +78,21 @@ const ConfirmBalancePurchase = ({
 							/>
 						)}
 
-						<Button size="lg">
-							Pay {pricePrefix} {price} {pricePostfix} From Balance
+						<Button
+							onClick={onBalancePurchase}
+							leftIcon={<IconCheck />}
+							color="green"
+							size="lg"
+						>
+							Confirm Paying {pricePrefix} {price} {pricePostfix} From
+							Balance
 						</Button>
-						<Button onClick={open} size="lg" variant="outline">
+						<Button
+							loading={isLoading}
+							onClick={open}
+							size="lg"
+							variant="outline"
+						>
 							Transfer Money to Your Balance
 						</Button>
 					</Stack>

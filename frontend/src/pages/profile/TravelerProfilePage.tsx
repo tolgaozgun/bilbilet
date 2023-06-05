@@ -28,6 +28,7 @@ const TravelerProfilePage = () => {
 		isLoading,
 		isError,
 		data: travelerResponse,
+		refetch,
 	} = useTraveler(axiosSecure, user?.id!);
 	const traveler = travelerResponse?.data;
 
@@ -36,7 +37,12 @@ const TravelerProfilePage = () => {
 	}
 
 	if (isError) {
-		if (isErrorResponse<TravelerInfo>(travelerResponse)) {
+		if (!travelerResponse) {
+			notifications.show({
+				message:
+					"We couldn't receive a response from the servers. Please try again.",
+			});
+		} else if (isErrorResponse<TravelerInfo>(travelerResponse)) {
 			notifications.show({
 				message: travelerResponse.msg,
 			});
@@ -68,7 +74,7 @@ const TravelerProfilePage = () => {
 							<Stack>
 								<Text>
 									<Text fw={700}> Balance: </Text>
-									{traveler?.traveler.balance}
+									{traveler?.traveler.balance} TL
 								</Text>
 								<Button onClick={open}>
 									Upload money to your balance

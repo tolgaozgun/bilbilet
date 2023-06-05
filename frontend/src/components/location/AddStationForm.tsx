@@ -1,32 +1,32 @@
-import { Card, Title, Flex, TextInput, Select } from '@mantine/core';
+import { Card, Flex, Select, TextInput, Title } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
-import { primaryAccordionColor } from '../../constants/colors';
-import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
-import { AddStation, StationType } from '../../types/LocationTypes';
 import { useMutation } from '@tanstack/react-query';
-import { addStation } from '../../services/location';
+import { primaryAccordionColor } from '../../constants/colors';
 import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
+import { addStation } from '../../services/location';
+import { AddStation, StationType } from '../../types/LocationTypes';
+import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
 
 interface StationFormProps {
 	form: UseFormReturnType<
 		{
 			title: string;
 			abbreviation: string;
-			stationType: StationType;
+			stationType: string;
 			city: string;
 			country: string;
 		},
 		(values: {
 			title: string;
 			abbreviation: string;
-			stationType: StationType;
+			stationType: string;
 			city: string;
 			country: string;
 		}) => {
 			title: string;
 			abbreviation: string;
-			stationType: StationType;
+			stationType: string;
 			city: string;
 			country: string;
 		}
@@ -35,10 +35,11 @@ interface StationFormProps {
 const AddStationForm = ({ form }: StationFormProps) => {
 	const axiosSecure = useAxiosSecure();
 	//TODO: from enum
-	const stationTypes = ['AIRPORT', 'BUS_TERMINAL', 'TRAIN_STATION', 'PORT', 'OTHER'];
+	const stationTypes = ['AIRPORT', 'BUS_TERMINAL'];
 
 	const stationDetails: AddStation = {
 		...form.values,
+		stationType: form.values.stationType as StationType,
 	};
 	// const { addStation } = useAddStation();
 	const { mutate: submitMutation, isLoading: isSubmitLoading } = useMutation({
@@ -53,6 +54,10 @@ const AddStationForm = ({ form }: StationFormProps) => {
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'green' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
 			});
 			form.reset();
 		},
@@ -64,6 +69,10 @@ const AddStationForm = ({ form }: StationFormProps) => {
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
 			}),
 	});
 	const handleAddStation = async () => {

@@ -24,7 +24,11 @@ const HotelTab = () => {
 		return <LoadingPage />;
 	}
 	if (isHotelsError) {
-		if (isErrorResponse(hotelsListRes)) {
+		if (!hotelsListRes) {
+			notifications.show({
+				message: 'Something went wrong',
+			});
+		} else if (isErrorResponse(hotelsListRes)) {
 			notifications.show({
 				message: hotelsListRes.msg,
 			});

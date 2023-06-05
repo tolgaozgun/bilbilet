@@ -7,6 +7,7 @@ interface CustomElevatedButtonProps {
 	onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 	isLoading?: boolean | undefined;
 	color?: DefaultMantineColor | undefined;
+	size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | undefined;
 }
 const CustomElevatedButton = ({
 	text,
@@ -14,6 +15,7 @@ const CustomElevatedButton = ({
 	onClick,
 	isLoading,
 	color,
+	size
 }: CustomElevatedButtonProps) => {
 	return (
 		<Button
@@ -21,8 +23,8 @@ const CustomElevatedButton = ({
 			leftIcon={leftIcon}
 			onClick={onClick}
 			bg={color ? color : primaryButtonColor}
-		>
-			{text}
+			size={size}
+			{text}>
 		</Button>
 	);
 };
