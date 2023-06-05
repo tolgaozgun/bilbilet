@@ -30,6 +30,8 @@ interface HotelFormProps {
 			websiteUrl: string;
 			coverPhotoUrl: string;
 			photoUrl: string;
+			country: string;
+			city: string;
 		}) => {
 			name: string;
 			avgPrice: number;
@@ -37,6 +39,8 @@ interface HotelFormProps {
 			websiteUrl: string;
 			coverPhotoUrl: string;
 			photoUrl: string;
+			country: string;
+			city: string;
 		}
 	>;
 }

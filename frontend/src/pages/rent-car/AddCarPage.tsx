@@ -1,12 +1,31 @@
-import { Center } from "@mantine/core";
-import AddCarForm from "../../components/car-rental/AddCarForm";
+import { Center } from '@mantine/core';
+import AddCarForm from '../../components/car-rental/AddCarForm';
+import { useForm } from '@mantine/form';
+import { CarCategoryType, FuelType, GearType } from '../../types/CarTypes';
 
 const AddCarPage = () => {
-  return (
-    <Center>
-      <AddCarForm></AddCarForm>
-    </Center>
-  );
+	const addCarForm = useForm({
+		initialValues: {
+			capacity: 5,
+			gear: GearType.AUTOMATIC,
+			model: '',
+			brand: '',
+			category: CarCategoryType.HATCHBACK,
+			fuelType: FuelType.DIESEL,
+			photoUrl: '',
+		},
+		validate: {
+			model: (value) => (value === '' ? 'This field cannot be left empty' : null),
+			brand: (value) => (value === '' ? 'This field cannot be left empty' : null),
+			photoUrl: (value) =>
+				value === '' ? 'This field cannot be left empty' : null,
+		},
+	});
+	return (
+		<Center>
+			<AddCarForm form={addCarForm}></AddCarForm>
+		</Center>
+	);
 };
 
 export default AddCarPage;
