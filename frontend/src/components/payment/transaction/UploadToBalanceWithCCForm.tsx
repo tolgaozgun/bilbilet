@@ -39,7 +39,6 @@ const UploadToBalanceWithCCForm = () => {
 		isLoading: isLoadingBalance,
 		isError,
 		mutate: uploadToBalance,
-		data: transaction,
 	} = useMutation({
 		mutationKey: ['uploadToBalance'],
 		mutationFn: (uploadDetails: UploadMoneyToBalanceWithCCRequest) => {
@@ -54,14 +53,16 @@ const UploadToBalanceWithCCForm = () => {
 			notifications.show({
 				id: 'balance-add-fail',
 				title: 'Upload to balance failed!',
-				message: error.response ? error.response.data.msg : 'Something went wrong',
+				message: error.response
+					? error.response.data.msg
+					: 'Something went wrong',
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },
 				styles: (theme) => ({
 					title: { color: theme.white },
-					description: { color: theme.white }
-				})
+					description: { color: theme.white },
+				}),
 			}),
 	});
 

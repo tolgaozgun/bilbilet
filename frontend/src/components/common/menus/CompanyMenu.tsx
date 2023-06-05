@@ -89,6 +89,15 @@ const CompanyMenu = () => {
 							Log out
 						</SubtleLinkButton>
 					</Menu.Item>
+					<Menu.Item>
+						<SubtleLinkButton
+							to="/add-company-car"
+							size="sm"
+							leftIcon={<IconCar />}
+						>
+							Add New Car
+						</SubtleLinkButton>
+					</Menu.Item>
 				</Menu.Dropdown>
 			</Menu>
 		</Group>
