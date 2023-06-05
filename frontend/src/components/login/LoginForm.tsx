@@ -50,8 +50,8 @@ const LoginForm = () => {
 				style: { backgroundColor: 'red' },
 				styles: (theme) => ({
 					title: { color: theme.white },
-					description: { color: theme.white }
-				})
+					description: { color: theme.white },
+				}),
 			});
 			return;
 		}
@@ -65,14 +65,16 @@ const LoginForm = () => {
 			style: { backgroundColor: 'green' },
 			styles: (theme) => ({
 				title: { color: theme.white },
-				description: { color: theme.white }
-			})
+				description: { color: theme.white },
+			}),
 		});
 
 		if (res.data.userType === 'COMPANY') {
 			navigate('/add-fare');
 		} else if (res.data.userType === 'TRAVELER') {
 			navigate('/search-fare');
+		} else if (res.data.userType === 'ADMIN') {
+			navigate('/system-reports');
 		}
 	};
 
