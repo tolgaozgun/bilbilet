@@ -66,6 +66,10 @@ const AddHotelForm = ({ form }: HotelFormProps) => {
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'green' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
 			});
 			form.reset();
 			setRating(0);
@@ -78,6 +82,10 @@ const AddHotelForm = ({ form }: HotelFormProps) => {
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
 			}),
 	});
 

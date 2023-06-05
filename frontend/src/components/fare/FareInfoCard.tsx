@@ -73,6 +73,11 @@ const FareInfoCard = ({
 							Select Seats
 						</SubtleLinkButton>
 					</Flex>
+					<Flex align="center">
+						<SubtleLinkButton to={`/fare/${fareId}/select-seats`}>
+							Add To Journey Plan
+						</SubtleLinkButton>
+					</Flex>
 				</Flex>
 			</Flex>
 		</Card>
