@@ -11,8 +11,8 @@ export type VehicleSeatConfig = {
 
 export type SeatTicket = {
 	ticketId: number;
-	ticketStatus: TicketStatus;
-	seatType: SeatType;
+	ticketStatus: string;
+	seatType: string;
 	seatRow: number;
 	seatColumn: number;
 	fareId: number;

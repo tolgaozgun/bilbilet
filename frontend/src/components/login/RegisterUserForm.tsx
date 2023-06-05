@@ -82,6 +82,10 @@ const RegisterUserForm = () => {
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red', color: 'white' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
 			});
 			return;
 		}
@@ -94,6 +98,10 @@ const RegisterUserForm = () => {
 			autoClose: 5000,
 			withCloseButton: true,
 			style: { backgroundColor: 'green', color: 'white' },
+			styles: (theme) => ({
+				title: { color: theme.white },
+				description: { color: theme.white }
+			})
 		});
 		navigate('/login');
 	};

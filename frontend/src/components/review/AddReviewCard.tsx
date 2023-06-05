@@ -50,6 +50,10 @@ const AddReviewCard = ({ isCompany, id }: AddReviewCardProps) => {
 					autoClose: 5000,
 					withCloseButton: true,
 					style: { backgroundColor: 'green' },
+					styles: (theme) => ({
+						title: { color: theme.white },
+						description: { color: theme.white }
+					})
 				});
 			},
 			onError: () =>
@@ -60,6 +64,10 @@ const AddReviewCard = ({ isCompany, id }: AddReviewCardProps) => {
 					autoClose: 5000,
 					withCloseButton: true,
 					style: { backgroundColor: 'red' },
+					styles: (theme) => ({
+						title: { color: theme.white },
+						description: { color: theme.white }
+					})
 				}),
 		});
 
@@ -74,6 +82,10 @@ const AddReviewCard = ({ isCompany, id }: AddReviewCardProps) => {
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'green' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
 			});
 		},
 		onError: () =>
@@ -84,6 +96,10 @@ const AddReviewCard = ({ isCompany, id }: AddReviewCardProps) => {
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
 			}),
 	});
 

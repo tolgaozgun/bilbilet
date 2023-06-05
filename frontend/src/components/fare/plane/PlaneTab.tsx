@@ -68,7 +68,7 @@ const PlaneTab = ({ stationData, setSearchParams, flightData }: PlaneTabProps) =
 
 	const stations = stationData.filter((station) => station.stationType === 'AIRPORT');
 	const onSearch = () => {
-		if (direction === 'one-way' && (depValue || arrValue || deptDate)) {
+		if (direction === 'one-way') {
 			const newSearchParams: FareSearchParams = {
 				arrive_stat_id: Number(arrValue) === 0 ? undefined : Number(arrValue),
 				dep_stat_id: Number(depValue) === 0 ? undefined : Number(depValue),

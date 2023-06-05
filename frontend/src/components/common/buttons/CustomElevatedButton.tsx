@@ -1,4 +1,4 @@
-import { Button } from '@mantine/core';
+import { Button, DefaultMantineColor } from '@mantine/core';
 import { primaryButtonColor } from '../../../constants/colors';
 
 interface CustomElevatedButtonProps {
@@ -6,6 +6,7 @@ interface CustomElevatedButtonProps {
 	leftIcon?: React.ReactNode | undefined;
 	onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 	isLoading?: boolean | undefined;
+	color?: DefaultMantineColor | undefined;
 	size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | undefined;
 }
 const CustomElevatedButton = ({
@@ -13,6 +14,7 @@ const CustomElevatedButton = ({
 	leftIcon,
 	onClick,
 	isLoading,
+	color,
 	size
 }: CustomElevatedButtonProps) => {
 	return (
@@ -20,10 +22,9 @@ const CustomElevatedButton = ({
 			loading={isLoading}
 			leftIcon={leftIcon}
 			onClick={onClick}
+			bg={color ? color : primaryButtonColor}
 			size={size}
-			bg={primaryButtonColor}
-		>
-			{text}
+			{text}>
 		</Button>
 	);
 };

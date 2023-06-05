@@ -54,6 +54,10 @@ const AddStationForm = ({ form }: StationFormProps) => {
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'green' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
 			});
 			form.reset();
 		},
@@ -61,10 +65,14 @@ const AddStationForm = ({ form }: StationFormProps) => {
 			notifications.show({
 				id: 'add-fail',
 				title: 'Station Add failed!',
-				message: 'Hmmmmmmmm',
+				message: 'Hmmmmmm',
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
 			}),
 	});
 	const handleAddStation = async () => {

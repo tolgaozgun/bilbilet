@@ -89,6 +89,10 @@ const AddVehicleForm = ({ form }: VehicleFormProps) => {
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'green' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
 			});
 			form.reset();
 		},
@@ -100,6 +104,10 @@ const AddVehicleForm = ({ form }: VehicleFormProps) => {
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
 			}),
 	});
 
@@ -114,6 +122,10 @@ const AddVehicleForm = ({ form }: VehicleFormProps) => {
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'green' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
 			});
 			form.reset();
 		},
@@ -125,6 +137,10 @@ const AddVehicleForm = ({ form }: VehicleFormProps) => {
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
 			}),
 	});
 

@@ -140,7 +140,7 @@ const MyReviewsPage = () => {
 
 				<Tabs.Panel value="company" pt="md">
 					<Flex direction={'column'} gap={'md'}>
-						<Title>My Past Company Reviews</Title>
+						<Title>My Company Reviews</Title>
 						<Card shadow="xl" withBorder radius={'lg'}>
 							{myCompanyReviewsCards}
 						</Card>
@@ -148,6 +148,7 @@ const MyReviewsPage = () => {
 				</Tabs.Panel>
 
 				<Tabs.Panel value="trip" pt="md">
+					<Title>My Trip Reviews</Title>
 					<Card shadow="xl" withBorder radius={'lg'}>
 						{myTripReviewsCards}
 					</Card>
