@@ -55,11 +55,11 @@ const AddAddressForm = ({ form }: AddressFormProps) => {
 			});
 			form.reset();
 		},
-		onError: () =>
+		onError: (error) =>
 			notifications.show({
 				id: 'add-fail',
 				title: 'Address Add failed!',
-				message: 'Hmmmmmm...',
+				message: error.response ? error.response.data.msg : 'Something went wrong',
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },
