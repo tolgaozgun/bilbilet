@@ -28,11 +28,14 @@ import MyRentalsPage from './pages/rent-car/MyRentalsPage';
 import SearchRentCarPage from './pages/rent-car/SearchRentCarPage';
 import MyReviewsPage from './pages/review/MyReviewsPage';
 import ReviewPage from './pages/review/ReviewPage';
+import AddCompanyCarPage from './pages/rent-car/AddCompanyCarPage';
+import MyRentalsPage from './pages/rent-car/MyRentalsPage';
 import SystemReportsPage from './pages/system/SystemReportsPage';
 import MyTicketsPage from './pages/tickets/past-tickets/MyTicketsPage';
 import SoldTicketsPage from './pages/tickets/past-tickets/SoldTicketsPage';
 import AddVehiclePage from './pages/vehicle/AddVehiclePage';
 import ListVehiclesPage from './pages/vehicle/ListVehiclesPage';
+import CompanyReviewsPage from './pages/review/CompanyReviewsPage';
 
 const router = createBrowserRouter([
 	{
@@ -145,10 +148,10 @@ const router = createBrowserRouter([
 						path: '/company/profile',
 						element: <CompanyProfilePage />,
 					},
-					// {
-					// 	path: '/my-companys-reviews',
-					// 	element: <CompanyReviewsPage />,
-					// },
+					{
+						path: '/my-companys-reviews',
+						element: <CompanyReviewsPage />,
+					},
 					{
 						path: '/system-reports',
 						element: <SystemReportsPage />,
