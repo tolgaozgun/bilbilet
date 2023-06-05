@@ -1,22 +1,22 @@
 import {
 	Card,
-	Title,
 	Flex,
-	TextInput,
-	Radio,
 	Group,
-	Select,
 	NumberInput,
+	Radio,
+	Select,
+	TextInput,
+	Title,
 } from '@mantine/core';
-import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
-import { primaryAccordionColor } from '../../constants/colors';
 import { UseFormReturnType } from '@mantine/form';
-import { GearType, CarCategoryType, FuelType, Car } from '../../types/CarTypes';
-import useGetBrands from '../../hooks/car/useGetBrands';
-import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
-import { addCar } from '../../services/car';
 import { notifications } from '@mantine/notifications';
 import { useMutation } from '@tanstack/react-query';
+import { primaryAccordionColor } from '../../constants/colors';
+import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
+import useGetBrands from '../../hooks/car/useGetBrands';
+import { addCar } from '../../services/car';
+import { Car, CarCategoryType, FuelType, GearType } from '../../types/CarTypes';
+import CustomElevatedButton from '../common/buttons/CustomElevatedButton';
 
 interface AddCarFormProps {
 	form: UseFormReturnType<
@@ -70,11 +70,13 @@ const AddCarForm = ({ form }: AddCarFormProps) => {
 			});
 			form.reset();
 		},
-		onError: () =>
+		onError: (error) =>
 			notifications.show({
 				id: 'add-fail',
 				title: 'Car Add failed!',
-				message: 'Hmmmmmmm',
+				message: error.response
+					? error.response.data.msg
+					: 'Something went wrong',
 				autoClose: 5000,
 				withCloseButton: true,
 				style: { backgroundColor: 'red' },

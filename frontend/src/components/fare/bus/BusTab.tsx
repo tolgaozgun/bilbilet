@@ -30,8 +30,6 @@ import FareInfoCard from '../FareInfoCard';
 
 interface BusTabProps {
 	stationData: Array<SelectItem>;
-	setSearchParams: (params: FareSearchParams) => void;
-	busData: FareDetailsView[];
 }
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -54,7 +52,8 @@ const CustomSelectItem = forwardRef<HTMLDivElement, ItemProps>(
 	),
 );
 
-const BusTab = ({ stationData, setSearchParams, busData }: BusTabProps) => {
+const BusTab = ({ stationData }: BusTabProps) => {
+	const axiosSecure = useAxiosSecure();
 	const [depSearchValue, setDepSearchValue] = useState('');
 	const [arrSearchValue, setArrSearchValue] = useState('');
 	const [direction, setDirection] = useState('one-way');
@@ -64,6 +63,27 @@ const BusTab = ({ stationData, setSearchParams, busData }: BusTabProps) => {
 	const [deptDate, setDeptDate] = useState<Date | null>(null);
 	const [returnDate, setReturnDate] = useState<Date | null>(null);
 
+	const [searchParams, setSearchParams] = useState<FareSearchParams | {}>({});
+
+	const {
+		isLoading: isFareLoading,
+		isError: isFareFetchError,
+		data: busResponse,
+		error,
+	} = useBusFares(axiosSecure, searchParams);
+
+	if (isFareFetchError) {
+		if (!busResponse) {
+			notifications.show({
+				message: 'Something went wrong',
+			});
+		} else if (isErrorResponse(busResponse)) {
+			notifications.show({
+				message: busResponse.msg,
+			});
+		}
+		return <ItemsNotFoundPage />;
+	}
 	const onSearch = () => {
 		if (direction === 'one-way' && depValue && arrValue && deptDate) {
 			const newSearchParams: FareSearchParams = {
@@ -173,7 +193,7 @@ const BusTab = ({ stationData, setSearchParams, busData }: BusTabProps) => {
 					</Flex>
 				</Stack>
 				<Flex direction={'column'} gap={'xl'}>
-					{busData?.map((bus) => {
+					{busResponse?.data?.map((bus) => {
 						const depTimeDateObj = new Date(bus.depTime);
 						const arrTimeDateObj = new Date(bus.arrTime);
 

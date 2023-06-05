@@ -30,8 +30,6 @@ import FareInfoCard from '../FareInfoCard';
 
 interface PlaneTabProps {
 	stationData: Array<SelectItem>;
-	setSearchParams: (params: FareSearchParams) => void;
-	flightData: FareDetailsView[];
 }
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -54,7 +52,8 @@ const CustomSelectItem = forwardRef<HTMLDivElement, ItemProps>(
 	),
 );
 
-const PlaneTab = ({ stationData, setSearchParams, flightData }: PlaneTabProps) => {
+const PlaneTab = ({ stationData }: PlaneTabProps) => {
+	const axiosSecure = useAxiosSecure();
 	const [depSearchValue, setDepSearchValue] = useState('');
 	const [arrSearchValue, setArrSearchValue] = useState('');
 	const [direction, setDirection] = useState('one-way');
@@ -64,7 +63,29 @@ const PlaneTab = ({ stationData, setSearchParams, flightData }: PlaneTabProps) =
 	const [deptDate, setDeptDate] = useState<Date | null>(null);
 	const [returnDate, setReturnDate] = useState<Date | null>(null);
 
-	const axiosSecure = useAxiosSecure();
+	const [searchParams, setSearchParams] = useState<FareSearchParams | {}>({});
+	const {
+		isLoading: isFlightFareLoading,
+		isError: isFlightFareFetchError,
+		data: flightResponse,
+	} = useFlightFares(axiosSecure, searchParams);
+
+	if (isFlightFareLoading) {
+		return <LoadingPage />;
+	}
+
+	if (isFlightFareFetchError) {
+		if (!flightResponse) {
+			notifications.show({
+				message: 'Something went wrong',
+			});
+		} else if (isErrorResponse(flightResponse)) {
+			notifications.show({
+				message: flightResponse.msg,
+			});
+		}
+		return <ItemsNotFoundPage />;
+	}
 
 	const stations = stationData.filter((station) => station.stationType === 'AIRPORT');
 	const onSearch = () => {
@@ -102,7 +123,14 @@ const PlaneTab = ({ stationData, setSearchParams, flightData }: PlaneTabProps) =
 	};
 
 	return (
-		<Card withBorder radius="xl" shadow="xl" p={48} sx={{ minWidth: 400, minHeight: 900 }} mx="auto">
+		<Card
+			withBorder
+			radius="xl"
+			shadow="xl"
+			p={48}
+			sx={{ minWidth: 400, minHeight: 900 }}
+			mx="auto"
+		>
 			<Flex direction={'column'} align={'start'} gap={'xl'}>
 				<Title>Buy Plane Ticket</Title>
 				<Stack>
@@ -173,7 +201,7 @@ const PlaneTab = ({ stationData, setSearchParams, flightData }: PlaneTabProps) =
 				<Flex direction={'row'} gap={'xl'}>
 					{/* <PlaneFilter /> */}
 					<Flex direction={'column'} gap={'xl'}>
-						{flightData?.map((flight) => {
+						{flightResponse.data?.map((flight) => {
 							const depTimeDateObj = new Date(flight.depTime);
 							const arrTimeDateObj = new Date(flight.arrTime);
 

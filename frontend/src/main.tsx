@@ -23,12 +23,11 @@ import PurchaseFailed from './pages/purchase-ticket/PurchaseFailed';
 import PurchaseSucceeded from './pages/purchase-ticket/PurchaseSucceeded';
 import PurchaseTicketPage from './pages/purchase-ticket/PurchaseTicketPage';
 import AddCarPage from './pages/rent-car/AddCarPage';
+import AddCompanyCarPage from './pages/rent-car/AddCompanyCarPage';
+import MyRentalsPage from './pages/rent-car/MyRentalsPage';
 import SearchRentCarPage from './pages/rent-car/SearchRentCarPage';
 import MyReviewsPage from './pages/review/MyReviewsPage';
 import ReviewPage from './pages/review/ReviewPage';
-import PastTicketsPage from './pages/tickets/past-tickets/PastTicketsPage';
-import AddCompanyCarPage from './pages/rent-car/AddCompanyCarPage';
-import MyRentalsPage from './pages/rent-car/MyRentalsPage';
 import SystemReportsPage from './pages/system/SystemReportsPage';
 import MyTicketsPage from './pages/tickets/past-tickets/MyTicketsPage';
 import SoldTicketsPage from './pages/tickets/past-tickets/SoldTicketsPage';
@@ -133,8 +132,8 @@ const router = createBrowserRouter([
 					{
 						path: '/my-rentals',
 						element: <MyRentalsPage />,
-          },
-          {
+					},
+					{
 						path: '/my-reviews',
 						element: <MyReviewsPage />,
 					},
