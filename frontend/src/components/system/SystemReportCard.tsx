@@ -14,8 +14,8 @@ const SystemReportCard = ({
 	return (
 		<Card shadow="xl" withBorder radius={'lg'}>
 			<Flex direction={'column'} gap={'xs'} align={'start'}>
-				<Flex direction={'column'} gap={'xs'} align={'center'}>
-					<Text>{title}</Text>
+				<Flex direction={'row'} gap={'xs'} align={'center'}>
+					<Text fw={700}>{title}</Text>
 					<Text>{count}{ }{extraInfo}</Text>
 				</Flex>
 			</Flex>

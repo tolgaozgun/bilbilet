@@ -1,7 +1,7 @@
 export interface FareSearchParams {
-	dep_stat_id: number;
-	arrive_stat_id: number;
-	departure_time: Date;
+	dep_stat_id?: number;
+	arrive_stat_id?: number;
+	departure_time?: Date;
 	return_date?: Date;
 }
 
