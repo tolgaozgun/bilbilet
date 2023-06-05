@@ -23,7 +23,8 @@ const SubtleLinkButton = ({
 		<Link to={to}>
 			<Button
 				size={size || 'lg'}
-				variant="filled"
+				variant="subtle"
+				// variant="filled"
 				// gradient={{ from: '#3B5BDB', to: '#22B8CF', deg: 360 }}
 				color={color || primaryButtonColor}
 				radius="xs"

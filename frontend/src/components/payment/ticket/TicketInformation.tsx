@@ -11,7 +11,8 @@ import { getTicketByUserId } from '../../../services/payment/TicketService';
 import { useUser } from '../../../hooks/auth';
 
 interface TicketInformationProps {
-	ticket: SeatTicket;
+	ticket: SeatTicket,
+	cTitle?: string,
 	depTime: string,
 	arrTime: string,
 	depDate: string,
@@ -19,13 +20,19 @@ interface TicketInformationProps {
 	duration: string
 }
 
-const TicketInformation = ({ ticket, depTime, arrTime, depDate, arrDate, duration }: TicketInformationProps) => {
+const TicketInformation = ({ ticket, cTitle, depTime, arrTime, depDate, arrDate, duration }: TicketInformationProps) => {
 	const { seatColumn, seatRow, seatType, ticketStatus, totalPrice, ticketId } = ticket;
+
+	let ticketCompanyName = cTitle;
+
+	if (!ticketCompanyName) {
+		ticketCompanyName = "Ticket Information";
+	}
 
 	return (
 		<Card withBorder p={24}>
 			<Stack spacing="lg">
-				<Title>Ticket Information</Title>
+				<Title>{ticketCompanyName}</Title>
 				<Divider />
 				<Flex direction="column">
 					<Title order={4}>Seat - Type</Title>

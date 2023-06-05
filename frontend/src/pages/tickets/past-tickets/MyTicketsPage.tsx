@@ -70,6 +70,7 @@ const MyTicketsPage = () => {
 						return (
 							<TicketInformation
 					   			ticket = { ticketData }
+								cTitle = { ticketData.companyTitle.toString() }
 								depTime = { depTimeD }
 								arrTime = { arrTimeD }
 								depDate = { depDateD }
@@ -97,11 +98,12 @@ const MyTicketsPage = () => {
 						return (
 							<TicketInformation
 					   			ticket = { ticketData }
-								   depTime = { depTimeD }
-								   arrTime = { arrTimeD }
-								   depDate = { depDateD }
-								   arrDate = { arrDateD }
-								   duration = { durationD }
+								cTitle = { ticketData.companyTitle.toString() }
+								depTime = { depTimeD }
+								arrTime = { arrTimeD }
+								depDate = { depDateD }
+								arrDate = { arrDateD }
+								duration = { durationD }
 					   		></TicketInformation>
 						);
 					})}
