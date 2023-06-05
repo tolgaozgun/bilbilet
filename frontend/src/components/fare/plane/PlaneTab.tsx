@@ -68,11 +68,11 @@ const PlaneTab = ({ stationData, setSearchParams, flightData }: PlaneTabProps) =
 
 	const stations = stationData.filter((station) => station.stationType === 'AIRPORT');
 	const onSearch = () => {
-		if (direction === 'one-way' && depValue && arrValue && deptDate) {
+		if (direction === 'one-way' && (depValue || arrValue || deptDate)) {
 			const newSearchParams: FareSearchParams = {
-				arrive_stat_id: Number(arrValue),
-				dep_stat_id: Number(depValue),
-				departure_time: deptDate,
+				arrive_stat_id: Number(arrValue) === 0 ? undefined : Number(arrValue),
+				dep_stat_id: Number(depValue) === 0 ? undefined : Number(depValue),
+				departure_time: deptDate === null ? undefined : deptDate,
 			};
 			setSearchParams(newSearchParams);
 			return;
@@ -102,7 +102,7 @@ const PlaneTab = ({ stationData, setSearchParams, flightData }: PlaneTabProps) =
 	};
 
 	return (
-		<Card withBorder radius="xl" shadow="xl" p={48} sx={{ minWidth: 400 }} mx="auto">
+		<Card withBorder radius="xl" shadow="xl" p={48} sx={{ minWidth: 400, minHeight: 900 }} mx="auto">
 			<Flex direction={'column'} align={'start'} gap={'xl'}>
 				<Title>Buy Plane Ticket</Title>
 				<Stack>
