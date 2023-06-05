@@ -33,9 +33,9 @@ const ConfirmBalancePurchase = ({
 	const { isLoading, mutateAsync: payWithBalance } = useMutation({
 		mutationFn: (paymentDetails: PaymentWithBalanceRequest) =>
 			payTicketWithBalance(axiosSecure, paymentDetails),
-		onError: () => {
+		onError: (error) => {
 			notifications.show({
-				message: "Payment Failed, You Don't Have Enough Balance",
+				message: error.response ? error.response.data.msg : 'Payment Failed! You Don\'t Have Enough Balance',
 				color: 'red',
 			});
 			navigate('/purchase-failed');

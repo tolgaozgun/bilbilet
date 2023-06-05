@@ -23,48 +23,8 @@ const SearchFarePage = () => {
 		isError: isStationsError,
 	} = useGetStations(axiosSecure);
 
-	const [busSearchParams, setBusSearchParams] = useState<FareSearchParams | {}>({});
-	const [flightSearchParams, setFlightSearchParams] = useState<FareSearchParams | {}>(
-		{},
-	);
-	const {
-		isLoading: isFlightFareLoading,
-		isError: isFlightFareFetchError,
-		data: flightResponse,
-	} = useFlightFares(axiosSecure, flightSearchParams);
-
-	const {
-		isLoading: isFareLoading,
-		isError: isFareFetchError,
-		data: busResponse,
-	} = useBusFares(axiosSecure, busSearchParams);
-
-	if (isStationsLoading || isFareLoading || isFlightFareLoading || !allStations) {
+	if (isStationsLoading || !allStations) {
 		return <LoadingPage />;
-	}
-	if (isFlightFareFetchError) {
-		if (!flightResponse) {
-			notifications.show({
-				message: 'Something went wrong',
-			});
-		} else if (isErrorResponse(flightResponse)) {
-			notifications.show({
-				message: flightResponse.msg,
-			});
-		}
-		return <ItemsNotFoundPage />;
-	}
-	if (isFareFetchError) {
-		if (!busResponse) {
-			notifications.show({
-				message: 'Something went wrong',
-			});
-		} else if (isErrorResponse(busResponse)) {
-			notifications.show({
-				message: busResponse.msg,
-			});
-		}
-		return <ItemsNotFoundPage />;
 	}
 
 	const stationList: Array<Station> = allStations.data!;
@@ -92,18 +52,10 @@ const SearchFarePage = () => {
 					</Tabs.Tab>
 				</Tabs.List>
 				<Tabs.Panel value="flight" pt="xs">
-					<PlaneTab
-						stationData={stationData}
-						flightData={flightResponse.data!}
-						setSearchParams={setFlightSearchParams}
-					/>
+					<PlaneTab stationData={stationData} />
 				</Tabs.Panel>
 				<Tabs.Panel value="bus" pt="xs">
-					<BusTab
-						stationData={stationData}
-						setSearchParams={setBusSearchParams}
-						busData={busResponse.data!}
-					/>
+					<BusTab stationData={stationData} />
 				</Tabs.Panel>
 				<Tabs.Panel value="hotel" pt="xs">
 					<HotelTab />

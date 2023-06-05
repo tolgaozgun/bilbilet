@@ -1,20 +1,20 @@
 import { AVAILABLE_TRANSITIONS, Center, Flex, Tabs, Title } from '@mantine/core';
-import PastTicketCard from '../../../components/ticket/PastTicketCard';
-import SortPastTicketsBar from '../../../components/ticket/SortPastTicketsBar';
-import PastTicketsFilter from '../../../components/ticket/PastTicketsFilter';
-import useGetTickets from '../../../hooks/tickets/useTickets';
-import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
-import { useUser } from '../../../hooks/auth';
-import LoadingPage from '../../LoadingPage';
-import { IconPlane, IconBus, IconBuilding } from '@tabler/icons-react';
+import { IconBuilding, IconBus, IconPlane } from '@tabler/icons-react';
+import FareInfoCard from '../../../components/fare/FareInfoCard';
 import BusTab from '../../../components/fare/bus/BusTab';
 import PlaneTab from '../../../components/fare/plane/PlaneTab';
 import HotelTab from '../../../components/hotel/HotelTab';
-import FareInfoCard from '../../../components/fare/FareInfoCard';
 import TicketInformation from '../../../components/payment/ticket/TicketInformation';
+import PastTicketCard from '../../../components/ticket/PastTicketCard';
+import PastTicketsFilter from '../../../components/ticket/PastTicketsFilter';
+import SortPastTicketsBar from '../../../components/ticket/SortPastTicketsBar';
+import { useUser } from '../../../hooks/auth';
+import useAxiosSecure from '../../../hooks/auth/useAxiosSecure';
+import useGetTickets from '../../../hooks/tickets/useTickets';
 import { convertDateToTime, formatDate, getTimeDifference } from '../../../utils/utils';
+import LoadingPage from '../../LoadingPage';
 
-const MyTicketsPage = () => {	
+const MyTicketsPage = () => {
 	const axiosSecure = useAxiosSecure();
 	const user = useUser();
 
@@ -29,7 +29,7 @@ const MyTicketsPage = () => {
 	}
 
 	const ticketsList = ticketsData?.data!;
-	
+
 	// const ticketCards = ticketsList.map((ticketData) => {
 	// 	return (
 	// 		<TicketInformation
@@ -66,17 +66,22 @@ const MyTicketsPage = () => {
 							depTimeDateObj,
 							arrTimeDateObj,
 						);
-						
+
+						// If arrival time is less than current time, then don't show the ticket
+						if (arrTimeDateObj.getTime() < Date.now()) {
+							return null;
+						}
+
 						return (
 							<TicketInformation
-					   			ticket = { ticketData }
-								cTitle = { ticketData.companyTitle.toString() }
-								depTime = { depTimeD }
-								arrTime = { arrTimeD }
-								depDate = { depDateD }
-								arrDate = { arrDateD }
-								duration = { durationD }
-					   		></TicketInformation>
+								ticket={ticketData}
+								cTitle={ticketData.companyTitle.toString()}
+								depTime={depTimeD}
+								arrTime={arrTimeD}
+								depDate={depDateD}
+								arrDate={arrDateD}
+								duration={durationD}
+							></TicketInformation>
 						);
 					})}
 				</Tabs.Panel>
@@ -94,26 +99,30 @@ const MyTicketsPage = () => {
 							depTimeDateObj,
 							arrTimeDateObj,
 						);
-						
+
+						if (arrTimeDateObj.getTime() > Date.now()) {
+							return null;
+						}
 						return (
 							<TicketInformation
-					   			ticket = { ticketData }
-								cTitle = { ticketData.companyTitle.toString() }
-								depTime = { depTimeD }
-								arrTime = { arrTimeD }
-								depDate = { depDateD }
-								arrDate = { arrDateD }
-								duration = { durationD }
-					   		></TicketInformation>
+								ticket={ticketData}
+								cTitle={ticketData.companyTitle.toString()}
+								depTime={depTimeD}
+								arrTime={arrTimeD}
+								depDate={depDateD}
+								arrDate={arrDateD}
+								duration={durationD}
+							></TicketInformation>
 						);
 					})}
 				</Tabs.Panel>
 
 				<Tabs.Panel value="cancelled" pt="xs">
+					<div>empty</div>
 				</Tabs.Panel>
 			</Tabs>
 		</Center>
-			
+
 		// </Center><Flex direction={'column'} gap={'sm'}>
 		// </Center>	<Title>Past Tickets</Title>
 		// </Center>	<SortPastTicketsBar></SortPastTicketsBar>

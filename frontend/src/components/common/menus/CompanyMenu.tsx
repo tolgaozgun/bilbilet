@@ -80,6 +80,15 @@ const CompanyMenu = () => {
 					</Menu.Item>
 					<Menu.Item>
 						<SubtleLinkButton
+							to="/add-company-car"
+							size="sm"
+							leftIcon={<IconCar />}
+						>
+							Add New Car
+						</SubtleLinkButton>
+					</Menu.Item>
+					<Menu.Item>
+						<SubtleLinkButton
 							onClick={onLogout}
 							size="sm"
 							leftIcon={<IconLogout />}

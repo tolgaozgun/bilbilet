@@ -127,6 +127,19 @@ const AddFareForm = () => {
 	const { mutateAsync: addFare } = useMutation({
 		mutationKey: ['addFare'],
 		mutationFn: (addFare: AddFare) => createFare(axiosSecure, addFare),
+		onError: (error) =>
+			notifications.show({
+				id: 'fare-create-fail',
+				title: 'Create Fare failed!',
+				message: error.response ? error.response.data.msg : 'Something went wrong',
+				autoClose: 5000,
+				withCloseButton: true,
+				style: { backgroundColor: 'red' },
+				styles: (theme) => ({
+					title: { color: theme.white },
+					description: { color: theme.white }
+				})
+			}),
 	});
 
 	if (isStationsLoading || companyQuery.isLoading || vehiclesQuery.isLoading) {
