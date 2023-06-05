@@ -1,4 +1,4 @@
-import { Card, Center, Flex, Tabs, Title, Text, Textarea } from '@mantine/core';
+import { Card, Center, Flex, Tabs, Title, Text } from '@mantine/core';
 import {
 	IconArrowRight,
 	IconBuilding,
@@ -9,8 +9,6 @@ import {
 } from '@tabler/icons-react';
 import { useUser } from '../../hooks/auth';
 import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
-import useGetMyTripReviews from '../../hooks/review/useGetMyTripReviews';
-import useGetMyCompanyReviews from '../../hooks/review/useGetMyCompanyReviews';
 import LoadingPage from '../LoadingPage';
 import RatingBar from '../../components/common/RatingBar';
 import useCompany from '../../hooks/users/useCompany';

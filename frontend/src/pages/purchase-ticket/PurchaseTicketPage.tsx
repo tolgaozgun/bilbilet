@@ -27,6 +27,10 @@ import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
 import { getTicketById } from '../../services/payment/TicketService';
 import { PaymentType } from '../../types/PaymentTypes';
 import LoadingPage from '../LoadingPage';
+import useTicketById from '../../hooks/tickets/useTickets';
+import { convertDateToTime, formatDate, getTimeDifference } from '../../utils/utils';
+import TicketInformationLimited from '../../components/payment/ticket/TicketInformationLimited';
+import useDetailedTicketById from '../../hooks/tickets/useTicketsById';
 
 const PurchaseTicketPage = () => {
 	const { ticketId } = useParams();
@@ -47,6 +51,7 @@ const PurchaseTicketPage = () => {
 		queryKey: ['getTicket'],
 		queryFn: () => getTicketById(axiosSecure, Number(ticketId)),
 	});
+
 	// Traveler information form
 	const travelerInformationForm = useForm({
 		initialValues: {
@@ -74,6 +79,16 @@ const PurchaseTicketPage = () => {
 		},
 	});
 
+	const {
+		isLoading: isTicketsLoading,
+		isError: isTicketsError,
+		data: ticketsData,
+	} = useDetailedTicketById(axiosSecure, Number(ticketId));
+
+	if (isTicketsLoading || !ticketsData || isTicketsError) {
+		return <LoadingPage />;
+	}
+
 	if (isTicketLoading) {
 		return <LoadingPage />;
 	}
@@ -82,7 +97,18 @@ const PurchaseTicketPage = () => {
 		return <ItemsNotFoundPage />;
 	}
 
-	console.log(ticket?.data!);
+	const depTimeDateObj = new Date(ticketsData?.data!.departureTime);
+	const arrTimeDateObj = new Date(ticketsData?.data!.arrivalTime);
+
+	const depTimeD = convertDateToTime(depTimeDateObj);
+	const arrTimeD = convertDateToTime(arrTimeDateObj);
+	const depDateD = formatDate(depTimeDateObj);
+	const arrDateD = formatDate(arrTimeDateObj);
+	const durationD = getTimeDifference(
+		depTimeDateObj,
+		arrTimeDateObj,
+	);
+
 	const price = ticket?.data!.totalPrice;
 
 	const PaymentForm = () => {
@@ -125,6 +151,17 @@ const PurchaseTicketPage = () => {
 		nextStep();
 	};
 
+	// <TicketInformation 
+	// 	ticket={ticket?.data!}
+	// 	depTime = { depTimeD }
+	// 	arrTime = { arrTimeD }
+	// 	depDate = { depDateD }
+	// 	arrDate = { arrDateD }
+	// 	duration = { durationD }
+	// />
+
+	// <TicketInformationLimited ticket = {ticket?.data!}></TicketInformationLimited>
+
 	return (
 		<Center>
 			<Stepper active={active} breakpoint="sm" p={18}>
@@ -134,7 +171,14 @@ const PurchaseTicketPage = () => {
 				>
 					<Stack spacing={36}>
 						<Flex align="center" justify="space-evenly">
-							<TicketInformation ticket={ticket?.data!} />
+							<TicketInformation 
+							 	ticket={ ticket?.data! }
+							 	depTime = { depTimeD }
+							 	arrTime = { arrTimeD }
+							 	depDate = { depDateD }
+							 	arrDate = { arrDateD }
+							 	duration = { durationD }
+							/>
 							<TravelerInformationForm form={travelerInformationForm} />
 						</Flex>
 						<Container>
