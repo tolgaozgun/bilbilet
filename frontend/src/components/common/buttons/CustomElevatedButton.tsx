@@ -15,7 +15,7 @@ const CustomElevatedButton = ({
 	onClick,
 	isLoading,
 	color,
-	size
+	size,
 }: CustomElevatedButtonProps) => {
 	return (
 		<Button
@@ -24,7 +24,8 @@ const CustomElevatedButton = ({
 			onClick={onClick}
 			bg={color ? color : primaryButtonColor}
 			size={size}
-			{text}>
+		>
+			{text}
 		</Button>
 	);
 };
