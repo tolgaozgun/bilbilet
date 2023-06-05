@@ -6,18 +6,6 @@ import { RUserTicketView } from '../../types/TicketTypes';
 
 interface PastTicketCardProps {
 	ticket: RUserTicketView;
-
-	companyName: string;
-	departureTime: string;
-	arrivalTime: string;
-	departureLocation: string;
-	arrivalLocation: string;
-	departureABB: string;
-	arrivalABB: string;
-	duration: string;
-	price: number;
-	status: string;
-	seat: string;
 }
 const PastTicketCard = ({ ticket }: PastTicketCardProps) => {
 	return (

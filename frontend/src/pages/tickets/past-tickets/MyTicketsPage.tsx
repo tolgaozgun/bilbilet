@@ -12,35 +12,32 @@ import PlaneTab from '../../../components/fare/plane/PlaneTab';
 import HotelTab from '../../../components/hotel/HotelTab';
 import FareInfoCard from '../../../components/fare/FareInfoCard';
 import TicketInformation from '../../../components/payment/ticket/TicketInformation';
+import { convertDateToTime, formatDate, getTimeDifference } from '../../../utils/utils';
 
-const MyTicketsPage = () => {
+const MyTicketsPage = () => {	
 	const axiosSecure = useAxiosSecure();
 	const user = useUser();
+
 	const {
 		isLoading: isTicketsLoading,
 		isError: isTicketsError,
 		data: ticketsData,
 	} = useGetTickets(axiosSecure, user?.id!);
+
 	if (isTicketsLoading || !ticketsData || isTicketsError) {
 		return <LoadingPage></LoadingPage>;
 	}
+
 	const ticketsList = ticketsData?.data!;
 	
-	const ticketCards = ticketsList.map((ticket) => {
-		return (
-			<TicketInformation
-				ticket={{
-					ticketId: 0,
-					ticketStatus: 'AVAILABE',
-					seatType: 'ECONOMY',
-					seatRow: 0,
-					seatColumn: 0,
-					fareId: 0,
-					totalPrice: 0,
-				}}
-			></TicketInformation>
-		);
-	});
+	// const ticketCards = ticketsList.map((ticketData) => {
+	// 	return (
+	// 		<TicketInformation
+	// 			ticket = { ticketData }
+	// 		></TicketInformation>
+	// 	);
+	// });
+
 	return (
 		<Center>
 			<Tabs defaultValue="current">
@@ -55,39 +52,102 @@ const MyTicketsPage = () => {
 						Cancelled
 					</Tabs.Tab>
 				</Tabs.List>
+
 				<Tabs.Panel value="current" pt="xs">
-				<{ticketCards}> 
+					{ticketsList?.map((ticketData) => {
+						const depTimeDateObj = new Date(ticketData.departureTime);
+						const arrTimeDateObj = new Date(ticketData.arrivalTime);
+
+						const depTimeD = convertDateToTime(depTimeDateObj);
+						const arrTimeD = convertDateToTime(arrTimeDateObj);
+						const depDateD = formatDate(depTimeDateObj);
+						const arrDateD = formatDate(arrTimeDateObj);
+						const durationD = getTimeDifference(
+							depTimeDateObj,
+							arrTimeDateObj,
+						);
+						
+						return (
+							<TicketInformation
+					   			ticket = { ticketData }
+								depTime = { depTimeD }
+								arrTime = { arrTimeD }
+								depDate = { depDateD }
+								arrDate = { arrDateD }
+								duration = { durationD }
+					   		></TicketInformation>
+						);
+					})}
 				</Tabs.Panel>
+
 				<Tabs.Panel value="past" pt="xs">
-						<{ticketCards}> 
+				{ticketsList?.map((ticketData) => {
+						const depTimeDateObj = new Date(ticketData.departureTime);
+						const arrTimeDateObj = new Date(ticketData.arrivalTime);
+
+						const depTimeD = convertDateToTime(depTimeDateObj);
+						const arrTimeD = convertDateToTime(arrTimeDateObj);
+						const depDateD = formatDate(depTimeDateObj);
+						const arrDateD = formatDate(arrTimeDateObj);
+						const durationD = getTimeDifference(
+							depTimeDateObj,
+							arrTimeDateObj,
+						);
+						
+						return (
+							<TicketInformation
+					   			ticket = { ticketData }
+								   depTime = { depTimeD }
+								   arrTime = { arrTimeD }
+								   depDate = { depDateD }
+								   arrDate = { arrDateD }
+								   duration = { durationD }
+					   		></TicketInformation>
+						);
+					})}
 				</Tabs.Panel>
+
 				<Tabs.Panel value="cancelled" pt="xs">
-						<{ticketCards}> 
+				{ticketsList?.map((ticketData) => {
+						const depTimeDateObj = new Date(ticketData.departureTime);
+						const arrTimeDateObj = new Date(ticketData.arrivalTime);
+
+						const depTimeD = convertDateToTime(depTimeDateObj);
+						const arrTimeD = convertDateToTime(arrTimeDateObj);
+						const depDateD = formatDate(depTimeDateObj);
+						const arrDateD = formatDate(arrTimeDateObj);
+						const durationD = getTimeDifference(
+							depTimeDateObj,
+							arrTimeDateObj,
+						);
+						
+						return (
+							<TicketInformation
+					   			ticket = { ticketData }
+								   depTime = { depTimeD }
+								   arrTime = { arrTimeD }
+								   depDate = { depDateD }
+								   arrDate = { arrDateD }
+								   duration = { durationD }
+					   		></TicketInformation>
+						);
+					})}
 				</Tabs.Panel>
 			</Tabs>
-			<Flex direction={'column'} gap={'sm'}>
-				<Title>Past Tickets</Title>
-				<SortPastTicketsBar></SortPastTicketsBar>
-				<Flex direction={'row'} gap={'sm'}>
-					<PastTicketsFilter></PastTicketsFilter>
-					<Flex direction={'column'} gap={'sm'}>
-						<PastTicketCard
-							companyName={'Pegasus Airlines'}
-							departureTime={'12:05'}
-							arrivalTime={'13:30'}
-							departureLocation={'Ankara Esenboğa Airport'}
-							arrivalLocation={'İstanbul Sabiha Gökçen'}
-							departureABB={'ESB'}
-							arrivalABB={'SAW'}
-							duration={'1h 25min'}
-							price={900}
-							status="Done"
-							seat="20C"
-						></PastTicketCard>
-					</Flex>
-				</Flex>
-			</Flex>
 		</Center>
+			
+		// </Center><Flex direction={'column'} gap={'sm'}>
+		// </Center>	<Title>Past Tickets</Title>
+		// </Center>	<SortPastTicketsBar></SortPastTicketsBar>
+		// </Center>	<Flex direction={'row'} gap={'sm'}>
+		// </Center>		<PastTicketsFilter></PastTicketsFilter>
+		// </Center>		<Flex direction={'column'} gap={'sm'}>
+		// </Center>			<PastTicketCard
+		// </Center>				ticket = { }
+		// </Center>			></PastTicketCard>
+		// </Center>		</Flex>
+		// </Center>	</Flex>
+		// </Center></Flex>
 	);
 };
 
