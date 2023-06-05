@@ -84,6 +84,28 @@ const SeatConfiguration = ({ seatConfig, seatTickets }: SeatConfigurationProps) 
 		return color;
 	};
 
+	const unavailableSeats = seatTickets.map((seat) => {
+		if (seat.ticketStatus !== 'AVAILABLE') {
+			return [seat.seatRow, seat.seatColumn];
+		}
+
+		return [];
+	});
+
+	const isSeatUnavailable = (
+		rowIndex: number,
+		colDivisionIndex: number,
+		colIndex: number,
+	) => {
+		const rowNumber = getRowNumber(rowIndex);
+		const colNumber = getColNumber(colDivisionIndex, colIndex);
+		for (const seat of unavailableSeats) {
+			if (seat[0] === rowNumber && seat[1] === colNumber) {
+				return true;
+			}
+		}
+	};
+
 	const onSeatSelection = (
 		rowIndex: number,
 		colDivisionIndex: number,
@@ -154,6 +176,11 @@ const SeatConfiguration = ({ seatConfig, seatTickets }: SeatConfigurationProps) 
 															(_, columnIndex) => (
 																<Button
 																	variant="filled"
+																	disabled={isSeatUnavailable(
+																		rowIndex,
+																		colDivisionIndex,
+																		columnIndex,
+																	)}
 																	color={
 																		isSeatSelected(
 																			rowIndex,
