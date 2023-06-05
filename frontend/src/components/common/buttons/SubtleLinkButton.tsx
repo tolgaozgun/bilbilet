@@ -23,11 +23,13 @@ const SubtleLinkButton = ({
 		<Link to={to}>
 			<Button
 				size={size || 'lg'}
-				variant="subtle"
+				variant="filled"
+				// gradient={{ from: '#3B5BDB', to: '#22B8CF', deg: 360 }}
 				color={color || primaryButtonColor}
 				radius="xs"
 				leftIcon={leftIcon || null}
 				onClick={onClick}
+				style={{ borderRadius: '8px' }}
 			>
 				{children}
 			</Button>

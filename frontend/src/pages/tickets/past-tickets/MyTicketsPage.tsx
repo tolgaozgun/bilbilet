@@ -81,7 +81,7 @@ const MyTicketsPage = () => {
 				</Tabs.Panel>
 
 				<Tabs.Panel value="past" pt="xs">
-				{ticketsList?.map((ticketData) => {
+					{ticketsList?.map((ticketData) => {
 						const depTimeDateObj = new Date(ticketData.departureTime);
 						const arrTimeDateObj = new Date(ticketData.arrivalTime);
 
@@ -108,30 +108,6 @@ const MyTicketsPage = () => {
 				</Tabs.Panel>
 
 				<Tabs.Panel value="cancelled" pt="xs">
-				{ticketsList?.map((ticketData) => {
-						const depTimeDateObj = new Date(ticketData.departureTime);
-						const arrTimeDateObj = new Date(ticketData.arrivalTime);
-
-						const depTimeD = convertDateToTime(depTimeDateObj);
-						const arrTimeD = convertDateToTime(arrTimeDateObj);
-						const depDateD = formatDate(depTimeDateObj);
-						const arrDateD = formatDate(arrTimeDateObj);
-						const durationD = getTimeDifference(
-							depTimeDateObj,
-							arrTimeDateObj,
-						);
-						
-						return (
-							<TicketInformation
-					   			ticket = { ticketData }
-								   depTime = { depTimeD }
-								   arrTime = { arrTimeD }
-								   depDate = { depDateD }
-								   arrDate = { arrDateD }
-								   duration = { durationD }
-					   		></TicketInformation>
-						);
-					})}
 				</Tabs.Panel>
 			</Tabs>
 		</Center>
