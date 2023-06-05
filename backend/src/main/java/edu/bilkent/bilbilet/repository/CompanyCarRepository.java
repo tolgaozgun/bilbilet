@@ -12,8 +12,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import edu.bilkent.bilbilet.model.CompanyCar;
-import edu.bilkent.bilbilet.repository.rowmapper.BilBiletRowMapper;
-import edu.bilkent.bilbilet.repository.rowmapper.CompanyCarRM;
+import edu.bilkent.bilbilet.repository.rowmapper.datamodel.CompanyCarRM;
+import edu.bilkent.bilbilet.repository.rowmapper.rm.CompanyCarRowMapper;
 import edu.bilkent.bilbilet.request.AddCompanyCar;
 import edu.bilkent.bilbilet.response.RCompanyCar;
 
@@ -94,12 +94,12 @@ public class CompanyCarRepository {
 
     public List<CompanyCarRM> findByCompanyId(int companyId) {
         String sql = "SELECT * FROM CompanyCar cc INNER JOIN Car c ON c.car_id = cc.car_id INNER JOIN Address a ON a.address_id = cc.address_id WHERE cc.company_id = ?";
-        return jdbcTemplate.query(sql, BilBiletRowMapper.COMPANY_CAR_MAPPED_RM, companyId);
+        return jdbcTemplate.query(sql, CompanyCarRowMapper.COMPANY_CAR_MAPPED_RM, companyId);
     }
 
     public List<CompanyCarRM> findByCompanyCarId(int companyCarId) {
         String sql = "SELECT * FROM CompanyCar cc INNER JOIN Car c ON c.car_id = cc.car_id INNER JOIN Address a ON a.address_id = cc.address_id WHERE cc.company_car_id = ?";
-        return jdbcTemplate.query(sql, BilBiletRowMapper.COMPANY_CAR_MAPPED_RM, companyCarId);
+        return jdbcTemplate.query(sql, CompanyCarRowMapper.COMPANY_CAR_MAPPED_RM, companyCarId);
     }
 
     public boolean existByCompanyCarId(int companyCarId) {

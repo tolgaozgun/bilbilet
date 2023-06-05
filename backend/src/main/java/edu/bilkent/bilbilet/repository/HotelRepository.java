@@ -1,14 +1,18 @@
 package edu.bilkent.bilbilet.repository;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.ArrayList;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -42,12 +46,12 @@ public class HotelRepository {
         try {
             return jdbcTemplate.query(sql, hotelRowMapper, addressId);
         } catch (EmptyResultDataAccessException e) {
-            List<Hotel> emptyList = Collections.<Hotel>emptyList();
+            List<Hotel> emptyList = Collections.emptyList();
             return emptyList;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        List<Hotel> emptyList = Collections.<Hotel>emptyList();
+        List<Hotel> emptyList = Collections.emptyList();
         return emptyList;
     }
 
@@ -94,5 +98,80 @@ public class HotelRepository {
         Optional<Hotel> hotel = findHotelByName(name);
 
         return hotel.isPresent();
+    }
+
+    public List<Hotel> findHotelByProperties(Map<String, Object> properties) {
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Hotel ");
+        List<Object> parameterValues = new ArrayList<>();
+        boolean andNeeded = false;
+
+        if (properties.isEmpty()) {
+            return jdbcTemplate.query(sqlBuilder.toString(), hotelRowMapper);
+        }
+
+        sqlBuilder.append(" WHERE ");
+
+        for (String property : properties.keySet()) {
+            Object param = properties.get(property);
+            String paramStr = (String) param;
+            // Not valid param
+            if (paramStr.isEmpty() || paramStr.isBlank()) {
+                continue;
+            }
+
+            
+            // Check the case
+            boolean isOrderBy = property.compareTo("order_by") == 0;
+            boolean isBetweenStatement = property.compareTo("avg_price") == 0 || property.compareTo("rating") == 0;
+            boolean isName = property.compareTo("name") == 0;
+            
+            if (!isOrderBy && andNeeded) {
+                sqlBuilder.append(" AND ");
+            }
+
+            // Append ORDER BY ASC | DESC
+            if (isOrderBy) {
+                String[] paramList = paramStr.split(",");
+                String orderParam = paramList[0];
+                String orderDir = paramList[1];
+                if (orderParam.compareTo("") == 0 && orderDir.compareTo("") == 0) {
+                    continue;
+                }
+
+                sqlBuilder.append(" ORDER BY ? ? ");
+                parameterValues.add(orderParam);
+                parameterValues.add(orderDir);
+            }
+            else if (isBetweenStatement) {
+                sqlBuilder.append(property);
+                sqlBuilder.append(" BETWEEN ? AND ? ");
+                String[] rangeList = paramStr.split(",");
+                parameterValues.add(rangeList[0]);
+                parameterValues.add(rangeList[1]);
+            } else if (isName) {
+                sqlBuilder.append(property);
+                sqlBuilder.append(" LIKE CONCAT('%', ?, '%')");
+                parameterValues.add(param);
+            } else {
+                sqlBuilder.append(property);
+                sqlBuilder.append(" = ? ");
+                parameterValues.add(param);
+            }
+            
+            andNeeded = true;
+        }
+        
+        String sql = sqlBuilder.toString();
+        System.out.println("Get hotels query: " + sql);
+        System.out.println("Param values: " + parameterValues.toString());
+
+        return jdbcTemplate.query(sql, new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps) throws SQLException {
+                for (int i = 0; i < parameterValues.size(); i++) {
+                    ps.setObject(i + 1, parameterValues.get(i));
+                }
+            }
+        }, hotelRowMapper); // check if empty
     }
 }

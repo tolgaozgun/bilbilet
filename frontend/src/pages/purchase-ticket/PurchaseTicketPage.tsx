@@ -13,24 +13,41 @@ import {
 	IconSquareRoundedArrowLeftFilled,
 	IconSquareRoundedArrowRightFilled,
 } from '@tabler/icons-react';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import ItemsNotFoundPage from '../../components/common/feedback/ItemsNotFoundPage';
 import ConfirmBalancePurchase from '../../components/payment/ticket/ConfirmBalancePurchase';
 import SelectPaymentOption from '../../components/payment/ticket/SelectPaymentOption';
 import TicketInformation from '../../components/payment/ticket/TicketInformation';
 import TravelerInformationForm from '../../components/payment/ticket/TravelerInformationForm';
 import PayWithCreditCardForm from '../../components/payment/transaction/PayWithCreditCardForm';
 import { useUser } from '../../hooks/auth';
+import useAxiosSecure from '../../hooks/auth/useAxiosSecure';
+import { getTicketById } from '../../services/payment/TicketService';
 import { PaymentType } from '../../types/PaymentTypes';
+import LoadingPage from '../LoadingPage';
 
 const PurchaseTicketPage = () => {
+	const { ticketId } = useParams();
+	const axiosSecure = useAxiosSecure();
+	const user = useUser();
+
 	// Stepper
 	const [active, setActive] = useState(0);
 	const [selectedPaymentOption, setSelectedPaymentOption] = useState<PaymentType>(null);
 	const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
 	const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
+	const {
+		isLoading: isTicketLoading,
+		isError: isTicketError,
+		data: ticket,
+	} = useQuery({
+		queryKey: ['getTicket'],
+		queryFn: () => getTicketById(axiosSecure, Number(ticketId)),
+	});
 	// Traveler information form
-	const user = useUser();
 	const travelerInformationForm = useForm({
 		initialValues: {
 			name: user?.name || '',
@@ -38,7 +55,7 @@ const PurchaseTicketPage = () => {
 			passportNumber: '',
 			TCK: user?.TCK || '',
 			email: user?.email || '',
-			phone: user?.phone || '',
+			phone: user?.telephone || '',
 		},
 		validate: {
 			name: (value) => (value === '' ? 'This field cannot be left empty' : null),
@@ -57,18 +74,40 @@ const PurchaseTicketPage = () => {
 		},
 	});
 
-	// TODO: Fetch ticket price using ticket id from backend, create hook
-	// useTicket that will fetch ticket info
+	if (isTicketLoading) {
+		return <LoadingPage />;
+	}
+
+	if (isTicketError) {
+		return <ItemsNotFoundPage />;
+	}
+
+	console.log(ticket?.data!);
+	const price = ticket?.data!.totalPrice;
 
 	const PaymentForm = () => {
 		switch (selectedPaymentOption) {
 			case 'balance':
-				return <ConfirmBalancePurchase price={100} pricePostfix="TL" />;
+				return (
+					<>
+						<Title order={2}>Confirm payment from balance</Title>
+						<ConfirmBalancePurchase
+							ticketId={ticket?.data!.ticketId}
+							travelerId={user?.id!}
+							price={price}
+							pricePostfix="TL"
+						/>
+					</>
+				);
 			case 'credit-card':
 				return (
 					<Card withBorder shadow="md" p={24}>
+						<Title order={2}>Enter credit card information</Title>
 						<Flex align="center" justify="space-evenly">
-							<PayWithCreditCardForm price={100} />
+							<PayWithCreditCardForm
+								ticketId={ticket?.data!.ticketId}
+								price={price}
+							/>
 						</Flex>
 					</Card>
 				);
@@ -86,7 +125,6 @@ const PurchaseTicketPage = () => {
 		nextStep();
 	};
 
-	const price = 100;
 	return (
 		<Center>
 			<Stepper active={active} breakpoint="sm" p={18}>
@@ -96,7 +134,7 @@ const PurchaseTicketPage = () => {
 				>
 					<Stack spacing={36}>
 						<Flex align="center" justify="space-evenly">
-							<TicketInformation />
+							<TicketInformation ticket={ticket?.data!} />
 							<TravelerInformationForm form={travelerInformationForm} />
 						</Flex>
 						<Container>
@@ -152,7 +190,6 @@ const PurchaseTicketPage = () => {
 									Back
 								</Button>
 							</Stack>
-							<Title order={2}>Enter credit card information</Title>
 							<PaymentForm />
 						</Stack>
 					</Card>

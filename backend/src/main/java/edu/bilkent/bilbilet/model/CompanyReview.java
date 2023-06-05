@@ -12,9 +12,8 @@ import lombok.NoArgsConstructor;
 public class CompanyReview {
 	@Id
 	@NotNull
-	private int review_id;
+	private int reviewId;
 
 	@NotNull
-	private int company_id;
-
+	private int companyId;
 }

@@ -31,27 +31,39 @@ public class DatabaseInitializer {
     @Autowired
     private DataSource dataSource;
 
-    @PostConstruct
-    public void initializeTriggers() {
-        ResourceDatabasePopulator triggersPopulator = 
-            new ResourceDatabasePopulator(false, false, StandardCharsets.UTF_8.toString(), new ClassPathResource("sql/triggers.sql"));
-        triggersPopulator.setSeparator("//");
-        triggersPopulator.execute(dataSource);
+    // @PostConstruct
+    // public void initializeTriggers() {
+    //     ResourceDatabasePopulator triggersPopulator = 
+    //         new ResourceDatabasePopulator(false, false, StandardCharsets.UTF_8.toString(), new ClassPathResource("sql/triggers.sql"));
+    //     triggersPopulator.setSeparator("//");
+    //     triggersPopulator.execute(dataSource);
 
-        System.out.println("hola triger");
-    }
+    //     System.out.println("hola triger");
+    // }
 
     @PostConstruct
     public void initializeDatabase() throws IOException {
         ClassPathResource resource = new ClassPathResource("sql/init.sql");
         ClassPathResource data = new ClassPathResource("sql/data.sql");
-        // ClassPathResource trigger = new ClassPathResource("sql/triggers.sql");
+        ClassPathResource view = new ClassPathResource("sql/view.sql");
 
         try {
             ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), resource);
             ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), data);
-            // ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), trigger);
-        } catch (ScriptException | SQLException e) {
+            ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(), view);
+
+            ResourceDatabasePopulator triggersPopulator = new ResourceDatabasePopulator(
+                false,
+                false,
+                StandardCharsets.UTF_8.toString(),
+                new ClassPathResource("sql/triggers.sql")
+            );
+            triggersPopulator.setSeparator("//");
+            triggersPopulator.execute(dataSource);
+
+            System.out.println("hola triger");
+        }
+        catch (ScriptException | SQLException e) {
             e.printStackTrace();
         }
 

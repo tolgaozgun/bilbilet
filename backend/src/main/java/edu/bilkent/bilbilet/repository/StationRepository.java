@@ -59,12 +59,12 @@ public class StationRepository {
         try {
             return jdbcTemplate.query(sql, rStationAddressRowMapper);
         } catch (EmptyResultDataAccessException e) {
-            List<RStationAddress> emptyList = Collections.<RStationAddress>emptyList();
+            List<RStationAddress> emptyList = Collections.emptyList();
             return emptyList;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        List<RStationAddress> emptyList = Collections.<RStationAddress>emptyList();
+        List<RStationAddress> emptyList = Collections.emptyList();
         return emptyList;
     }
 
@@ -94,6 +94,20 @@ public class StationRepository {
         }
 
         return Optional.empty();
+    }
+
+    public List<RStationAddress> findStationsByType(StationType type) {
+        String sql = "SELECT * FROM Station s NATURAL JOIN Address a WHERE s.station_type = '" + type.toString() + "'";
+
+        try {
+            return jdbcTemplate.query(sql, rStationAddressRowMapper);
+        } catch (EmptyResultDataAccessException e) {
+            return Collections.emptyList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
     }
 
     public Station save(Station station) { // check if exist????????????
