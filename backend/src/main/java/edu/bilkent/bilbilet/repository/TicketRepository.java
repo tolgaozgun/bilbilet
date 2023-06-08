@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import edu.bilkent.bilbilet.enums.SeatType;
 import edu.bilkent.bilbilet.enums.TicketStatus;
 import edu.bilkent.bilbilet.exception.ItemNotFoundException;
+import edu.bilkent.bilbilet.exception.TicketConflictException;
 import edu.bilkent.bilbilet.model.Ticket;
 import edu.bilkent.bilbilet.repository.rowmapper.rm.TicketRowMapper;
 import edu.bilkent.bilbilet.response.RTicketView;
@@ -25,6 +26,8 @@ import edu.bilkent.bilbilet.response.RUserTicketView;
 public class TicketRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    private final String OVERLAPPING_DATE_ERROR = "PreparedStatementCallback; uncategorized SQLException for SQL [UPDATE Ticket SET ticket_status = ?, traveler_id = ? WHERE ticket_id = ?]; SQL state [45000]; error code [1644]; Error: User has overlapping ticket date/time";
 
     private RowMapper<Ticket> ticketRowMapper = (rs, rowNum) -> {
         Ticket t = new Ticket();
@@ -126,7 +129,7 @@ public class TicketRepository {
         }
     }
 
-    public Optional<Ticket> buyTicket(int userId, int ticketId) {
+    public Optional<Ticket> buyTicket(int userId, int ticketId) throws TicketConflictException {
         String sql = "UPDATE Ticket SET ticket_status = ?, traveler_id = ? "
                     + "WHERE ticket_id = ?";
         try {
@@ -135,6 +138,10 @@ public class TicketRepository {
             
             return ticket;
         } catch (Exception e) {
+            if (e.getMessage().equals(OVERLAPPING_DATE_ERROR)) {
+                throw new TicketConflictException("You already have ticket between these dates");
+            }
+
             throw e;
         }
     }
